@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAMG | Client Meeting Log</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root {
+      --yellow:   #F8C200;
+      --yellow-dk:#D4A500;
+      --navy:     #1A3C5E;
+      --navy-lt:  #1E4A73;
+      --black:    #1A1A1A;
+      --grey:     #6B6B6B;
+      --grey-lt:  #F4F4F4;
+      --border:   #E0E0E0;
+      --white:    #FFFFFF;
+      --success:  #2A9D5C;
+      --error:    #D94F4F;
+      --warning:  #E07B39;
+      --radius:   12px;
+      --shadow:   0 2px 12px rgba(0,0,0,0.09);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: #F0F2F5; color: var(--black); font-size: 15px; min-height: 100vh; }
+
+    /* Header */
+    .header { background: var(--navy); padding: 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
+    .header-bar { background: var(--yellow); height: 5px; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; }
+    .header-logo { display: flex; align-items: center; gap: 12px; }
+    .logo-mark { width: 38px; height: 38px; background: var(--yellow); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--navy); font-size: 16px; letter-spacing: -0.5px; }
+    .header-title { color: var(--white); font-size: 16px; font-weight: 600; }
+    .header-sub { color: rgba(255,255,255,0.6); font-size: 12px; font-weight: 400; margin-top: 1px; }
+    .header-date { color: rgba(255,255,255,0.75); font-size: 13px; font-weight: 400; text-align: right; }
+
+    /* Layout */
+    .page { max-width: 960px; margin: 32px auto; padding: 0 20px 60px; }
+
+    /* Card */
+    .card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px; margin-bottom: 20px; }
+    .card-title { font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+    .card-sub { font-size: 13px; color: var(--grey); margin-bottom: 24px; }
+
+    /* No Meeting Banner */
+    .no-meeting-banner { background: #FFF8E6; border: 2px solid var(--yellow); border-radius: var(--radius); padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+    .no-meeting-banner .label { font-weight: 600; color: var(--navy); font-size: 15px; }
+    .no-meeting-banner .sublabel { font-size: 12px; color: var(--grey); margin-top: 2px; }
+
+    /* Toggle */
+    .toggle-wrap { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .toggle { position: relative; width: 52px; height: 28px; cursor: pointer; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 34px; transition: 0.3s; }
+    .toggle-slider:before { content: ''; position: absolute; width: 22px; height: 22px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+    .toggle input:checked + .toggle-slider { background: var(--yellow); }
+    .toggle input:checked + .toggle-slider:before { transform: translateX(24px); }
+    .toggle-label { font-weight: 500; font-size: 14px; color: var(--black); }
+
+    /* Form */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-grid .full { grid-column: 1 / -1; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 13px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 4px; }
+    .field label .req { color: var(--error); font-size: 14px; }
+    .field select, .field input[type="text"], .field input[type="number"], .field input[type="datetime-local"], .field textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px;
+      font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--black); background: var(--white);
+      transition: border-color 0.2s, box-shadow 0.2s; appearance: none; -webkit-appearance: none;
+      min-height: 44px;
+    }
+    .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; cursor: pointer; }
+    .field select:focus, .field input:focus, .field textarea:focus { outline: none; border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(248,194,0,0.18); }
+    .field select.error, .field input.error, .field textarea.error { border-color: var(--error); }
+    .field textarea { resize: vertical; min-height: 90px; }
+    .field .hint { font-size: 11px; color: var(--grey); margin-top: 2px; }
+    .field .err-msg { font-size: 12px; color: var(--error); display: none; }
+    .field.has-error .err-msg { display: block; }
+
+    /* Client combo */
+    .client-combo { position: relative; }
+    .client-combo input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--black); background: var(--white); transition: border-color 0.2s; min-height: 44px; }
+    .client-combo input:focus { outline: none; border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(248,194,0,0.18); }
+    .client-combo input.error { border-color: var(--error); }
+    .dropdown-list { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--white); border: 1.5px solid var(--yellow); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.14); max-height: 220px; overflow-y: auto; z-index: 200; display: none; }
+    .dropdown-list.open { display: block; }
+    .dropdown-item { padding: 10px 14px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 8px; transition: background 0.15s; }
+    .dropdown-item:hover, .dropdown-item.active { background: #FFF8E6; }
+    .dropdown-item .badge-new { background: #E8F5E9; color: #2A9D5C; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 20px; flex-shrink: 0; }
+    .dropdown-item .badge-existing { background: #E3F0FF; color: var(--navy); font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 20px; flex-shrink: 0; }
+    .dropdown-item .create-new-opt { color: var(--yellow-dk); font-weight: 600; }
+    .dropdown-empty { padding: 14px; font-size: 13px; color: var(--grey); text-align: center; }
+
+    /* Segment autofill */
+    .autofill-badge { display:none; font-size:11px; color:var(--success); font-weight:600; margin-top:4px; }
+    .autofill-badge.visible { display:block; }
+    select.segment-locked { background-color:#F4F4F4; color:var(--grey); cursor:not-allowed; }
+    .msii-badge { display:none; margin-top:6px; }
+    .msii-badge.visible { display:inline-flex; align-items:center; gap:5px; background:var(--yellow); color:var(--navy); font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; }
+
+    /* Divider / section label */
+    .divider { border: none; border-top: 1.5px solid var(--grey-lt); margin: 24px 0; }
+    .section-label { font-size: 11px; font-weight: 700; color: var(--grey); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+
+    /* Submit */
+    .submit-wrap { display: flex; gap: 12px; margin-top: 28px; }
+    .btn-submit { flex: 1; padding: 15px; background: var(--yellow); color: var(--navy); font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; }
+    .btn-submit:hover { background: var(--yellow-dk); transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-reset { padding: 15px 24px; background: var(--grey-lt); color: var(--grey); font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s; min-height: 50px; }
+    .btn-reset:hover { background: var(--border); }
+
+    /* Toast */
+    .toast-container { position: fixed; top: 80px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+    .toast { padding: 14px 20px; border-radius: 10px; font-size: 14px; font-weight: 500; color: var(--white); box-shadow: 0 4px 16px rgba(0,0,0,0.18); animation: slideIn 0.3s ease; max-width: 340px; display: flex; align-items: center; gap: 10px; }
+    .toast.success { background: var(--success); }
+    .toast.error   { background: var(--error); }
+    .toast.info    { background: var(--navy); }
+    @keyframes slideIn { from { transform: translateX(120%); opacity:0; } to { transform: translateX(0); opacity:1; } }
+
+    /* Spinner */
+    .spinner { width: 18px; height: 18px; border: 3px solid rgba(26,60,94,0.3); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Disabled */
+    .form-body.disabled { opacity: 0.4; pointer-events: none; }
+
+    /* Config modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; z-index: 9000; }
+    .modal-overlay.hidden { display: none; }
+    .modal { background: var(--white); border-radius: 16px; padding: 36px; max-width: 480px; width: 90%; box-shadow: 0 16px 48px rgba(0,0,0,0.25); }
+    .modal h2 { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .modal p { font-size: 13px; color: var(--grey); margin-bottom: 24px; line-height: 1.6; }
+    .modal .field { margin-bottom: 16px; }
+    .modal .field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--black); }
+    .modal .field input:focus { outline: none; border-color: var(--yellow); }
+    .btn-config { width: 100%; padding: 14px; background: var(--navy); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; }
+    .btn-config:hover { background: var(--navy-lt); }
+    .config-link { font-size: 12px; color: var(--yellow-dk); cursor: pointer; text-decoration: underline; margin-top: 12px; text-align: center; display: block; }
+
+    /* Tab Navigation */
+    .tab-nav { display: flex; gap: 4px; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 6px; margin-bottom: 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .tab-btn { flex: 1; padding: 11px 16px; border: none; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; color: var(--grey); background: transparent; display: flex; align-items: center; justify-content: center; gap: 7px; white-space: nowrap; min-height: 44px; }
+    .tab-btn:hover { background: var(--grey-lt); color: var(--navy); }
+    .tab-btn.active { background: var(--navy); color: var(--white); font-weight: 600; box-shadow: 0 2px 8px rgba(26,60,94,0.25); }
+    .tab-btn .tab-count { background: var(--yellow); color: var(--navy); font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 20px; min-width: 22px; text-align: center; }
+    .tab-btn.active .tab-count { background: rgba(248,194,0,0.9); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Client Status Tab */
+    .cl-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+    .cl-search { flex: 1; min-width: 180px; padding: 10px 14px 10px 38px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 12px center; min-height: 44px; }
+    .cl-search:focus { outline: none; border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(248,194,0,0.18); }
+    .cl-filter { padding: 10px 30px 10px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--black); background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 10px center; appearance: none; cursor: pointer; min-height: 44px; }
+    .cl-filter:focus { outline: none; border-color: var(--yellow); }
+    .btn-refresh { padding: 10px 16px; background: var(--grey-lt); border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--grey); cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; min-height: 44px; }
+    .btn-refresh:hover { border-color: var(--yellow); color: var(--navy); }
+
+    /* Stats bar */
+    .cl-stats { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .cl-stat { background: var(--white); border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .cl-stat .stat-num { font-size: 20px; font-weight: 700; color: var(--navy); }
+    .cl-stat .stat-lbl { font-size: 11px; color: var(--grey); line-height: 1.3; }
+    .cl-stat.highlight { background: #FFF8E6; border-color: var(--yellow); }
+    .cl-stat.highlight .stat-num { color: var(--yellow-dk); }
+    .cl-stat.success-stat { background: #E8F5E9; border-color: #2A9D5C; }
+    .cl-stat.success-stat .stat-num { color: var(--success); }
+
+    /* Table */
+    .cl-table-wrap { overflow-x: auto; overflow-y: auto; max-height: 900px; border-radius: 10px; border: 1.5px solid var(--border); }
+    .cl-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .cl-table thead tr { background: var(--navy); color: var(--white); }
+    .cl-table thead th { padding: 12px 14px; text-align: center; font-weight: 600; font-size: 12px; white-space: nowrap; position: sticky; top: 0; z-index: 2; background: var(--navy); }
+    .cl-table thead th:first-child { border-radius: 8px 0 0 0; }
+    .cl-table thead th:last-child  { border-radius: 0 8px 0 0; }
+    .cl-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+    .cl-table tbody tr:last-child { border-bottom: none; }
+    .cl-table tbody tr:hover { background: #FAFAFA; }
+    .cl-table tbody tr.injected-row { background: #F0FFF6; }
+    .cl-table tbody tr.injected-row:hover { background: #E6FFF0; }
+    .cl-table td { padding: 11px 14px; vertical-align: middle; text-align: center; font-size: 12px; color: var(--grey); }
+    .cl-table td.company-name { font-weight: 600; color: var(--navy); min-width: 140px; max-width: 220px; text-align: left; font-size: 13px; }
+    .cl-name-btn span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; }
+    .cl-table th.col-msii, .cl-table td.col-msii { width: 56px; min-width: 56px; max-width: 56px; text-align: center; }
+    .cl-table td.td-num { font-size: 12px; color: var(--grey); }
+    .cl-table td.td-bold { font-size: 13px; color: var(--black); font-weight: 500; }
+    .action-cell { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+    .btn-icon { padding: 5px 9px; font-size: 13px; line-height: 1; }
+    .status-display { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+
+    /* Status badges */
+    .status-pill { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .s-injected      { background: #D4EDDA; color: #1A6B3A; }
+    .s-successful    { background: #D4EDDA; color: #1A6B3A; }
+    .s-pending       { background: #FFF3CD; color: #856404; }
+    .s-onboarding    { background: #CCE5FF; color: #1A4B8C; }
+    .s-decision      { background: #E2D9F3; color: #4A2C8E; }
+    .s-board         { background: #FDE5CC; color: #7A3C0E; }
+    .s-topup         { background: #D1ECF1; color: #0C5460; }
+    .s-rejected      { background: #F8D7DA; color: #721C24; }
+    .s-inprogress    { background: #E9ECEF; color: #495057; }
+    .s-default       { background: var(--grey-lt); color: var(--grey); }
+
+    .type-new      { background: #E8F5E9; color: #2A9D5C; font-size:10px; font-weight:600; padding:2px 7px; border-radius:20px; }
+    .type-existing { background: #E3F0FF; color: var(--navy); font-size:10px; font-weight:600; padding:2px 7px; border-radius:20px; }
+
+    /* Inline edit */
+    .edit-cell { display: flex; align-items: center; gap: 8px; }
+    .inline-select { padding: 6px 28px 6px 10px; border: 1.5px solid var(--yellow); border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 12px; background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 8px center; appearance: none; cursor: pointer; box-shadow: 0 0 0 3px rgba(248,194,0,0.15); }
+    .inline-select:focus { outline: none; }
+    .btn-save-row { padding: 5px 12px; background: var(--success); color: white; border: none; border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; cursor: pointer; }
+    .btn-save-row:hover { background: #238A4D; }
+    .btn-cancel-row { padding: 5px 10px; background: var(--grey-lt); color: var(--grey); border: none; border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 11px; cursor: pointer; }
+    .btn-edit-row { padding: 5px 12px; background: transparent; color: var(--grey); border: 1.5px solid var(--border); border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .btn-edit-row:hover { border-color: var(--yellow); color: var(--navy); }
+
+    /* Injection modal */
+    .injection-modal { background: var(--white); border-radius: 16px; padding: 36px; max-width: 520px; width: 90%; box-shadow: 0 16px 48px rgba(0,0,0,0.25); }
+    .injection-modal h2 { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .injection-modal .company-tag { display: inline-block; background: #FFF8E6; border: 1px solid var(--yellow); border-radius: 6px; padding: 4px 12px; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 20px; }
+    .injection-modal .field { margin-bottom: 16px; }
+    .injection-modal .field label { font-size: 13px; font-weight: 600; color: var(--navy); display:block; margin-bottom:6px; }
+    .injection-modal .field input, .injection-modal .field select, .injection-modal .field textarea { width:100%; padding:10px 14px; border:1.5px solid var(--border); border-radius:8px; font-family:'Poppins',sans-serif; font-size:14px; color:var(--black); background: var(--white); appearance: none; }
+    .injection-modal .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; cursor: pointer; }
+    .injection-modal .field input:focus, .injection-modal .field select:focus, .injection-modal .field textarea:focus { outline:none; border-color:var(--yellow); box-shadow:0 0 0 3px rgba(248,194,0,0.18); }
+    .injection-modal .field textarea { resize:vertical; min-height:80px; }
+    .inj-modal-row { display:flex; gap:12px; }
+    .inj-modal-btns { display:flex; gap:10px; margin-top:8px; }
+    .btn-inj-confirm { flex:1; padding:13px; background: var(--success); color:white; font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; border:none; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
+    .btn-inj-confirm:hover { background: #238A4D; }
+    .btn-inj-cancel { padding:13px 20px; background:var(--grey-lt); color:var(--grey); font-family:'Poppins',sans-serif; font-size:14px; font-weight:600; border:none; border-radius:10px; cursor:pointer; }
+
+    .empty-state { text-align: center; padding: 48px 20px; color: var(--grey); }
+    .empty-state .empty-icon { font-size: 40px; margin-bottom: 12px; }
+    .empty-state p { font-size: 14px; }
+
+    /* ─── Admin PIN Screen ─── */
+    .pin-screen { display: flex; align-items: center; justify-content: center; min-height: 420px; padding: 20px; }
+    .pin-card { background: var(--white); border-radius: 16px; padding: 40px 36px; text-align: center; box-shadow: var(--shadow); max-width: 360px; width: 100%; }
+    .pin-lock { font-size: 44px; margin-bottom: 14px; }
+    .pin-card h2 { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .pin-card p { font-size: 13px; color: var(--grey); margin-bottom: 24px; line-height: 1.6; }
+    #pinInput, #rmPinInput { width: 100%; padding: 14px; font-size: 28px; letter-spacing: 10px; text-align: center; border: 2px solid var(--border); border-radius: 10px; font-family: 'Poppins', sans-serif; margin-bottom: 10px; transition: border-color 0.2s; }
+    #pinInput:focus, #rmPinInput:focus { outline: none; border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(248,194,0,0.2); }
+    .btn-unlock { width: 100%; padding: 14px; background: var(--navy); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s; min-height: 50px; }
+    .btn-unlock:hover { background: var(--navy-lt); }
+    .pin-error { font-size: 13px; color: var(--error); margin-top: 10px; display: none; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)} }
+    .pin-shake { animation: shake 0.4s ease; }
+
+    /* ─── Admin Dashboard ─── */
+    .admin-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .admin-topbar h2 { font-size: 20px; font-weight: 700; color: var(--navy); }
+    .btn-admin-refresh { padding: 9px 18px; background: var(--grey-lt); border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--grey); cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; min-height: 44px; }
+    .btn-admin-refresh:hover { border-color: var(--yellow); color: var(--navy); }
+    .admin-section { margin-bottom: 28px; }
+    .admin-section-hdr { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 20px; border-radius: 10px; font-size: 15px; font-weight: 700; margin-bottom: 18px; letter-spacing: 0.3px; }
+    .btn-export-pdf { background: rgba(255,255,255,0.25); border: 1.5px solid rgba(255,255,255,0.5); color: inherit; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+    .btn-export-pdf:hover { background: rgba(255,255,255,0.45); }
+    .btn-export-pdf:disabled { opacity: 0.6; cursor: not-allowed; }
+    .waterfall-wrap { margin-top: 18px; }
+    .wf-chart { display: flex; align-items: flex-end; gap: 8px; height: 160px; padding: 0 4px; border-bottom: 2px solid var(--border); }
+    .wf-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; flex: 1; cursor: pointer; gap: 4px; }
+    .wf-col:hover .wf-bar-v { filter: brightness(1.15); }
+    .wf-col.wf-active .wf-bar-v { outline: 2px solid var(--navy); outline-offset: 2px; border-radius: 6px 6px 0 0; }
+    .wf-bar-v { width: 100%; border-radius: 6px 6px 0 0; transition: height 0.4s ease; }
+    .wf-col-count { font-size: 12px; font-weight: 700; color: var(--navy); line-height: 1; }
+    .wf-labels { display: flex; gap: 8px; padding: 8px 4px 0; }
+    .wf-col-lbl { flex: 1; text-align: center; font-size: 10px; font-weight: 600; color: var(--grey); line-height: 1.4; }
+    .wf-drawer { margin-top: 12px; display: none; background: #FAFCFF; border: 1.5px solid var(--border); border-radius: 8px; padding: 12px 16px; }
+    .wf-drawer.open { display: block; }
+    .wf-drawer-title { font-size: 11px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .wf-client-list { list-style: decimal; padding: 0 0 0 18px; margin: 0; display: flex; flex-direction: column; gap: 5px; max-height: 220px; overflow-y: auto; }
+    .wf-client-list li { font-size: 12px; color: var(--navy); font-weight: 500; padding: 1px 0; }
+    .hos-hdr { background: var(--navy); color: var(--white); }
+    .chairman-hdr { background: #5C2E00; color: var(--white); }
+    .admin-sub { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 24px; margin-bottom: 14px; }
+    .admin-sub-title { font-size: 12px; font-weight: 700; color: var(--grey); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+    .admin-divider { height: 2px; background: linear-gradient(to right, var(--border), transparent); margin: 32px 0; }
+
+    /* Pipeline cards */
+    .admin-headline { font-size: 14px; color: var(--grey); margin-bottom: 14px; }
+    .admin-headline strong { color: var(--navy); font-size: 26px; font-weight: 700; margin-right: 4px; }
+    .pipeline-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .p-card { border-radius: 10px; padding: 16px 12px; text-align: center; border: 1.5px solid var(--border); }
+    .p-card .p-num { font-size: 30px; font-weight: 700; color: var(--navy); line-height: 1; margin-bottom: 6px; }
+    .p-card .p-lbl { font-size: 10px; font-weight: 600; color: var(--grey); line-height: 1.4; text-transform: uppercase; letter-spacing: 0.3px; }
+    .p-card .p-sub { font-size: 11px; color: var(--grey); margin-top: 5px; font-weight: 500; }
+    .p-card.pc-inprogress    { background: #EAECEF; border-color: #CED4DA; }
+    .p-card.pc-decision      { background: #EDE5FF; border-color: #C8B8F5; } .p-card.pc-decision .p-num { color: #4A2C8E; }
+    .p-card.pc-board         { background: #FEF0E0; border-color: #F8C89A; } .p-card.pc-board .p-num { color: #7A3C0E; }
+    .p-card.pc-onboarding    { background: #E0F0FF; border-color: #99CBFF; } .p-card.pc-onboarding .p-num { color: #1A4B8C; }
+    .p-card.pc-injection     { background: #FFFBE0; border-color: #FFE08A; } .p-card.pc-injection .p-num { color: #856404; }
+    .p-card.pc-topup         { background: #E0F5F8; border-color: #A8D9E2; } .p-card.pc-topup .p-num { color: #0C5460; }
+    .p-card.pc-successful    { background: #DFF5EA; border-color: #A3D9B5; } .p-card.pc-successful .p-num { color: #1A6B3A; }
+    .p-card.pc-rejected      { background: #FCEAEA; border-color: #F1AEB5; } .p-card.pc-rejected .p-num { color: #721C24; }
+
+    /* Admin tables */
+    .admin-table-wrap { overflow-x: auto; border-radius: 10px; border: 1.5px solid var(--border); }
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .admin-table thead tr { background: var(--navy); color: var(--white); }
+    .admin-table thead th { padding: 11px 14px; text-align: center; font-weight: 600; font-size: 12px; white-space: nowrap; }
+    .admin-table thead th:first-child { border-radius: 8px 0 0 0; }
+    .admin-table thead th:last-child  { border-radius: 0 8px 0 0; }
+    .admin-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+    .admin-table tbody tr:last-child { border-bottom: none; }
+    .admin-table tbody tr:hover { background: #FAFAFA; }
+    .admin-table td { padding: 10px 14px; vertical-align: middle; text-align: center; }
+    .td-rm { font-weight: 600; color: var(--navy); white-space: nowrap; text-align: left; }
+    .td-success { color: var(--success); font-weight: 700; }
+    .td-aged-amber { color: #b45309; font-weight: 700; }
+    .td-aged-red   { color: var(--error); font-weight: 700; }
+    .td-reject  { color: var(--error); font-weight: 700; }
+    .td-hl      { color: var(--yellow-dk); font-weight: 700; }
+    .td-grey    { color: var(--grey); font-size: 12px; }
+
+    /* RM drilldown controls */
+    .drilldown-ctrl { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+    .drilldown-ctrl label { font-size: 13px; font-weight: 600; color: var(--navy); }
+    .drilldown-ctrl select { padding: 9px 32px 9px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--black); background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 10px center; appearance: none; cursor: pointer; min-width: 160px; min-height: 44px; }
+    .drilldown-ctrl select:focus { outline: none; border-color: var(--yellow); }
+
+    /* Admin note */
+    .admin-note { background: #FFF8E6; border: 1px solid var(--yellow); border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #7A5C00; margin-bottom: 16px; line-height: 1.5; }
+
+    /* Chairman cards */
+    .chairman-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .ch-card { border-radius: 12px; padding: 24px; border: 1.5px solid var(--border); }
+    .ch-card.cc  { background: #EEF4FF; border-color: #B3CEFF; }
+    .ch-card.cbd { background: #F0FFF6; border-color: #A3D9B5; }
+    .ch-card-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.08); letter-spacing: 0.3px; }
+    .ch-metric { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+    .ch-num { font-size: 34px; font-weight: 700; color: var(--navy); line-height: 1; }
+    .ch-num.converted { color: var(--success); }
+    .ch-lbl { font-size: 12px; color: var(--grey); }
+    .ch-rate { font-size: 20px; font-weight: 700; color: var(--yellow-dk); margin: 14px 0 10px; }
+    .ch-amounts { font-size: 12px; color: var(--grey); display: flex; flex-direction: column; gap: 4px; padding-top: 12px; border-top: 1px solid rgba(0,0,0,0.06); margin-top: 8px; }
+    .ch-combined { background: var(--navy); color: var(--white); border-radius: 10px; padding: 16px 20px; font-size: 13px; line-height: 1.8; }
+    .ch-combined strong { color: var(--yellow); }
+    .ch-seg-wrap { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(0,0,0,0.08); }
+    .ch-seg-hdr { font-size: 11px; font-weight: 700; color: var(--grey); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+    .ch-seg-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+    .ch-seg-table th { text-align: left; font-weight: 600; color: var(--grey); padding: 3px 6px 5px 0; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .ch-seg-table th:not(:first-child) { text-align: center; }
+    .ch-seg-table td { padding: 4px 6px 4px 0; color: var(--black); border-bottom: 1px solid var(--grey-lt); }
+    .ch-seg-table td:not(:first-child) { text-align: center; font-weight: 600; color: var(--navy); }
+    .ch-seg-table td.seg-rate { color: var(--yellow-dk); }
+    .ch-seg-table tr:last-child td { border-bottom: none; }
+
+    /* Loading placeholder */
+    .loading-row { text-align: center; padding: 24px; color: var(--grey); font-size: 13px; }
+
+    /* ─── Contact Section (optional, in form) ─── */
+    .contact-toggle-btn { background: none; border: 1.5px dashed var(--border); border-radius: 8px; padding: 9px 16px; font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--grey); cursor: pointer; width: 100%; text-align: left; margin: 14px 0 4px; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+    .contact-toggle-btn:hover { border-color: var(--yellow); color: var(--navy); background: #FFFBEE; }
+    .contact-toggle-btn.open { border-color: var(--yellow); color: var(--navy); background: #FFFBEE; border-style: solid; }
+    .contact-section { margin-top: 12px; }
+    .contact-optional-label { font-size: 11px; color: var(--grey); margin-bottom: 10px; font-style: italic; }
+
+    /* ─── Contact Drawer (client status tab) ─── */
+    .drawer-row td { padding: 0 !important; border-bottom: 2px solid var(--yellow) !important; }
+    .drawer-inner { background: #FAFCFF; padding: 16px 20px; border-top: 1px solid var(--border); }
+    .drawer-inner .drawer-title { font-size: 12px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .drawer-contacts-wrap { overflow-x: auto; }
+    .drawer-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .drawer-table th { padding: 7px 12px; text-align: left; font-weight: 600; color: var(--white); background: var(--navy); white-space: nowrap; }
+    .drawer-table th:first-child { border-radius: 6px 0 0 0; }
+    .drawer-table th:last-child  { border-radius: 0 6px 0 0; }
+    .drawer-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--black); vertical-align: middle; }
+    .drawer-table tr:last-child td { border-bottom: none; }
+    .drawer-table tr:hover td { background: #F4F8FF; }
+    .drawer-empty { font-size: 13px; color: var(--grey); font-style: italic; padding: 4px 0; }
+    .drawer-loading { font-size: 13px; color: var(--grey); padding: 4px 0; }
+    .cl-name-btn { background: none; border: none; font-family: 'Poppins', sans-serif; font-size: inherit; font-weight: 600; color: var(--navy); cursor: pointer; padding: 0; text-align: left; display: flex; align-items: center; gap: 6px; }
+    .cl-name-btn:hover { color: var(--yellow-dk); }
+    .cl-name-btn .chevron { font-size: 10px; color: var(--grey); transition: transform 0.2s; display: inline-block; }
+    .cl-name-btn.open .chevron { transform: rotate(180deg); }
+
+    /* ─── Responsive: iPad (581-1024px) ─── */
+    @media (min-width: 581px) and (max-width: 1024px) {
+      .page { padding: 0 16px 60px; margin: 20px auto; }
+      .pipeline-grid { grid-template-columns: repeat(4, 1fr); }
+      .chairman-grid { grid-template-columns: 1fr 1fr; }
+      .header-inner { padding: 12px 20px; }
+    }
+
+    /* ─── Responsive: Mobile (≤580px) ─── */
+    @media (max-width: 580px) {
+      .page { padding: 0 12px 60px; margin: 12px auto; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-grid .full { grid-column: 1; }
+      .card { padding: 18px 16px; }
+      .header-inner { padding: 10px 14px; }
+      .header-date { display: none; }
+      .header-title { font-size: 14px; }
+      .tab-btn { font-size: 12px; padding: 10px 10px; flex: none; }
+      .tab-nav { gap: 3px; padding: 4px; }
+      .cl-toolbar { gap: 8px; }
+      .cl-search { min-width: 120px; }
+      .cl-col-product, .cl-col-potential { display: none; }
+      .cl-stats { gap: 8px; }
+      .cl-stat { padding: 8px 12px; }
+      .cl-stat .stat-num { font-size: 18px; }
+      .pipeline-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .chairman-grid { grid-template-columns: 1fr; }
+      .inj-modal-row { flex-direction: column; }
+      .modal { padding: 24px 20px; }
+      .injection-modal { padding: 24px 20px; }
+      .admin-sub { padding: 16px; }
+      .pin-card { padding: 28px 20px; }
+      .submit-wrap { flex-direction: column; }
+      .btn-reset { text-align: center; }
+      .admin-topbar { flex-direction: column; align-items: flex-start; }
+      .drilldown-ctrl select { min-width: 100%; }
+      .ch-num { font-size: 26px; }
+      .no-meeting-banner { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ─── Admin Sub-tabs ─── */
+    .admin-subtab-nav { display:flex; gap:4px; background:var(--grey-lt); border-radius:10px; padding:5px; margin-bottom:20px; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .admin-subtab-btn { flex:1; padding:10px 14px; border:none; border-radius:7px; font-family:'Poppins',sans-serif; font-size:13px; font-weight:500; cursor:pointer; color:var(--grey); background:transparent; transition:all 0.2s; white-space:nowrap; min-height:40px; }
+    .admin-subtab-btn:hover { background:var(--white); color:var(--navy); }
+    .admin-subtab-btn.active { background:var(--navy); color:var(--white); font-weight:600; box-shadow:0 2px 8px rgba(26,60,94,0.2); }
+    .admin-subpanel { display:none; }
+    .admin-subpanel.active { display:block; }
+  </style>
+</head>
+<body>
+
+<!-- Config Modal -->
+<div class="modal-overlay hidden" id="configModal">
+  <div class="modal">
+    <h2>Connect to Supabase</h2>
+    <p>Enter your Supabase project credentials. These are saved in your browser only.</p>
+    <div class="field"><label>Project URL</label><input type="text" id="cfgUrl" placeholder="https://xxxxxxxxxxxx.supabase.co" /></div>
+    <div class="field"><label>Anon Public Key</label><input type="text" id="cfgKey" placeholder="eyJhbGci..." /></div>
+    <button class="btn-config" onclick="saveConfig()">Save &amp; Connect</button>
+    <a class="config-link" onclick="skipConfig()">Skip for now (demo mode)</a>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-bar"></div>
+  <div class="header-inner">
+    <div class="header-logo">
+      <div class="logo-mark">M</div>
+      <div>
+        <div class="header-title">Client Meeting Log</div>
+        <div class="header-sub">Maybank Asset Management Group</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="header-date" id="headerDate"></div>
+      <button onclick="openConfig()" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);border-radius:6px;padding:6px 12px;font-family:Poppins,sans-serif;font-size:12px;cursor:pointer;min-height:36px;">Config</button>
+    </div>
+  </div>
+</div>
+
+<!-- Injection Modal -->
+<div class="modal-overlay hidden" id="injectionModal">
+  <div class="injection-modal">
+    <h2>Mark as Successfully Injected</h2>
+    <div class="company-tag" id="injCompanyTag"></div>
+    <div class="inj-modal-row">
+      <div class="field" style="flex:1;">
+        <label>Product / Fund</label>
+        <select id="injProduct">
+          <option value="">Select product</option>
+          <option value="LMS">LMS</option>
+          <option value="Private Mandate">Private Mandate</option>
+          <option value="Unit Trust">Unit Trust</option>
+          <option value="Sukuk">Sukuk</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="field" style="flex:1;">
+        <label>Injected Amount (RM Mn)</label>
+        <input type="number" id="injAmount" placeholder="e.g. 50" min="0" step="0.1" />
+      </div>
+    </div>
+    <div class="field"><label>Injection Date</label><input type="date" id="injDate" /></div>
+    <div class="field"><label>Remarks / Notes</label><textarea id="injRemarks" placeholder="Add any notes..."></textarea></div>
+    <input type="hidden" id="injLogId" />
+    <input type="hidden" id="injClientName" />
+    <div class="inj-modal-btns">
+      <button class="btn-inj-confirm" onclick="confirmInjection()">
+        <span id="injBtnText">Confirm Injection</span>
+        <div class="spinner" id="injSpinner" style="display:none;"></div>
+      </button>
+      <button class="btn-inj-cancel" onclick="closeInjectionModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="editLogModal">
+  <div class="injection-modal">
+    <h2>Edit Meeting Log</h2>
+    <div class="company-tag" id="editLogCompanyTag"></div>
+    <div class="inj-modal-row">
+      <div class="field" style="flex:1;">
+        <label>RM</label>
+        <select id="editLogRM">
+          <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
+          <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+        </select>
+      </div>
+      <div class="field" style="flex:1;">
+        <label>Meeting Type</label>
+        <select id="editLogMeetingType">
+          <option value="First Meeting">First Meeting</option>
+          <option value="Follow Up">Follow Up</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="inj-modal-row">
+      <div class="field" style="flex:1;">
+        <label>Product / Fund</label>
+        <select id="editLogProduct">
+          <option value="">— Select —</option>
+          <option value="LMS">LMS</option>
+          <option value="Private Mandate">Private Mandate</option>
+          <option value="Unit Trust">Unit Trust</option>
+          <option value="Sukuk">Sukuk</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="field" style="flex:1;">
+        <label>Potential Size (RM Mn)</label>
+        <input type="number" id="editLogPotential" placeholder="e.g. 50" min="0" step="0.1" />
+      </div>
+    </div>
+    <div class="field">
+      <label>Status</label>
+      <select id="editLogStatus" onchange="toggleEditInjectedFields()">
+        <option value="Not Met">Not Met</option>
+        <option value="Pending Decision">Pending Decision</option>
+        <option value="Pending Board Approval">Pending Board Approval</option>
+        <option value="Pending Onboarding">Pending Onboarding</option>
+        <option value="Pending Injection">Pending Injection</option>
+        <option value="Successful">Successful</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+    </div>
+    <div id="editInjectedFields" style="display:none;border-top:1px solid var(--border);margin-top:4px;padding-top:16px;">
+      <div class="inj-modal-row">
+        <div class="field" style="flex:1;">
+          <label>Injected Amount (RM Mn)</label>
+          <input type="number" id="editLogInjAmount" placeholder="e.g. 50" min="0" step="0.1" />
+        </div>
+        <div class="field" style="flex:1;">
+          <label>Injection Date</label>
+          <input type="date" id="editLogInjDate" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Injection Remarks</label>
+        <textarea id="editLogInjRemarks" placeholder="Add any notes..."></textarea>
+      </div>
+    </div>
+    <input type="hidden" id="editLogClientId" />
+    <input type="hidden" id="editLogClientName" />
+    <div class="inj-modal-btns">
+      <button class="btn-inj-confirm" id="editLogConfirmBtn" onclick="confirmEditLog()">
+        <span id="editLogBtnText">Save Changes</span>
+        <div class="spinner" id="editLogSpinner" style="display:none;"></div>
+      </button>
+      <button class="btn-inj-cancel" onclick="closeEditModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Page -->
+<div class="page">
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" id="tab-log" onclick="switchTab('log')">Log Meeting</button>
+    <button class="tab-btn" id="tab-clients" onclick="switchTab('clients')">
+      Client Status <span class="tab-count" id="tabClientCount">&#8212;</span>
+    </button>
+    <button class="tab-btn" id="tab-admin" onclick="switchTab('admin')">Admin</button>
+  </div>
+
+  <!-- TAB 1: LOG MEETING -->
+  <div class="tab-panel active" id="panel-log">
+
+    <!-- RM PIN Screen -->
+    <div id="rmPinScreen" class="pin-screen">
+      <div class="pin-card">
+        <h2>Meeting Log</h2>
+        <p>Enter your PIN to enter the meeting log.</p>
+        <input type="password" id="rmPinInput" maxlength="4" placeholder="&#8226;&#8226;&#8226;&#8226;"
+          oninput="clearRMPinError()" onkeydown="if(event.key==='Enter')submitRMPin()" inputmode="numeric" />
+        <div class="pin-error" id="rmPinError">Incorrect PIN. Please try again.</div>
+        <button class="btn-unlock" onclick="submitRMPin()">Unlock</button>
+      </div>
+    </div>
+
+    <!-- Log Content (shown after PIN) -->
+    <div id="logContent" style="display:none;">
+
+    <div class="card">
+      <div class="card-title">Log a Client Meeting</div>
+      <div class="card-sub">All fields are required. Entries are saved directly to the team database.</div>
+
+      <div class="form-body" id="formBody">
+
+        <div class="section-label">Meeting Details</div>
+        <div class="form-grid">
+          <div class="field full" id="fld-rm">
+            <label>RM Name <span class="req">*</span></label>
+            <select id="rmName" onchange="clearError('rm')">
+              <option value="">&#8212; Select your name &#8212;</option>
+              <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
+              <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+            </select>
+            <span class="err-msg">Please select your name.</span>
+          </div>
+          <div class="field full" id="fld-datetime">
+            <label>Date &amp; Time of Meeting <span class="req">*</span></label>
+            <input type="datetime-local" id="meetingDatetime" onchange="clearError('datetime')" />
+            <span class="err-msg">Please enter the meeting date and time.</span>
+          </div>
+        </div>
+
+        <hr class="divider" />
+        <div class="section-label">Client Information</div>
+        <div class="form-grid">
+          <div class="field full" id="fld-company">
+            <label>Client Name <span class="req">*</span></label>
+            <div class="client-combo">
+              <input type="text" id="companySearch" placeholder="Search client name from database&#8230;" autocomplete="off"
+                oninput="const s=this.selectionStart,e=this.selectionEnd;this.value=this.value.toUpperCase();this.setSelectionRange(s,e);filterCompanies()" onfocus="openDropdown()" onblur="closeDropdownDelayed()" />
+              <div class="dropdown-list" id="dropdownList"></div>
+            </div>
+            <input type="hidden" id="clientId" />
+            <input type="hidden" id="selectedCompanyName" />
+            <input type="hidden" id="isNewCompany" value="false" />
+            <span class="err-msg" id="companyErrMsg">Please select or enter a client name.</span>
+            <div class="msii-badge" id="msiiBadge">MSII Command Council</div>
+            <div class="hint">Start typing to search from the potential client database, or type a new name to add it.</div>
+          </div>
+
+          <div class="full">
+            <button type="button" class="contact-toggle-btn" id="contactToggleBtn" onclick="toggleContactSection()">
+              <span id="contactToggleIcon">&#43;</span> Add contact person details <em style="font-weight:400;">(optional)</em>
+            </button>
+            <div class="contact-section" id="contactSection" style="display:none;">
+              <div class="contact-optional-label">These fields are optional — fill in as much or as little as you have.</div>
+              <div class="form-grid">
+                <div class="field">
+                  <label>Contact Person Name</label>
+                  <input type="text" id="contactName" placeholder="e.g. Ahmad bin Ali" />
+                </div>
+                <div class="field">
+                  <label>Position / Title</label>
+                  <input type="text" id="contactPosition" placeholder="e.g. CFO" />
+                </div>
+                <div class="field">
+                  <label>Phone Number</label>
+                  <input type="text" id="contactPhone" placeholder="e.g. 012-3456789" inputmode="tel" />
+                </div>
+                <div class="field">
+                  <label>Email</label>
+                  <input type="text" id="contactEmail" placeholder="e.g. ahmad@company.com" inputmode="email" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field" id="fld-segment">
+            <label>Segment <span class="req">*</span></label>
+            <select id="segmentSelect" onchange="clearError('segment')">
+              <option value="">&#8212; Select segment &#8212;</option>
+              <optgroup label="CC Coverage">
+                <option value="CONGLO">CONGLO</option><option value="MID CAP">MID CAP</option>
+                <option value="LARGE CAP">LARGE CAP</option>
+                <option value="MNC">MNC</option><option value="FIG">FIG</option>
+                <option value="GLIC">GLIC</option><option value="GOM">GOM</option>
+              </optgroup>
+              <optgroup label="CBD Coverage">
+                <option value="PKP">PKP</option><option value="JM">JM</option>
+                <option value="PPKT">PPKT</option><option value="SNS">SNS</option>
+                <option value="FT">FT</option><option value="SBH">SBH</option>
+                <option value="SWK">SWK</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option value="CB">CB</option><option value="HNW">HNW</option>
+                <option value="INSTITUTIONAL">INSTITUTIONAL</option><option value="OTHER">OTHER</option>
+              </optgroup>
+            </select>
+            <span class="err-msg">Please select a segment.</span>
+            <div class="autofill-badge" id="segmentAutoFill">Auto-filled &#8212; <a href="#" onclick="unlockSegment();return false;" style="color:var(--navy);">change</a></div>
+          </div>
+
+          <div class="field" id="fld-referral">
+            <label>Referred By <span class="req">*</span></label>
+            <select id="referralSelect" onchange="clearError('referral')">
+              <option value="">&#8212; Select &#8212;</option>
+              <option value="CC">CC</option><option value="CBD">CBD</option><option value="CB">CB</option>
+              <option value="Direct">Direct</option><option value="Private Banking">Private Banking</option>
+              <option value="Premier Banking">Premier Banking</option><option value="Other">Other</option>
+            </select>
+            <span class="err-msg">Please select referral source.</span>
+          </div>
+        </div>
+
+        <hr class="divider" />
+        <div class="section-label">Opportunity Details</div>
+        <div class="form-grid">
+
+          <div class="field" id="fld-product">
+            <label>Product / Fund <span class="req">*</span></label>
+            <select id="productSelect" onchange="clearError('product')">
+              <option value="">&#8212; Select product &#8212;</option>
+              <option value="LMS">LMS (Liquidity Management Solution)</option>
+              <option value="Private Mandate">Private Mandate</option>
+              <option value="Unit Trust">Unit Trust</option><option value="Sukuk">Sukuk</option>
+              <option value="Other">Other</option>
+            </select>
+            <span class="err-msg">Please select a product.</span>
+          </div>
+
+          <div class="field" id="fld-status">
+            <label>Status <span class="req">*</span></label>
+            <select id="statusSelect" onchange="clearError('status')">
+              <option value="">&#8212; Select status &#8212;</option>
+              <option value="Pending Decision">Pending Decision</option>
+              <option value="Pending Board Approval">Pending Board Approval</option>
+              <option value="Pending Onboarding">Pending Onboarding</option>
+              <option value="Pending Injection">Pending Injection</option>
+              <option value="Successful">Successful</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+            <span class="err-msg">Please select a status.</span>
+          </div>
+
+          <div class="field" id="fld-meetingType">
+            <label>Meeting Type <span class="req">*</span></label>
+            <select id="meetingTypeSelect" onchange="clearError('meetingType')">
+              <option value="">&#8212; Select type &#8212;</option>
+              <option value="First Meeting">First Meeting</option>
+              <option value="Follow-up">Follow-up</option>
+              <option value="Other">Other</option>
+            </select>
+            <span class="err-msg">Please select the meeting type.</span>
+          </div>
+
+          <div class="field" id="fld-size">
+            <label>Potential Size (RM' Mn) <span class="req">*</span></label>
+            <input type="number" id="potentialSize" placeholder="e.g. 50" min="0" step="0.1" onchange="clearError('size')" />
+            <span class="err-msg">Please enter a potential size (use 0 if unknown).</span>
+          </div>
+
+          <div class="field full" id="fld-remarks">
+            <label>Remarks <span class="req">*</span></label>
+            <textarea id="remarks" placeholder="Key discussion points, client concerns, next steps&#8230;" onchange="clearError('remarks')"></textarea>
+            <span class="err-msg">Please add remarks for this meeting.</span>
+          </div>
+
+        </div>
+      </div><!-- /form-body -->
+
+      <div class="submit-wrap">
+        <button class="btn-submit" id="submitBtn" onclick="submitForm()">
+          <span id="submitText">Save Meeting Log</span>
+          <div class="spinner" id="submitSpinner" style="display:none;"></div>
+        </button>
+        <button class="btn-reset" onclick="resetForm()">Reset</button>
+      </div>
+    </div><!-- /card -->
+
+    <div style="text-align:center;font-size:11px;color:var(--grey);margin-top:8px;">
+      Maybank Asset Management Group &middot; Client Meeting Log Tracker &middot; <span id="footerDate"></span>
+    </div>
+
+    </div><!-- /logContent -->
+  </div><!-- /panel-log -->
+
+  <!-- TAB 2: CLIENT STATUS -->
+  <div class="tab-panel" id="panel-clients">
+    <div class="cl-stats">
+      <div class="cl-stat"><div class="stat-num" id="statTotal">--</div><div class="stat-lbl">Total Clients</div></div>
+      <div class="cl-stat success-stat"><div class="stat-num" id="statInjected">--</div><div class="stat-lbl">Injected</div></div>
+      <div class="cl-stat highlight"><div class="stat-num" id="statPending">--</div><div class="stat-lbl">In Pursuit</div></div>
+      <div class="cl-stat" style="background:#FFF8E6;border-color:var(--yellow);"><div class="stat-num" id="statMSII" style="color:var(--yellow-dk);">--</div><div class="stat-lbl">MSII CC</div></div>
+    </div>
+
+    <div class="cl-toolbar">
+      <input class="cl-search" type="text" id="clSearch" placeholder="Search company name..." oninput="renderClientTable()" />
+      <select class="cl-filter" id="clFilterStatus" onchange="renderClientTable()">
+        <option value="">All Statuses</option>
+        <option value="Successful">Successful</option>
+        <option value="Pending Decision">Pending Decision</option>
+        <option value="Pending Board Approval">Pending Board Approval</option>
+        <option value="Pending Onboarding">Pending Onboarding</option>
+        <option value="Pending Injection">Pending Injection</option>
+        <option value="Rejected">Rejected</option><option value="Not Met">Not Met</option>
+      </select>
+<select class="cl-filter" id="clFilterRM" onchange="renderClientTable()">
+        <option value="">All RMs</option>
+        <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
+        <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+      </select>
+      <button class="btn-refresh" onclick="loadClientStatuses()">Refresh</button>
+    </div>
+
+    <div class="card" style="padding:0;">
+      <div class="cl-table-wrap">
+        <table class="cl-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Client</th><th class="col-msii">MSII</th><th>Last RM</th>
+              <th class="cl-col-product">Product</th><th class="cl-col-potential">Potential (RM Mn)</th><th>Status</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="clTableBody">
+            <tr><td colspan="9"><div class="empty-state"><div class="empty-icon"></div><p>Loading client data...</p></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div><!-- /panel-clients -->
+
+  <!-- TAB 3: ADMIN DASHBOARD -->
+  <div class="tab-panel" id="panel-admin">
+
+    <!-- PIN Screen -->
+    <div id="pinScreen" class="pin-screen">
+      <div class="pin-card">
+        <h2>Admin Dashboard</h2>
+        <p>Enter your PIN to view admin dashboard.</p>
+        <input type="password" id="pinInput" maxlength="4" placeholder="&#8226;&#8226;&#8226;&#8226;"
+          oninput="clearPinError()" onkeydown="if(event.key==='Enter')submitPin()" inputmode="numeric" />
+        <div class="pin-error" id="pinError">Incorrect PIN. Please try again.</div>
+        <button class="btn-unlock" onclick="submitPin()">Unlock Dashboard</button>
+      </div>
+    </div>
+
+    <!-- Admin Content (shown after PIN) -->
+    <div id="adminContent" style="display:none;">
+      <div class="admin-topbar">
+        <h2>Admin Dashboard</h2>
+        <button class="btn-admin-refresh" onclick="loadAdminDashboard()">Refresh Data</button>
+      </div>
+
+      <!-- Admin Sub-tab Navigation -->
+      <div class="admin-subtab-nav">
+        <button class="admin-subtab-btn active" id="asubtab-pipeline" onclick="switchAdminSubtab('pipeline')">Pipeline Summary</button>
+        <button class="admin-subtab-btn" id="asubtab-overview" onclick="switchAdminSubtab('overview')">RM Overview</button>
+        <button class="admin-subtab-btn" id="asubtab-drilldown" onclick="switchAdminSubtab('drilldown')">RM Pipeline</button>
+      </div>
+
+      <!-- Sub-panel 1: Pipeline Summary + Conversion Summary -->
+      <div class="admin-subpanel active" id="subpanel-pipeline">
+        <div class="admin-sub">
+          <div class="admin-sub-title">Pipeline Summary &mdash; Clients by Stage</div>
+          <div id="pipelineContainer"><div class="loading-row">Loading...</div></div>
+        </div>
+        <div class="admin-sub">
+          <div class="admin-sub-title">Conversion Summary &mdash; CC &amp; CBD Referrals
+            <button class="btn-export-pdf" onclick="exportConversionPDF(this)" style="margin-left:12px;background:var(--navy);border:none;color:var(--white);">Export PDF</button>
+          </div>
+          <div id="chairmanContainer"><div class="loading-row">Loading...</div></div>
+        </div>
+      </div>
+
+      <!-- Sub-panel 2: All RMs Overview + Activity Tracker -->
+      <div class="admin-subpanel" id="subpanel-overview">
+        <div class="admin-sub">
+          <div class="admin-sub-title">All RMs Overview</div>
+          <div id="rmOverviewContainer"><div class="loading-row">Loading...</div></div>
+        </div>
+        <div class="admin-sub">
+          <div class="admin-sub-title">Activity Tracker &mdash; First Meetings</div>
+          <div id="activityContainer"><div class="loading-row">Loading...</div></div>
+        </div>
+      </div>
+
+      <!-- Sub-panel 3: Individual RM Pipeline -->
+      <div class="admin-subpanel" id="subpanel-drilldown">
+        <div class="admin-sub">
+          <div class="admin-sub-title">Individual RM Pipeline</div>
+          <div class="drilldown-ctrl">
+            <label>View RM:</label>
+            <select id="rmDrilldownSelect" onchange="renderRMDrilldown(this.value)">
+              <option value="all">All RMs</option>
+              <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
+              <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+            </select>
+          </div>
+          <div id="rmDrilldownContainer"><div class="loading-row">Loading...</div></div>
+        </div>
+      </div>
+
+    </div><!-- /adminContent -->
+  </div><!-- /panel-admin -->
+
+</div><!-- /page -->
+
+<script>
+// ─── CONFIG & SUPABASE ───────────────────────────────────────────
+let _sb = null;
+let demoMode = false;
+const SUPABASE_URL = 'https://kamhckbyxhjgmpvjzeop.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthbWhja2J5eGhqZ21wdmp6ZW9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4NDMxNjMsImV4cCI6MjA5MjQxOTE2M30.RYDBUwm4VBmevxS7-unmRygv5DyRao8_stnc4hQ28Vk';
+
+function initSupabase() {
+  try {
+    if (!window.supabase || typeof window.supabase.createClient !== 'function') return false;
+    _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    document.getElementById('configModal').classList.add('hidden');
+    return true;
+  } catch(e) { console.error('Supabase init:', e); return false; }
+}
+function saveConfig() {
+  const url = document.getElementById('cfgUrl').value.trim();
+  const key = document.getElementById('cfgKey').value.trim();
+  if (!url || !key) { showToast('Please enter both URL and key.', 'error'); return; }
+  try {
+    _sb = window.supabase.createClient(url, key);
+    demoMode = false;
+    document.getElementById('configModal').classList.add('hidden');
+    showToast('Connected to Supabase!', 'success');
+    loadPotentialClients();
+  } catch(e) { showToast('Connection failed: ' + e.message, 'error'); }
+}
+function skipConfig() {
+  demoMode = true;
+  document.getElementById('configModal').classList.add('hidden');
+  showToast('Running in demo mode — submissions will not be saved.', 'info');
+  loadPotentialClients();
+}
+function openConfig() {
+  document.getElementById('cfgUrl').value = SUPABASE_URL;
+  document.getElementById('cfgKey').value = SUPABASE_KEY;
+  document.getElementById('configModal').classList.remove('hidden');
+}
+
+// ─── POTENTIAL CLIENTS ───────────────────────────────────────────
+let potentialClientsData = [];
+async function loadPotentialClients() {
+  if (demoMode || !_sb) {
+    potentialClientsData = [
+      {client_name:'Sample Corp A', segment:'CONGLO', gb_cbd:'GB', msii_command_council:true},
+      {client_name:'Sample Corp B', segment:'PKP', gb_cbd:'CBD', msii_command_council:false},
+    ];
+    return;
+  }
+  try {
+    const {data, error} = await _sb.from('potential_clients')
+      .select('client_name, segment, gb_cbd, msii_command_council, source').order('client_name');
+    if (error) throw error;
+    potentialClientsData = data || [];
+  } catch(err) {
+    console.error('Failed to load clients:', err);
+    showToast('Could not load client list from database.', 'error');
+  }
+}
+
+// ─── COMPANY SEARCH ──────────────────────────────────────────────
+let selectedClient = null;
+function filterCompanies() {
+  const q = document.getElementById('companySearch').value.trim().toLowerCase();
+  const list = document.getElementById('dropdownList');
+  selectedClient = null;
+  document.getElementById('selectedCompanyName').value = '';
+  document.getElementById('isNewCompany').value = 'false';
+  unlockSegment();
+  document.getElementById('msiiBadge').classList.remove('visible');
+  const filtered = q.length === 0 ? potentialClientsData.slice(0,50) : potentialClientsData.filter(c => c.client_name.toLowerCase().includes(q));
+  let html = '';
+  filtered.forEach(c => {
+    const badge = c.gb_cbd === 'GB' ? `<span class="badge-new">GB</span>` : `<span class="badge-existing">CBD</span>`;
+    const seg = c.segment ? `<span style="font-size:10px;color:var(--grey);">${c.segment}</span>` : '';
+    html += `<div class="dropdown-item" onmousedown="selectClient('${esc(c.client_name)}','${esc(c.segment||'')}',${c.msii_command_council?'true':'false'})">
+      <span style="flex:1;">${highlight(c.client_name,q)}</span>${seg}${badge}
+    </div>`;
+  });
+  if (q.length > 0) {
+    html += `<div class="dropdown-item" onmousedown="createNewCompany('${esc(document.getElementById('companySearch').value.trim())}')">
+      <span class="create-new-opt">+ Add "${document.getElementById('companySearch').value.trim()}" as new client</span>
+    </div>`;
+  }
+  if (filtered.length === 0 && q.length === 0) html = `<div class="dropdown-empty">Start typing to search clients...</div>`;
+  list.innerHTML = html;
+  list.classList.add('open');
+}
+function highlight(text, q) {
+  if (!q) return text;
+  const i = text.toLowerCase().indexOf(q);
+  if (i === -1) return text;
+  return text.substring(0,i) + `<strong style="color:var(--navy)">${text.substring(i,i+q.length)}</strong>` + text.substring(i+q.length);
+}
+function selectClient(name, segment, msii) {
+  selectedClient = {name, segment, msii: msii===true||msii==='true'};
+  document.getElementById('companySearch').value = name;
+  document.getElementById('selectedCompanyName').value = name;
+  document.getElementById('isNewCompany').value = 'false';
+  document.getElementById('dropdownList').classList.remove('open');
+  clearFieldError('fld-company');
+  document.getElementById('companySearch').classList.remove('error');
+  document.getElementById('msiiBadge').classList.toggle('visible', selectedClient.msii);
+  if (segment) {
+    const sel = document.getElementById('segmentSelect');
+    if (!Array.from(sel.options).find(o => o.value === segment)) {
+      const opt = document.createElement('option'); opt.value = segment; opt.text = segment; sel.appendChild(opt);
+    }
+    sel.value = segment; sel.disabled = true; sel.classList.add('segment-locked');
+    document.getElementById('segmentAutoFill').classList.add('visible');
+    clearError('segment');
+  }
+}
+function unlockSegment() {
+  const sel = document.getElementById('segmentSelect');
+  sel.disabled = false; sel.classList.remove('segment-locked');
+  document.getElementById('segmentAutoFill').classList.remove('visible');
+}
+function createNewCompany(name) {
+  document.getElementById('companySearch').value = name;
+  document.getElementById('isNewCompany').value = 'true';
+  document.getElementById('selectedCompanyName').value = name;
+  document.getElementById('dropdownList').classList.remove('open');
+  document.getElementById('msiiBadge').classList.remove('visible');
+  unlockSegment(); clearFieldError('fld-company');
+}
+function openDropdown() { filterCompanies(); }
+function closeDropdownDelayed() { setTimeout(() => document.getElementById('dropdownList').classList.remove('open'), 200); }
+
+// ─── VALIDATION ──────────────────────────────────────────────────
+function validateForm() {
+  let valid = true;
+  const checks = [
+    {id:'rmName', fld:'fld-rm'}, {id:'meetingDatetime', fld:'fld-datetime'},
+    {id:'segmentSelect', fld:'fld-segment'}, {id:'referralSelect', fld:'fld-referral'},
+    {id:'productSelect', fld:'fld-product'}, {id:'statusSelect', fld:'fld-status'},
+    {id:'meetingTypeSelect', fld:'fld-meetingType'},
+  ];
+  checks.forEach(c => {
+    const el = document.getElementById(c.id);
+    if (!el || !el.value) { document.getElementById(c.fld)?.classList.add('has-error'); el?.classList.add('error'); valid = false; }
+  });
+  const searchVal = document.getElementById('companySearch').value.trim();
+  if (!searchVal) { document.getElementById('fld-company').classList.add('has-error'); document.getElementById('companySearch').classList.add('error'); valid = false; }
+  const sizeEl = document.getElementById('potentialSize');
+  if (sizeEl.value === '' || isNaN(parseFloat(sizeEl.value))) { document.getElementById('fld-size').classList.add('has-error'); sizeEl.classList.add('error'); valid = false; }
+  const rem = document.getElementById('remarks');
+  if (!rem.value.trim()) { document.getElementById('fld-remarks').classList.add('has-error'); rem.classList.add('error'); valid = false; }
+  return valid;
+}
+function clearError(key) {
+  const map = {
+    rm:['fld-rm','rmName'], datetime:['fld-datetime','meetingDatetime'],
+    segment:['fld-segment','segmentSelect'], referral:['fld-referral','referralSelect'],
+    product:['fld-product','productSelect'], status:['fld-status','statusSelect'],
+    meetingType:['fld-meetingType','meetingTypeSelect'],
+    size:['fld-size','potentialSize'], remarks:['fld-remarks','remarks'],
+  };
+  if (map[key]) { document.getElementById(map[key][0])?.classList.remove('has-error'); document.getElementById(map[key][1])?.classList.remove('error'); }
+}
+function clearFieldError(fldId) { document.getElementById(fldId)?.classList.remove('has-error'); }
+
+// ─── SUBMIT ──────────────────────────────────────────────────────
+async function submitForm() {
+  if (!validateForm()) {
+    showToast('Please fill in all required fields.', 'error');
+    const firstErr = document.querySelector('.has-error');
+    if (firstErr) firstErr.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  setLoading(true);
+  const companyName = document.getElementById('selectedCompanyName').value.trim() || document.getElementById('companySearch').value.trim();
+  const payload = {
+    rm_name: document.getElementById('rmName').value,
+    client_name_manual: companyName,
+    msii_command_council: selectedClient?.msii || false,
+    segment: document.getElementById('segmentSelect').value,
+    referral: document.getElementById('referralSelect').value,
+    product_fund: document.getElementById('productSelect').value,
+    status: document.getElementById('statusSelect').value,
+    meeting_type: document.getElementById('meetingTypeSelect').value,
+    potential_size_rm_mn: parseFloat(document.getElementById('potentialSize').value),
+    meeting_datetime: document.getElementById('meetingDatetime').value,
+    remarks: document.getElementById('remarks').value.trim(),
+    no_meeting_today: false,
+    contact_name:     document.getElementById('contactName').value.trim()     || null,
+    contact_position: document.getElementById('contactPosition').value.trim() || null,
+    contact_phone:    document.getElementById('contactPhone').value.trim()     || null,
+    contact_email:    document.getElementById('contactEmail').value.trim()     || null,
+  };
+  try {
+    if (demoMode || !_sb) {
+      await new Promise(r => setTimeout(r, 800));
+      console.log('DEMO — would submit:', payload);
+      showToast('Demo: Entry logged (not saved — connect Supabase to save).', 'info');
+    } else {
+      const {error} = await _sb.from('meeting_logs').insert(payload);
+      if (error) throw error;
+      showToast('Meeting logged successfully!', 'success');
+    }
+    resetForm();
+  } catch(err) {
+    console.error(err);
+    showToast('Error saving: ' + (err.message || 'Unknown error'), 'error');
+  } finally { setLoading(false); }
+}
+function setLoading(s) {
+  document.getElementById('submitBtn').disabled = s;
+  document.getElementById('submitText').style.display = s ? 'none' : 'inline';
+  document.getElementById('submitSpinner').style.display = s ? 'block' : 'none';
+}
+function resetForm() {
+  ['rmName','meetingDatetime','segmentSelect','referralSelect','productSelect','statusSelect','meetingTypeSelect','potentialSize','remarks'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('companySearch').value = '';
+  document.getElementById('selectedCompanyName').value = '';
+  document.getElementById('isNewCompany').value = 'false';
+  document.getElementById('msiiBadge').classList.remove('visible');
+  ['contactName','contactPosition','contactPhone','contactEmail'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('contactSection').style.display='none';
+  document.getElementById('contactToggleBtn').classList.remove('open');
+  document.getElementById('contactToggleIcon').textContent='+';
+  unlockSegment(); selectedClient = null;
+  document.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+  document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+}
+
+// ─── TOAST ───────────────────────────────────────────────────────
+function showToast(msg, type='info') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`; t.textContent = msg;
+  c.appendChild(t); setTimeout(() => t.remove(), 4500);
+}
+
+// ─── INIT ────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => document.getElementById('rmPinInput').focus(), 150);
+  const now = new Date();
+  const opts = {weekday:'long', year:'numeric', month:'long', day:'numeric'};
+  const dateStr = now.toLocaleDateString('en-MY', opts);
+  document.getElementById('headerDate').textContent = dateStr;
+  document.getElementById('footerDate').textContent = dateStr;
+  const pad = n => String(n).padStart(2,'0');
+  document.getElementById('meetingDatetime').value = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  function tryInit(n) {
+    if (initSupabase()) { showToast('Connected to Supabase', 'success'); loadPotentialClients(); return; }
+    if (n > 0) setTimeout(() => tryInit(n-1), 200);
+    else { showToast('Could not auto-connect. Please enter credentials.', 'error'); document.getElementById('configModal').classList.remove('hidden'); }
+  }
+  tryInit(10);
+});
+
+// ─── TAB SWITCHING ───────────────────────────────────────────────
+function switchTab(tab) {
+  if (!rmUnlocked && tab !== 'admin') tab = 'log';
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+  if (tab === 'clients') loadClientStatuses();
+  if (tab === 'admin') checkAdminAccess();
+}
+function switchAdminSubtab(name) {
+  document.querySelectorAll('.admin-subtab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.admin-subpanel').forEach(p => p.classList.remove('active'));
+  document.getElementById('asubtab-'+name).classList.add('active');
+  document.getElementById('subpanel-'+name).classList.add('active');
+}
+
+// ─── CLIENT STATUS ───────────────────────────────────────────────
+let clientStatusData = [];
+async function loadClientStatuses() {
+  const tbody = document.getElementById('clTableBody');
+  tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><div class="empty-icon"></div><p>Loading...</p></div></td></tr>';
+  if (demoMode || !_sb) {
+    const statuses = ['Pending Decision','Pending Board Approval','Pending Onboarding','Pending Injection','Successful','Rejected','Not Met'];
+    clientStatusData = potentialClientsData.map((c,i) => ({
+      id:'demo-'+i, name:c.client_name, gb_cbd:c.gb_cbd, segment:c.segment,
+      msii_command_council:c.msii_command_council||false,
+      latestLog: i<20 ? {rm_name:['Azmi','Iskandar','Nasya','Lei Khim','Izzati','Filzah','Colin'][i%7], product_fund:['LMS','Private Mandate','Unit Trust','Sukuk'][i%4], potential_size_rm_mn:(Math.random()*200).toFixed(1), status:statuses[i%statuses.length], meeting_datetime:new Date(Date.now()-i*86400000*3).toISOString(), injected_amount:null} : null,
+    }));
+    updateClientStats(); renderClientTable(); return;
+  }
+  try {
+    const {data:clients, error:cErr} = await _sb.from('potential_clients').select('id, client_name, gb_cbd, segment, msii_command_council').order('client_name');
+    if (cErr) throw cErr;
+    const {data:logs, error:lErr} = await _sb.from('meeting_logs').select('client_name_manual, rm_name, product_fund, potential_size_rm_mn, status, meeting_datetime, updated_at, injected_amount, injection_date').eq('no_meeting_today', false).order('meeting_datetime', {ascending:false});
+    if (lErr) throw lErr;
+    const logMap = {};
+    logs.forEach(log => { const key=(log.client_name_manual||'').toUpperCase(); if (key && !logMap[key]) logMap[key]=log; });
+    clientStatusData = clients.map(c => ({id:c.id, name:c.client_name, gb_cbd:c.gb_cbd, segment:c.segment, msii_command_council:c.msii_command_council, latestLog:logMap[c.client_name.toUpperCase()]||null}));
+    const knownNames = new Set(clients.map(c => c.client_name.toUpperCase()));
+    logs.forEach(log => {
+      const key=(log.client_name_manual||'').toUpperCase();
+      if (key && !knownNames.has(key)) { knownNames.add(key); clientStatusData.push({id:null, name:log.client_name_manual, gb_cbd:'', segment:'', msii_command_council:false, latestLog:log}); }
+    });
+    updateClientStats(); renderClientTable();
+    document.getElementById('tabClientCount').textContent = clientStatusData.length;
+  } catch(err) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="empty-icon"></div><p>Error: ${err.message}</p></div></td></tr>`;
+  }
+}
+function updateClientStats() {
+  const total = clientStatusData.length;
+  const injected = clientStatusData.filter(c => c.latestLog && c.latestLog.status==='Successful' && c.latestLog.injected_amount!=null).length;
+  const pending = clientStatusData.filter(c => c.latestLog && ['Pending Decision','Pending Board Approval','Pending Onboarding','Pending Injection'].includes(c.latestLog.status)).length;
+  const msii = clientStatusData.filter(c => c.msii_command_council===true).length;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statInjected').textContent = injected;
+  document.getElementById('statPending').textContent = pending;
+  document.getElementById('statMSII').textContent = msii;
+  document.getElementById('tabClientCount').textContent = total;
+}
+function renderClientTable() {
+  const q = (document.getElementById('clSearch')?.value||'').toLowerCase();
+  const fStatus = document.getElementById('clFilterStatus')?.value||'';
+  const fRM = document.getElementById('clFilterRM')?.value||'';
+  const tbody = document.getElementById('clTableBody');
+  let rows = clientStatusData.filter(c => {
+    const matchQ = !q || c.name.toLowerCase().includes(q);
+    const st = c.latestLog ? c.latestLog.status : 'Not Met';
+    const matchS = !fStatus || st===fStatus;
+    const matchRM = !fRM || (c.latestLog?.rm_name === fRM);
+    return matchQ && matchS && matchRM;
+  });
+  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><div class="empty-icon"></div><p>No clients match your filters.</p></div></td></tr>'; return; }
+  const priority = {'Successful':0,'Pending Decision':1,'Pending Board Approval':1,'Pending Onboarding':1,'Pending Injection':1,'Rejected':2,'Not Met':3};
+  rows.sort((a,b) => { const ap=priority[a.latestLog?.status||'Not Met']??7; const bp=priority[b.latestLog?.status||'Not Met']??7; return ap!==bp?ap-bp:a.name.localeCompare(b.name); });
+  tbody.innerHTML = rows.map((c,i) => {
+    const log = c.latestLog;
+    const status = log ? log.status : 'Not Met';
+    const isInj = status==='Successful' && log?.injected_amount!=null;
+    const statusBadge = getStatusBadge(status, log?.injected_amount);
+    const typeBadge = c.msii_command_council ? '<span style="background:var(--yellow);color:var(--navy);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;">MSII</span>' : '<span style="color:var(--grey);font-size:11px;">&#8212;</span>';
+    const injAmt = isInj && log.injected_amount ? `<br><small style="color:var(--success);font-weight:600;">Injected: RM ${parseFloat(log.injected_amount).toFixed(1)} Mn</small>` : '';
+    const potential = log?.potential_size_rm_mn!=null ? `RM ${parseFloat(log.potential_size_rm_mn).toFixed(1)} Mn` : '&#8212;';
+    const statusCell = `${statusBadge}${injAmt}`;
+    const actionCell = `<div class="action-cell">
+      ${isInj
+        ? `<span style="color:var(--success);font-size:12px;font-weight:600;">Done</span>`
+        : `<button class="btn-edit-row" onclick="openInjectionModal('${c.id||''}','${escQ(c.name)}','${escQ(log?.rm_name||'')}')">Mark Injected</button>`}
+      <button class="btn-edit-row btn-icon" onclick="openEditModal('${c.id||''}','${escQ(c.name)}')" title="Edit log">&#x270F;</button>
+    </div>`;
+    return `<tr class="${isInj?'injected-row':''}" id="cl-row-${i}">
+      <td class="td-num">${i+1}</td>
+      <td class="company-name">
+        <button class="cl-name-btn" id="cl-name-btn-${i}" onclick="toggleContactDrawer('${escQ(c.name)}',${i})" title="Click to view contact details">
+          <span>${c.name}</span><span class="chevron">&#9660;</span>
+        </button>
+      </td>
+      <td class="col-msii">${typeBadge}</td>
+      <td>${log?.rm_name||'&#8212;'}</td>
+      <td class="cl-col-product td-bold">${log?.product_fund||'&#8212;'}</td>
+      <td class="cl-col-potential">${potential}</td>
+      <td>${statusCell}</td>
+      <td>${actionCell}</td>
+    </tr>
+    <tr class="drawer-row" id="cl-drawer-${i}" style="display:none;">
+      <td colspan="9"><div class="drawer-inner" id="cl-drawer-inner-${i}"><div class="drawer-loading">Loading contacts...</div></div></td>
+    </tr>`;
+  }).join('');
+}
+// ─── CONTACT SECTION TOGGLE (form) ───────────────────────────────
+function toggleContactSection() {
+  const sec = document.getElementById('contactSection');
+  const btn = document.getElementById('contactToggleBtn');
+  const icon = document.getElementById('contactToggleIcon');
+  const isOpen = sec.style.display !== 'none';
+  sec.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+  icon.textContent = isOpen ? '+' : '−';
+}
+
+// ─── CONTACT DRAWER (client status tab) ──────────────────────────
+const drawerLoaded = {};
+async function toggleContactDrawer(clientName, i) {
+  const drawer = document.getElementById(`cl-drawer-${i}`);
+  const btn    = document.getElementById(`cl-name-btn-${i}`);
+  const isOpen = drawer.style.display !== 'none';
+  if (isOpen) {
+    drawer.style.display = 'none';
+    btn.classList.remove('open');
+    return;
+  }
+  drawer.style.display = 'table-row';
+  btn.classList.add('open');
+  if (drawerLoaded[i]) return; // already fetched
+  const inner = document.getElementById(`cl-drawer-inner-${i}`);
+  try {
+    let contacts = [];
+    if (!demoMode && _sb) {
+      const {data, error} = await _sb.from('meeting_logs')
+        .select('contact_name, contact_position, contact_phone, contact_email, rm_name, meeting_datetime')
+        .eq('client_name_manual', clientName)
+        .eq('no_meeting_today', false)
+        .order('meeting_datetime', {ascending: false});
+      if (error) throw error;
+      contacts = (data||[]).filter(l => l.contact_name || l.contact_phone || l.contact_email || l.contact_position);
+    }
+    drawerLoaded[i] = true;
+    if (!contacts.length) {
+      inner.innerHTML = `<div class="drawer-title">Contact Persons</div><div class="drawer-empty">No contact details have been logged for this client yet.</div>`;
+      return;
+    }
+    // Deduplicate by contact_name (case-insensitive), keep most recent
+    const seen = new Map();
+    contacts.forEach(c => {
+      const key = (c.contact_name||'').toLowerCase().trim() || `__anon_${Math.random()}`;
+      if (!seen.has(key)) seen.set(key, c);
+    });
+    const unique = Array.from(seen.values());
+    const rows = unique.map(c => {
+      const dt = c.meeting_datetime ? new Date(c.meeting_datetime).toLocaleDateString('en-MY',{day:'2-digit',month:'short',year:'numeric'}) : '&#8212;';
+      return `<tr>
+        <td>${c.contact_name||'&#8212;'}</td>
+        <td>${c.contact_position||'&#8212;'}</td>
+        <td>${c.contact_phone ? `<a href="tel:${c.contact_phone}" style="color:var(--navy);text-decoration:none;">${c.contact_phone}</a>` : '&#8212;'}</td>
+        <td>${c.contact_email ? `<a href="mailto:${c.contact_email}" style="color:var(--navy);text-decoration:none;">${c.contact_email}</a>` : '&#8212;'}</td>
+        <td style="color:var(--grey);">${c.rm_name||'&#8212;'}</td>
+        <td style="color:var(--grey);">${dt}</td>
+      </tr>`;
+    }).join('');
+    inner.innerHTML = `<div class="drawer-title">Contact Persons <span style="font-weight:400;font-size:11px;color:var(--grey);text-transform:none;letter-spacing:0;">(${unique.length} logged)</span></div>
+    <div class="drawer-contacts-wrap">
+      <table class="drawer-table">
+        <thead><tr><th>Name</th><th>Position</th><th>Phone</th><th>Email</th><th>Logged by</th><th>Date</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  } catch(err) {
+    inner.innerHTML = `<div class="drawer-title">Contact Persons</div><div class="drawer-empty" style="color:var(--error);">Error loading contacts: ${err.message}</div>`;
+  }
+}
+
+function escQ(s) { return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+function esc(s) { return (s||'').replace(/'/g,"\\'"); }
+function getStatusBadge(status, injAmt) {
+  const map = {'Successful':'s-successful','Pending Decision':'s-decision','Pending Board Approval':'s-board','Pending Onboarding':'s-onboarding','Pending Injection':'s-pending','Rejected':'s-rejected','Not Met':'s-default'};
+  const cls = map[status]||'s-default';
+  const lbl = (status==='Successful'&&injAmt!=null) ? 'Successful (Injected)' : status;
+  return `<span class="status-pill ${cls}">${lbl}</span>`;
+}
+function getStatusBadgeCls(status) {
+  const map = {'Successful':'s-successful','Pending Decision':'s-decision','Pending Board Approval':'s-board','Pending Onboarding':'s-onboarding','Pending Injection':'s-pending','Rejected':'s-rejected','Not Met':'s-default'};
+  return map[status]||'s-default';
+}
+function toggleEditInjectedFields() {
+  const isSuccessful = document.getElementById('editLogStatus').value === 'Successful';
+  document.getElementById('editInjectedFields').style.display = isSuccessful ? 'block' : 'none';
+}
+function openEditModal(clientId, clientName) {
+  const ci = clientStatusData.find(c => c.name === clientName);
+  const log = ci?.latestLog;
+  document.getElementById('editLogCompanyTag').textContent = clientName;
+  document.getElementById('editLogClientId').value = clientId || '';
+  document.getElementById('editLogClientName').value = clientName;
+  document.getElementById('editLogRM').value = log?.rm_name || RM_LIST[0];
+  document.getElementById('editLogMeetingType').value = log?.meeting_type || 'Follow Up';
+  document.getElementById('editLogProduct').value = log?.product_fund || '';
+  document.getElementById('editLogPotential').value = log?.potential_size_rm_mn != null ? log.potential_size_rm_mn : '';
+  document.getElementById('editLogStatus').value = log?.status || 'Not Met';
+  document.getElementById('editLogInjAmount').value = log?.injected_amount != null ? log.injected_amount : '';
+  document.getElementById('editLogInjDate').value = log?.injection_date || '';
+  document.getElementById('editLogInjRemarks').value = log?.injection_remarks || '';
+  toggleEditInjectedFields();
+  document.getElementById('editLogModal').classList.remove('hidden');
+}
+function closeEditModal() { document.getElementById('editLogModal').classList.add('hidden'); }
+async function confirmEditLog() {
+  const clientName = document.getElementById('editLogClientName').value;
+  const rm = document.getElementById('editLogRM').value;
+  const meetingType = document.getElementById('editLogMeetingType').value;
+  const product = document.getElementById('editLogProduct').value;
+  const potential = document.getElementById('editLogPotential').value;
+  const status = document.getElementById('editLogStatus').value;
+  const injAmount = document.getElementById('editLogInjAmount').value;
+  const injDate = document.getElementById('editLogInjDate').value;
+  const injRemarks = document.getElementById('editLogInjRemarks').value.trim();
+  const btn = document.getElementById('editLogConfirmBtn');
+  document.getElementById('editLogBtnText').style.display = 'none';
+  document.getElementById('editLogSpinner').style.display = 'block';
+  btn.disabled = true;
+  try {
+    if (!demoMode && _sb) {
+      const {data: latest, error: selErr} = await _sb.from('meeting_logs')
+        .select('id')
+        .eq('client_name_manual', clientName)
+        .eq('no_meeting_today', false)
+        .order('meeting_datetime', {ascending: false})
+        .limit(1)
+        .maybeSingle();
+      if (selErr) throw selErr;
+      if (latest) {
+        const upd = {rm_name: rm, meeting_type: meetingType, product_fund: product || null, potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status, updated_at: new Date().toISOString(),
+          injected_amount: status === 'Successful' && injAmount !== '' ? parseFloat(injAmount) : null,
+          injection_date: status === 'Successful' && injDate ? injDate : null,
+          injection_remarks: status === 'Successful' ? injRemarks || null : null};
+        const {error: updErr} = await _sb.from('meeting_logs').update(upd).eq('id', latest.id);
+        if (updErr) throw updErr;
+      }
+    }
+    const ci = clientStatusData.find(c => c.name === clientName);
+    if (ci) {
+      if (!ci.latestLog) ci.latestLog = {};
+      Object.assign(ci.latestLog, {rm_name: rm, meeting_type: meetingType, product_fund: product || null, potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status,
+        injected_amount: status === 'Successful' && injAmount !== '' ? parseFloat(injAmount) : null,
+        injection_date: status === 'Successful' && injDate ? injDate : null,
+        injection_remarks: status === 'Successful' ? injRemarks || null : null});
+    }
+    closeEditModal(); updateClientStats(); renderClientTable();
+    showToast(`Log updated for ${clientName}`, 'success');
+  } catch(err) { showToast('Error updating log: ' + err.message, 'error'); }
+  finally {
+    document.getElementById('editLogBtnText').style.display = 'inline';
+    document.getElementById('editLogSpinner').style.display = 'none';
+    btn.disabled = false;
+  }
+}
+
+// ─── INJECTION MODAL ─────────────────────────────────────────────
+function openInjectionModal(clientId, clientName) {
+  document.getElementById('injCompanyTag').textContent = clientName;
+  document.getElementById('injLogId').value = clientId;
+  document.getElementById('injClientName').value = clientName;
+  document.getElementById('injProduct').value = '';
+  document.getElementById('injAmount').value = '';
+  document.getElementById('injRemarks').value = '';
+  document.getElementById('injDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('injectionModal').classList.remove('hidden');
+}
+function closeInjectionModal() { document.getElementById('injectionModal').classList.add('hidden'); }
+async function confirmInjection() {
+  const clientId = document.getElementById('injLogId').value;
+  const clientName = document.getElementById('injClientName').value;
+  const product = document.getElementById('injProduct').value;
+  const amount = document.getElementById('injAmount').value;
+  const date = document.getElementById('injDate').value;
+  const remarks = document.getElementById('injRemarks').value.trim();
+  if (!product) { showToast('Please select a product.','error'); return; }
+  if (!amount||isNaN(parseFloat(amount))) { showToast('Please enter the injected amount.','error'); return; }
+  if (!date) { showToast('Please enter the injection date.','error'); return; }
+  document.getElementById('injBtnText').style.display='none';
+  document.getElementById('injSpinner').style.display='block';
+  document.querySelector('.btn-inj-confirm').disabled=true;
+  try {
+    if (!demoMode && _sb) {
+      const upd = {status:'Successful', product_fund:product, injected_amount:parseFloat(amount), injection_date:date, injection_remarks:remarks, updated_at:new Date().toISOString()};
+      // Fetch latest log id first, then update by id
+      const {data: latest, error: selErr} = await _sb.from('meeting_logs')
+        .select('id')
+        .eq('client_name_manual', clientName)
+        .eq('no_meeting_today', false)
+        .order('meeting_datetime', {ascending: false})
+        .limit(1)
+        .maybeSingle();
+      if (selErr) throw selErr;
+      if (latest) {
+        const {error: updErr} = await _sb.from('meeting_logs').update(upd).eq('id', latest.id);
+        if (updErr) throw updErr;
+      }
+    }
+    const ci = clientStatusData.find(c => clientId ? c.id===clientId : c.name===clientName);
+    if (ci) { if(!ci.latestLog) ci.latestLog={}; ci.latestLog.status='Successful'; ci.latestLog.product_fund=product; ci.latestLog.injected_amount=parseFloat(amount); ci.latestLog.injection_date=date; }
+    closeInjectionModal(); updateClientStats(); renderClientTable();
+    showToast(`Injection confirmed for ${clientName}! RM ${parseFloat(amount).toFixed(1)} Mn`, 'success');
+  } catch(err) { showToast('Error: '+err.message,'error'); }
+  finally { document.getElementById('injBtnText').style.display='inline'; document.getElementById('injSpinner').style.display='none'; document.querySelector('.btn-inj-confirm').disabled=false; }
+}
+
+// ─── RM PIN ──────────────────────────────────────────────────────
+const RM_PIN_HASH = '1ea2f89d934cb4a2af0b486736609cf9cb4bdafdc6e946e79aecb02b9d9dceb4';
+let rmUnlocked = false;
+
+async function submitRMPin() {
+  const pin = document.getElementById('rmPinInput').value;
+  if (!pin) { showRMPinError('Please enter your PIN.'); return; }
+  const hash = await hashPin(pin);
+  if (hash === RM_PIN_HASH) {
+    rmUnlocked = true;
+    document.getElementById('rmPinScreen').style.display = 'none';
+    document.getElementById('logContent').style.display = 'block';
+  } else {
+    showRMPinError('Incorrect PIN. Please try again.');
+    document.getElementById('rmPinInput').value = '';
+    document.getElementById('rmPinInput').classList.add('pin-shake');
+    setTimeout(() => document.getElementById('rmPinInput').classList.remove('pin-shake'), 500);
+  }
+}
+function showRMPinError(msg) { const e=document.getElementById('rmPinError'); e.textContent=msg; e.style.display='block'; }
+function clearRMPinError() { document.getElementById('rmPinError').style.display='none'; }
+
+// ─── ADMIN PIN ───────────────────────────────────────────────────
+const ADMIN_PIN_HASH = '158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab';
+
+async function hashPin(pin) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+async function submitPin() {
+  const pin = document.getElementById('pinInput').value;
+  if (!pin) { showPinError('Please enter your PIN.'); return; }
+  const hash = await hashPin(pin);
+  if (hash === ADMIN_PIN_HASH) {
+    document.getElementById('pinScreen').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    loadAdminDashboard();
+  } else {
+    showPinError('Incorrect PIN. Please try again.');
+    document.getElementById('pinInput').value = '';
+    document.getElementById('pinInput').classList.add('pin-shake');
+    setTimeout(() => document.getElementById('pinInput').classList.remove('pin-shake'), 500);
+  }
+}
+function showPinError(msg) { const e=document.getElementById('pinError'); e.textContent=msg; e.style.display='block'; }
+function clearPinError() { document.getElementById('pinError').style.display='none'; }
+function checkAdminAccess() {
+  document.getElementById('pinScreen').style.display='flex';
+  document.getElementById('adminContent').style.display='none';
+  document.getElementById('pinInput').value='';
+  document.getElementById('pinError').style.display='none';
+  setTimeout(() => document.getElementById('pinInput').focus(), 150);
+}
+
+// ─── ADMIN DATA ───────────────────────────────────────────────────
+let adminAllLogs = [];
+let adminLatestPerClient = {};
+let adminFirstDatePerClient = {};
+
+async function loadAdminDashboard() {
+  setAdminLoading();
+  if (demoMode || !_sb) { renderAdminDemo(); return; }
+  try {
+    const {data:logs, error} = await _sb.from('meeting_logs')
+      .select('id, rm_name, client_name_manual, msii_command_council, segment, referral, product_fund, status, potential_size_rm_mn, meeting_datetime, injected_amount, injection_date, meeting_type, no_meeting_today, updated_at')
+      .eq('no_meeting_today', false)
+      .order('meeting_datetime', {ascending:false});
+    if (error) throw error;
+    adminAllLogs = logs || [];
+    adminLatestPerClient = {};
+    adminAllLogs.forEach(log => {
+      const key = (log.client_name_manual||'').toUpperCase().trim();
+      if (key && !adminLatestPerClient[key]) adminLatestPerClient[key] = log;
+    });
+    adminFirstDatePerClient = {};
+    adminAllLogs.forEach(log => {
+      const key = (log.client_name_manual||'').toUpperCase().trim();
+      if (key && log.meeting_datetime) adminFirstDatePerClient[key] = log.meeting_datetime;
+    });
+    renderAllAdminSections();
+  } catch(err) {
+    showToast('Error loading admin data: '+err.message, 'error');
+    ['pipelineContainer','rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer'].forEach(id => {
+      document.getElementById(id).innerHTML = `<p style="color:var(--error);padding:16px 0;">Error loading data: ${err.message}</p>`;
+    });
+  }
+}
+
+function setAdminLoading() {
+  ['pipelineContainer','rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer'].forEach(id => {
+    document.getElementById(id).innerHTML = '<div class="loading-row">Loading...</div>';
+  });
+}
+
+function renderAllAdminSections() {
+  renderPipelineCards();
+  renderRMOverviewTable();
+  renderRMDrilldown(document.getElementById('rmDrilldownSelect')?.value || 'all');
+  renderActivityTracker();
+  renderChairmanSection();
+}
+
+// Demo mode admin render
+function renderAdminDemo() {
+  document.getElementById('pipelineContainer').innerHTML = '<div class="admin-note">Connect to Supabase to load live dashboard data. Showing placeholder in demo mode.</div>';
+  ['rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer'].forEach(id => {
+    document.getElementById(id).innerHTML = '<div class="admin-note">Live data unavailable in demo mode.</div>';
+  });
+}
+
+// ─── PIPELINE CARDS + WATERFALL ───────────────────────────────────
+function renderPipelineCards() {
+  const clients = Object.values(adminLatestPerClient);
+  const total = clients.length;
+  const stages = [
+    {key:'Pending Decision',       cls:'pc-decision',   lbl:'Pending Decision',       barColor:'#4A2C8E'},
+    {key:'Pending Board Approval', cls:'pc-board',      lbl:'Pending Board Approval', barColor:'#7A3C0E'},
+    {key:'Pending Onboarding',     cls:'pc-onboarding', lbl:'Pending Onboarding',     barColor:'#1A4B8C'},
+    {key:'Pending Injection',      cls:'pc-injection',  lbl:'Pending Injection',      barColor:'#856404'},
+    {key:'Successful',             cls:'pc-successful', lbl:'Successful',             barColor:'#1A6B3A'},
+    {key:'Rejected',               cls:'pc-rejected',   lbl:'Rejected',               barColor:'#721C24'},
+  ];
+  const counts = {};
+  const clientsByStatus = {};
+  let pendingInjectionTotal = 0;
+  stages.forEach(s => { counts[s.key] = 0; clientsByStatus[s.key] = []; });
+  clients.forEach(log => {
+    if (counts.hasOwnProperty(log.status)) {
+      counts[log.status]++;
+      clientsByStatus[log.status].push(log.client_name_manual || 'Unknown');
+      if (log.status === 'Pending Injection') pendingInjectionTotal += parseFloat(log.potential_size_rm_mn) || 0;
+    }
+  });
+  stages.forEach(s => clientsByStatus[s.key].sort((a,b) => a.localeCompare(b)));
+
+  let html = `<div class="admin-headline"><strong>${total}</strong> total clients being pursued</div>
+  <div class="pipeline-grid">`;
+  stages.forEach(s => {
+    const sub = s.key === 'Pending Injection' && pendingInjectionTotal > 0
+      ? `<div class="p-sub">RM ${pendingInjectionTotal.toFixed(1)} Mn</div>` : '';
+    html += `<div class="p-card ${s.cls}"><div class="p-num">${counts[s.key]}</div><div class="p-lbl">${s.lbl}</div>${sub}</div>`;
+  });
+  html += '</div><div class="waterfall-wrap"><div id="pipelineWaterfallChart"></div></div>';
+  document.getElementById('pipelineContainer').innerHTML = html;
+  renderWaterfallHTML(stages, counts, clientsByStatus, total);
+}
+
+function renderWaterfallHTML(stages, counts, clientsByStatus, total) {
+  const container = document.getElementById('pipelineWaterfallChart');
+  if (!container) return;
+  const maxCount = Math.max(...stages.map(s => counts[s.key] || 0), 1);
+  const maxBarPx = 130;
+
+  let colsHtml = '', labelsHtml = '';
+  stages.forEach(s => {
+    const cnt = counts[s.key] || 0;
+    const barH = cnt > 0 ? Math.max(Math.round((cnt / maxCount) * maxBarPx), 8) : 0;
+    const sk = s.key.replace(/\s+/g, '_');
+    colsHtml += `<div class="wf-col" id="wf-col-${sk}" onclick="toggleWfDrawer('${sk}')">
+      <div class="wf-col-count">${cnt > 0 ? cnt : ''}</div>
+      <div class="wf-bar-v" style="height:${barH}px;background:${s.barColor};"></div>
+    </div>`;
+    labelsHtml += `<div class="wf-col-lbl">${s.lbl}</div>`;
+  });
+
+  container.innerHTML = `
+    <div class="wf-chart">${colsHtml}</div>
+    <div class="wf-labels">${labelsHtml}</div>
+    <div class="wf-drawer" id="wfDrawer">
+      <div class="wf-drawer-title" id="wfDrawerTitle"></div>
+      <ol class="wf-client-list" id="wfDrawerList"></ol>
+    </div>`;
+
+  container._stages = stages;
+  container._clientsByStatus = clientsByStatus;
+}
+
+function toggleWfDrawer(sk) {
+  const container = document.getElementById('pipelineWaterfallChart');
+  const drawer = document.getElementById('wfDrawer');
+  const titleEl = document.getElementById('wfDrawerTitle');
+  const listEl = document.getElementById('wfDrawerList');
+  if (!drawer) return;
+
+  const isActive = drawer.classList.contains('open') && drawer.dataset.sk === sk;
+  document.querySelectorAll('.wf-col').forEach(c => c.classList.remove('wf-active'));
+
+  if (isActive) {
+    drawer.classList.remove('open');
+    drawer.dataset.sk = '';
+  } else {
+    drawer.dataset.sk = sk;
+    drawer.classList.add('open');
+    document.getElementById(`wf-col-${sk}`)?.classList.add('wf-active');
+    const stages = container._stages || [];
+    const stage = stages.find(s => s.key.replace(/\s+/g, '_') === sk);
+    titleEl.textContent = stage ? stage.lbl : sk.replace(/_/g, ' ');
+    const names = ((container._clientsByStatus || {})[stage?.key] || []);
+    listEl.innerHTML = names.length
+      ? names.map(n => `<li>${n}</li>`).join('')
+      : '<li style="color:var(--grey);font-size:12px;list-style:none;padding:2px 0;">No clients at this stage</li>';
+  }
+}
+
+// ─── ALL RMs OVERVIEW TABLE ───────────────────────────────────────
+const RM_LIST = ['Azmi','Iskandar','Nasya','Lei Khim','Izzati','Filzah','Colin'];
+function renderRMOverviewTable() {
+  const currentYear = new Date().getFullYear();
+  const clients = Object.values(adminLatestPerClient);
+  const stats = {};
+  RM_LIST.forEach(rm => stats[rm] = {active:0, successful:0, rejected:0, potential:0});
+  clients.forEach(log => {
+    const rm = log.rm_name;
+    if (!stats[rm]) stats[rm] = {active:0, successful:0, rejected:0, potential:0};
+    const key = (log.client_name_manual||'').toUpperCase().trim();
+    const firstDate = adminFirstDatePerClient[key];
+    if (!firstDate || new Date(firstDate).getFullYear() !== currentYear) return;
+    if (log.status==='Successful')    stats[rm].successful++;
+    else if (log.status==='Rejected') stats[rm].rejected++;
+    else                              stats[rm].active++;
+    stats[rm].potential += parseFloat(log.potential_size_rm_mn)||0;
+  });
+  let html = `<div class="admin-table-wrap"><table class="admin-table"><thead>
+    <tr>
+      <th>RM</th>
+      <th>Active</th><th>Successful</th><th>Rejected</th>
+      <th>Total Potential (RM Mn)</th>
+    </tr></thead><tbody>`;
+  RM_LIST.forEach(rm => {
+    const s = stats[rm];
+    html += `<tr>
+      <td class="td-rm">${rm}</td>
+      <td>${s.active}</td>
+      <td class="${s.successful>0?'td-success':''}">${s.successful}</td>
+      <td class="${s.rejected>0?'td-reject':''}">${s.rejected}</td>
+      <td class="td-grey">RM ${s.potential.toFixed(1)} Mn</td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+
+  // ── Multi-RM flag ─────────────────────────────────────────────
+  const rmsByClient = {};
+  adminAllLogs.forEach(l => {
+    const key = (l.client_name_manual||'').toUpperCase().trim();
+    if (!key) return;
+    if (!rmsByClient[key]) rmsByClient[key] = new Set();
+    if (l.rm_name) rmsByClient[key].add(l.rm_name);
+  });
+  const sharedClients = Object.entries(rmsByClient)
+    .filter(([,rms]) => rms.size > 1)
+    .sort((a,b) => a[0].localeCompare(b[0]));
+
+  if (sharedClients.length) {
+    html += `<div style="margin-top:18px;background:#fff8e1;border:1px solid #f9a825;border-radius:8px;padding:14px 16px;">
+      <div style="font-weight:700;color:#e65100;font-size:13px;margin-bottom:10px;">
+        ${sharedClients.length} client${sharedClients.length>1?'s':''} logged by multiple RMs
+      </div>
+      <div style="font-size:11.5px;color:#555;margin-bottom:8px;">
+        These clients have log entries under more than one RM. The RM Overview credits the most recent RM; the Activity Tracker credits whoever logged the first meeting. This causes the count discrepancy.
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead><tr style="background:#fff3cd;">
+          <th style="text-align:left;padding:5px 8px;border-bottom:1px solid #f9a825;">Client</th>
+          <th style="text-align:left;padding:5px 8px;border-bottom:1px solid #f9a825;">RMs Involved</th>
+          <th style="text-align:left;padding:5px 8px;border-bottom:1px solid #f9a825;">Current Owner</th>
+        </tr></thead><tbody>`;
+    sharedClients.forEach(([clientKey, rms]) => {
+      const latestLog = adminLatestPerClient[clientKey];
+      const currentRM = latestLog ? (latestLog.rm_name||'—') : '—';
+      const displayName = latestLog ? (latestLog.client_name_manual||clientKey) : clientKey;
+      html += `<tr style="border-bottom:1px solid #fce4a0;">
+        <td style="padding:5px 8px;font-weight:600;color:#333;">${displayName}</td>
+        <td style="padding:5px 8px;color:#555;">${[...rms].join(', ')}</td>
+        <td style="padding:5px 8px;color:#1565c0;font-weight:600;">${currentRM}</td>
+      </tr>`;
+    });
+    html += '</tbody></table></div>';
+  } else {
+    html += `<div style="margin-top:14px;font-size:12px;color:#4caf50;">No clients with multi-RM log history detected.</div>`;
+  }
+
+  document.getElementById('rmOverviewContainer').innerHTML = html;
+}
+
+// ─── RM DRILLDOWN ─────────────────────────────────────────────────
+function renderRMDrilldown(selectedRM) {
+  const all = Object.values(adminLatestPerClient);
+  const rows = selectedRM === 'all' ? all : all.filter(l => l.rm_name === selectedRM);
+
+  if (!rows.length) { document.getElementById('rmDrilldownContainer').innerHTML = '<p style="color:var(--grey);padding:8px 0;">No clients found.</p>'; return; }
+
+  // Build map: clientKey -> earliest First Meeting date for the selected RM
+  const firstMeetingDateMap = {};
+  adminAllLogs.forEach(l => {
+    if (l.meeting_type !== 'First Meeting') return;
+    if (selectedRM !== 'all' && l.rm_name !== selectedRM) return;
+    const key = (l.client_name_manual || '').toUpperCase().trim();
+    if (!key) return;
+    if (!firstMeetingDateMap[key] || new Date(l.meeting_datetime) < new Date(firstMeetingDateMap[key]))
+      firstMeetingDateMap[key] = l.meeting_datetime;
+  });
+  const newClientKeys = new Set(Object.keys(firstMeetingDateMap));
+
+  const priority = {'Successful':0,'Pending Decision':1,'Pending Board Approval':1,'Pending Onboarding':1,'Pending Injection':1,'Rejected':2};
+  function sortRows(arr) {
+    return [...arr].sort((a,b) => {
+      const ap = priority[a.status] ?? 5, bp = priority[b.status] ?? 5;
+      if (ap !== bp) return ap - bp;
+      const ak = (a.client_name_manual||'').toUpperCase().trim(), bk = (b.client_name_manual||'').toUpperCase().trim();
+      const ad = adminFirstDatePerClient[ak] ? Date.now() - new Date(adminFirstDatePerClient[ak]) : 0;
+      const bd = adminFirstDatePerClient[bk] ? Date.now() - new Date(adminFirstDatePerClient[bk]) : 0;
+      return bd - ad;
+    });
+  }
+
+  const newRows = sortRows(rows.filter(l => newClientKeys.has((l.client_name_manual||'').toUpperCase().trim())));
+  const followupRows = sortRows(rows.filter(l => !newClientKeys.has((l.client_name_manual||'').toUpperCase().trim())));
+
+  function buildTable(tableRows, isNew) {
+    const dateColHdr = isNew ? 'First Meeting' : 'Last Meeting';
+    let tbody = '';
+    tableRows.forEach(log => {
+      const cls = getStatusBadgeCls(log.status || 'Not Met');
+      const clientKey = (log.client_name_manual || '').toUpperCase().trim();
+      const dateSource = isNew ? firstMeetingDateMap[clientKey] : log.meeting_datetime;
+      const dateDt = dateSource ? new Date(dateSource).toLocaleDateString('en-MY', {day:'2-digit', month:'short', year:'2-digit'}) : '&#8212;';
+      const daysSince = dateSource ? Math.floor((Date.now() - new Date(dateSource)) / 86400000) : null;
+      const isSuccessful = log.status === 'Successful';
+      const ageCls = isSuccessful ? 'td-grey' : daysSince === null ? 'td-grey' : daysSince > 60 ? 'td-aged-red' : daysSince > 30 ? 'td-aged-amber' : 'td-grey';
+      const daysDisplay = isSuccessful ? 'N/A' : daysSince !== null ? daysSince + 'd' : '&#8212;';
+      const injSubtext = isSuccessful && log.injected_amount != null
+        ? `<br><small style="color:#1A6B3A;font-weight:600;">Injected: RM ${parseFloat(log.injected_amount).toFixed(1)} Mn</small>` : '';
+      tbody += `<tr>
+        <td class="td-rm" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${log.client_name_manual||'&#8212;'}</td>
+        <td class="td-grey">${log.rm_name||'&#8212;'}</td>
+        <td class="td-grey">${dateDt}</td>
+        <td class="${ageCls}">${daysDisplay}</td>
+        <td><span class="status-pill ${cls}">${log.status||'Not Met'}</span>${injSubtext}</td>
+        <td class="td-grey">${log.product_fund||'&#8212;'}</td>
+        <td class="td-grey">${log.potential_size_rm_mn != null ? 'RM ' + parseFloat(log.potential_size_rm_mn).toFixed(1) + ' Mn' : '&#8212;'}</td>
+      </tr>`;
+    });
+    return `<div class="admin-table-wrap" style="max-height:440px;overflow-y:auto;"><table class="admin-table"><thead><tr style="position:sticky;top:0;z-index:1;"><th>Client Name</th><th>RM</th><th>${dateColHdr}</th><th>Days Since</th><th>Status</th><th>Product</th><th>Potential (RM Mn)</th></tr></thead><tbody>${tbody}</tbody></table></div>`;
+  }
+
+  const sectionHdr = (label, count, color) =>
+    `<div style="font-size:12px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">${label} <span style="background:${color};color:#fff;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;margin-left:6px;">${count}</span></div>`;
+
+  let html = '';
+  html += sectionHdr('New Clients &mdash; First Meeting', newRows.length, 'var(--navy)');
+  html += newRows.length ? buildTable(newRows, true) : '<p style="color:var(--grey);font-size:13px;margin-bottom:0;">No new clients logged yet.</p>';
+  html += '<div style="margin-top:28px;"></div>';
+  html += sectionHdr('Follow Up / Other', followupRows.length, 'var(--grey)');
+  html += followupRows.length ? buildTable(followupRows, false) : '<p style="color:var(--grey);font-size:13px;">No follow-up clients.</p>';
+  html = `<div style="margin-top:4px;">${html}</div>`;
+
+  document.getElementById('rmDrilldownContainer').innerHTML = html;
+}
+
+// ─── ACTIVITY TRACKER ─────────────────────────────────────────────
+function getWeekBounds(weeksAgo) {
+  const now = new Date(); const dow = now.getDay();
+  const mondayOff = dow===0 ? -6 : 1-dow;
+  const mon = new Date(now); mon.setDate(now.getDate()+mondayOff-weeksAgo*7); mon.setHours(0,0,0,0);
+  const sun = new Date(mon); sun.setDate(mon.getDate()+6); sun.setHours(23,59,59,999);
+  return {start:mon, end:sun};
+}
+function getMonthBounds(monthsAgo) {
+  const now = new Date(); const m = now.getMonth()-monthsAgo; const y = now.getFullYear();
+  return {start:new Date(y,m,1,0,0,0,0), end:new Date(y,m+1,0,23,59,59,999)};
+}
+function getYTDBounds() { return {start:new Date(new Date().getFullYear(),0,1), end:new Date()}; }
+function inRange(dt, b) { const d=new Date(dt); return d>=b.start && d<=b.end; }
+
+function renderActivityTracker() {
+  const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth(); // 0-based
+
+  const allFirstMeetings = adminAllLogs.filter(l => l.meeting_type === 'First Meeting');
+  const hasData = allFirstMeetings.length > 0;
+
+  // Deduplicate per RM: each RM gets credit for their own earliest first-meeting with each client
+  const clientFirstLog = {};
+  allFirstMeetings.forEach(l => {
+    const clientKey = (l.client_name_manual || '').toUpperCase().trim();
+    if (!clientKey) return;
+    const key = (l.rm_name || '') + '|||' + clientKey;
+    if (!clientFirstLog[key] || new Date(l.meeting_datetime) < new Date(clientFirstLog[key].meeting_datetime))
+      clientFirstLog[key] = l;
+  });
+  const firstMeetings = Object.values(clientFirstLog);
+
+  const ytd = getYTDBounds();
+  const counts = {};
+  RM_LIST.forEach(rm => counts[rm] = {ytd:0, months:Array(12).fill(0)});
+  firstMeetings.forEach(l => {
+    const rm = l.rm_name;
+    if (!counts[rm]) counts[rm] = {ytd:0, months:Array(12).fill(0)};
+    const dt = new Date(l.meeting_datetime);
+    if (inRange(l.meeting_datetime, ytd)) counts[rm].ytd++;
+    if (dt.getFullYear() === currentYear)  counts[rm].months[dt.getMonth()]++;
+  });
+
+  // Detect clients where more than one RM tagged "First Meeting"
+  const firstMeetingRMsByClient = {};
+  allFirstMeetings.forEach(l => {
+    const key = (l.client_name_manual || '').toUpperCase().trim();
+    if (!key || !l.rm_name) return;
+    if (!firstMeetingRMsByClient[key]) firstMeetingRMsByClient[key] = {rms: new Set(), displayName: l.client_name_manual};
+    firstMeetingRMsByClient[key].rms.add(l.rm_name);
+  });
+  const sharedFirstMeetings = Object.values(firstMeetingRMsByClient).filter(c => c.rms.size > 1).sort((a,b) => a.displayName.localeCompare(b.displayName));
+
+  let html = '';
+  html += `<div style="font-size:12px;color:var(--grey);background:#f8f9fa;border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:16px;">
+    <strong style="color:var(--navy);">Note:</strong> Counts below reflect only logs tagged as <strong>First Meeting</strong>. Each client is counted once per RM at their earliest first-meeting date.
+  </div>`;
+  if (!hasData) html += '<div class="admin-note">First meeting counts will appear once RMs select "First Meeting" as the Meeting Type when logging new entries.</div>';
+  html += `<div class="admin-table-wrap"><table class="admin-table"><thead>
+    <tr>
+      <th rowspan="2" style="vertical-align:middle;">RM</th>
+      <th rowspan="2" style="vertical-align:middle;background:#1E4A73;color:#fff;">YTD</th>
+      <th colspan="12" style="background:#1E4A73;text-align:center;border-bottom:1px solid rgba(255,255,255,0.2);">First Meetings</th>
+    </tr>
+    <tr>
+      ${MONTH_NAMES.map(m => `<th>${m}</th>`).join('')}
+    </tr>
+  </thead><tbody>`;
+  RM_LIST.forEach(rm => {
+    const c = counts[rm];
+    const montCells = MONTH_NAMES.map((_,i) => `<td class="${c.months[i]>0?'td-hl':''}">${c.months[i]}</td>`).join('');
+    html += `<tr>
+      <td class="td-rm">${rm}</td>
+      <td class="${c.ytd>0?'td-hl':''}">${c.ytd}</td>
+      ${montCells}
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+
+  if (sharedFirstMeetings.length) {
+    html += `<div style="margin-top:18px;background:#fff8e1;border:1px solid #f9a825;border-radius:8px;padding:14px 16px;">
+      <div style="font-weight:700;color:#e65100;font-size:13px;margin-bottom:6px;">
+        ${sharedFirstMeetings.length} client${sharedFirstMeetings.length>1?'s':''} tagged as First Meeting by multiple RMs
+      </div>
+      <div style="font-size:11.5px;color:#555;margin-bottom:10px;">
+        These clients have "First Meeting" logs under more than one RM. Each RM is counted separately in the table above — verify if this is intentional or a duplicate entry.
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead><tr style="background:#fff3cd;">
+          <th style="text-align:left;padding:5px 8px;border-bottom:1px solid #f9a825;">Client</th>
+          <th style="text-align:left;padding:5px 8px;border-bottom:1px solid #f9a825;">RMs who tagged First Meeting</th>
+        </tr></thead><tbody>
+        ${sharedFirstMeetings.map(c => `<tr style="border-bottom:1px solid #fce4a0;">
+          <td style="padding:5px 8px;font-weight:600;color:#333;">${c.displayName}</td>
+          <td style="padding:5px 8px;color:#555;">${[...c.rms].join(', ')}</td>
+        </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`;
+  } else if (hasData) {
+    html += `<div style="margin-top:14px;font-size:12px;color:#4caf50;">No clients with duplicate First Meeting tags detected.</div>`;
+  }
+
+  document.getElementById('activityContainer').innerHTML = html;
+}
+
+// ─── CHAIRMAN SECTION ─────────────────────────────────────────────
+function renderChairmanSection() {
+  const clients = Object.values(adminLatestPerClient);
+  function funnel(ref) {
+    const referred = clients.filter(l => l.referral===ref);
+    const converted = referred.filter(l => l.status==='Successful');
+    const pot = referred.reduce((s,l) => s+(parseFloat(l.potential_size_rm_mn)||0),0);
+    const inj = referred.reduce((s,l) => s+(parseFloat(l.injected_amount)||0),0);
+    const bySegment = {};
+    referred.forEach(l => {
+      const seg = l.segment || 'Unknown';
+      if (!bySegment[seg]) bySegment[seg] = {n:0, c:0};
+      bySegment[seg].n++;
+      if (l.status==='Successful') bySegment[seg].c++;
+    });
+    return {n:referred.length, c:converted.length, rate:referred.length?((converted.length/referred.length)*100).toFixed(1):'0.0', pot, inj, bySegment};
+  }
+  const cc = funnel('CC'); const cbd = funnel('CBD');
+  const combined = {
+    n: cc.n+cbd.n, c: cc.c+cbd.c,
+    rate: (cc.n+cbd.n) ? (((cc.c+cbd.c)/(cc.n+cbd.n))*100).toFixed(1) : '0.0',
+    pot: cc.pot+cbd.pot, inj: cc.inj+cbd.inj,
+  };
+  function segTable(bySegment) {
+    const rows = Object.entries(bySegment).sort((a,b) => b[1].n - a[1].n);
+    if (!rows.length) return '';
+    const rowsHtml = rows.map(([seg, d]) => {
+      const rate = d.n ? ((d.c/d.n)*100).toFixed(0)+'%' : '—';
+      return `<tr><td>${seg}</td><td>${d.n}</td><td>${d.c}</td><td class="seg-rate">${rate}</td></tr>`;
+    }).join('');
+    return `<div class="ch-seg-wrap">
+      <div class="ch-seg-hdr">Breakdown by Segment</div>
+      <table class="ch-seg-table">
+        <thead><tr><th>Segment</th><th>Appts</th><th>Converted</th><th>Rate</th></tr></thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+    </div>`;
+  }
+  function card(title, d, cls) {
+    return `<div class="ch-card ${cls}">
+      <div class="ch-card-title">${title}</div>
+      <div class="ch-metric"><div class="ch-num">${d.n}</div><div class="ch-lbl">Appointments Made</div></div>
+      <div class="ch-metric"><div class="ch-num converted">${d.c}</div><div class="ch-lbl">Successfully Converted</div></div>
+      <div class="ch-rate">${d.rate}% Conversion Rate</div>
+      <div class="ch-amounts">
+        <span>Total Potential: RM ${d.pot.toFixed(1)} Mn</span>
+        <span style="color:#1A6B3A;font-weight:600;">Total Injected: RM ${d.inj.toFixed(1)} Mn</span>
+      </div>
+      ${segTable(d.bySegment)}
+    </div>`;
+  }
+  let html = `<div class="chairman-grid">
+    ${card('CC Referrals', cc, 'cc')}
+    ${card('CBD Referrals', cbd, 'cbd')}
+  </div>
+  <div class="ch-combined">
+    <strong>Combined CC + CBD:</strong>&nbsp;&nbsp;
+    ${combined.n} appointments made &rarr; <strong style="color:#9EE8B5;">${combined.c} converted</strong> (${combined.rate}%)
+    &nbsp;&nbsp;|&nbsp;&nbsp; Potential: RM ${combined.pot.toFixed(1)} Mn
+    &nbsp;&nbsp;|&nbsp;&nbsp; Injected: RM ${combined.inj.toFixed(1)} Mn
+  </div>`;
+  document.getElementById('chairmanContainer').innerHTML = html;
+}
+
+// ─── PDF EXPORT ───────────────────────────────────────────────────
+async function exportSectionPDF(sectionId, filename, btn) {
+  if (!window.html2canvas || !window.jspdf) {
+    showToast('PDF library not loaded — check your internet connection.', 'error'); return;
+  }
+  const el = document.getElementById(sectionId);
+  btn.disabled = true; btn.textContent = 'Exporting…';
+  try {
+    const canvas = await html2canvas(el, { scale: 2, useCORS: true, logging: false, backgroundColor: '#f8f9fb' });
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const imgData = canvas.toDataURL('image/png');
+    const imgH = (canvas.height * pageW) / canvas.width;
+    let yOffset = 0;
+    while (yOffset < imgH) {
+      if (yOffset > 0) pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, -yOffset, pageW, imgH);
+      yOffset += pageH;
+    }
+    pdf.save(filename);
+  } catch(err) {
+    showToast('Export failed: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false; btn.innerHTML = 'Export PDF';
+  }
+}
+
+function exportConversionPDF(btn) {
+  const date = new Date().toISOString().slice(0,10);
+  exportSectionPDF('conversionSummarySection', `Conversion-Summary-${date}.pdf`, btn);
+}
+
+</script>
+</body>
+</html>
