@@ -27,8 +27,6 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Poppins', sans-serif; background: #F0F2F5; color: var(--black); font-size: 15px; min-height: 100vh; }
-
-    /* Header */
     .header { background: var(--navy); padding: 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
     .header-bar { background: var(--yellow); height: 5px; }
     .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; }
@@ -37,21 +35,13 @@
     .header-title { color: var(--white); font-size: 16px; font-weight: 600; }
     .header-sub { color: rgba(255,255,255,0.6); font-size: 12px; font-weight: 400; margin-top: 1px; }
     .header-date { color: rgba(255,255,255,0.75); font-size: 13px; font-weight: 400; text-align: right; }
-
-    /* Layout */
     .page { max-width: 960px; margin: 32px auto; padding: 0 20px 60px; }
-
-    /* Card */
     .card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px; margin-bottom: 20px; }
     .card-title { font-size: 18px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
     .card-sub { font-size: 13px; color: var(--grey); margin-bottom: 24px; }
-
-    /* No Meeting Banner */
     .no-meeting-banner { background: #FFF8E6; border: 2px solid var(--yellow); border-radius: var(--radius); padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
     .no-meeting-banner .label { font-weight: 600; color: var(--navy); font-size: 15px; }
     .no-meeting-banner .sublabel { font-size: 12px; color: var(--grey); margin-top: 2px; }
-
-    /* Toggle */
     .toggle-wrap { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
     .toggle { position: relative; width: 52px; height: 28px; cursor: pointer; }
     .toggle input { opacity: 0; width: 0; height: 0; }
@@ -60,8 +50,6 @@
     .toggle input:checked + .toggle-slider { background: var(--yellow); }
     .toggle input:checked + .toggle-slider:before { transform: translateX(24px); }
     .toggle-label { font-weight: 500; font-size: 14px; color: var(--black); }
-
-    /* Form */
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
     .form-grid .full { grid-column: 1 / -1; }
     .field { display: flex; flex-direction: column; gap: 6px; }
@@ -70,8 +58,7 @@
     .field select, .field input[type="text"], .field input[type="number"], .field input[type="datetime-local"], .field textarea {
       width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px;
       font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--black); background: var(--white);
-      transition: border-color 0.2s, box-shadow 0.2s; appearance: none; -webkit-appearance: none;
-      min-height: 44px;
+      transition: border-color 0.2s, box-shadow 0.2s; appearance: none; -webkit-appearance: none; min-height: 44px;
     }
     .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; cursor: pointer; }
     .field select:focus, .field input:focus, .field textarea:focus { outline: none; border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(248,194,0,0.18); }
@@ -80,8 +67,6 @@
     .field .hint { font-size: 11px; color: var(--grey); margin-top: 2px; }
     .field .err-msg { font-size: 12px; color: var(--error); display: none; }
     .field.has-error .err-msg { display: block; }
-
-    /* Client combo */
     .client-combo { position: relative; }
     .client-combo input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--black); background: var(--white); transition: border-color 0.2s; min-height: 44px; }
     .client-combo input:focus { outline: none; border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(248,194,0,0.18); }
@@ -94,42 +79,28 @@
     .dropdown-item .badge-existing { background: #E3F0FF; color: var(--navy); font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 20px; flex-shrink: 0; }
     .dropdown-item .create-new-opt { color: var(--yellow-dk); font-weight: 600; }
     .dropdown-empty { padding: 14px; font-size: 13px; color: var(--grey); text-align: center; }
-
-    /* Segment autofill */
     .autofill-badge { display:none; font-size:11px; color:var(--success); font-weight:600; margin-top:4px; }
     .autofill-badge.visible { display:block; }
     select.segment-locked { background-color:#F4F4F4; color:var(--grey); cursor:not-allowed; }
     .msii-badge { display:none; margin-top:6px; }
     .msii-badge.visible { display:inline-flex; align-items:center; gap:5px; background:var(--yellow); color:var(--navy); font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; }
-
-    /* Divider / section label */
     .divider { border: none; border-top: 1.5px solid var(--grey-lt); margin: 24px 0; }
     .section-label { font-size: 11px; font-weight: 700; color: var(--grey); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
-
-    /* Submit */
     .submit-wrap { display: flex; gap: 12px; margin-top: 28px; }
     .btn-submit { flex: 1; padding: 15px; background: var(--yellow); color: var(--navy); font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; }
     .btn-submit:hover { background: var(--yellow-dk); transform: translateY(-1px); }
     .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     .btn-reset { padding: 15px 24px; background: var(--grey-lt); color: var(--grey); font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s; min-height: 50px; }
     .btn-reset:hover { background: var(--border); }
-
-    /* Toast */
     .toast-container { position: fixed; top: 80px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
     .toast { padding: 14px 20px; border-radius: 10px; font-size: 14px; font-weight: 500; color: var(--white); box-shadow: 0 4px 16px rgba(0,0,0,0.18); animation: slideIn 0.3s ease; max-width: 340px; display: flex; align-items: center; gap: 10px; }
     .toast.success { background: var(--success); }
     .toast.error   { background: var(--error); }
     .toast.info    { background: var(--navy); }
     @keyframes slideIn { from { transform: translateX(120%); opacity:0; } to { transform: translateX(0); opacity:1; } }
-
-    /* Spinner */
     .spinner { width: 18px; height: 18px; border: 3px solid rgba(26,60,94,0.3); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* Disabled */
     .form-body.disabled { opacity: 0.4; pointer-events: none; }
-
-    /* Config modal */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; z-index: 9000; }
     .modal-overlay.hidden { display: none; }
     .modal { background: var(--white); border-radius: 16px; padding: 36px; max-width: 480px; width: 90%; box-shadow: 0 16px 48px rgba(0,0,0,0.25); }
@@ -141,8 +112,6 @@
     .btn-config { width: 100%; padding: 14px; background: var(--navy); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; }
     .btn-config:hover { background: var(--navy-lt); }
     .config-link { font-size: 12px; color: var(--yellow-dk); cursor: pointer; text-decoration: underline; margin-top: 12px; text-align: center; display: block; }
-
-    /* Tab Navigation */
     .tab-nav { display: flex; gap: 4px; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 6px; margin-bottom: 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .tab-btn { flex: 1; padding: 11px 16px; border: none; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; color: var(--grey); background: transparent; display: flex; align-items: center; justify-content: center; gap: 7px; white-space: nowrap; min-height: 44px; }
     .tab-btn:hover { background: var(--grey-lt); color: var(--navy); }
@@ -151,8 +120,6 @@
     .tab-btn.active .tab-count { background: rgba(248,194,0,0.9); }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
-
-    /* Client Status Tab */
     .cl-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
     .cl-search { flex: 1; min-width: 180px; padding: 10px 14px 10px 38px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 12px center; min-height: 44px; }
     .cl-search:focus { outline: none; border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(248,194,0,0.18); }
@@ -160,8 +127,6 @@
     .cl-filter:focus { outline: none; border-color: var(--yellow); }
     .btn-refresh { padding: 10px 16px; background: var(--grey-lt); border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--grey); cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; min-height: 44px; }
     .btn-refresh:hover { border-color: var(--yellow); color: var(--navy); }
-
-    /* Stats bar */
     .cl-stats { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
     .cl-stat { background: var(--white); border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; font-size: 13px; }
     .cl-stat .stat-num { font-size: 20px; font-weight: 700; color: var(--navy); }
@@ -170,8 +135,6 @@
     .cl-stat.highlight .stat-num { color: var(--yellow-dk); }
     .cl-stat.success-stat { background: #E8F5E9; border-color: #2A9D5C; }
     .cl-stat.success-stat .stat-num { color: var(--success); }
-
-    /* Table */
     .cl-table-wrap { overflow-x: auto; overflow-y: auto; max-height: 900px; border-radius: 10px; border: 1.5px solid var(--border); }
     .cl-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .cl-table thead tr { background: var(--navy); color: var(--white); }
@@ -192,8 +155,6 @@
     .action-cell { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
     .btn-icon { padding: 5px 9px; font-size: 13px; line-height: 1; }
     .status-display { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-
-    /* Status badges */
     .status-pill { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
     .s-injected      { background: #D4EDDA; color: #1A6B3A; }
     .s-successful    { background: #D4EDDA; color: #1A6B3A; }
@@ -205,11 +166,8 @@
     .s-rejected      { background: #F8D7DA; color: #721C24; }
     .s-inprogress    { background: #E9ECEF; color: #495057; }
     .s-default       { background: var(--grey-lt); color: var(--grey); }
-
     .type-new      { background: #E8F5E9; color: #2A9D5C; font-size:10px; font-weight:600; padding:2px 7px; border-radius:20px; }
     .type-existing { background: #E3F0FF; color: var(--navy); font-size:10px; font-weight:600; padding:2px 7px; border-radius:20px; }
-
-    /* Inline edit */
     .edit-cell { display: flex; align-items: center; gap: 8px; }
     .inline-select { padding: 6px 28px 6px 10px; border: 1.5px solid var(--yellow); border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 12px; background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 8px center; appearance: none; cursor: pointer; box-shadow: 0 0 0 3px rgba(248,194,0,0.15); }
     .inline-select:focus { outline: none; }
@@ -218,8 +176,6 @@
     .btn-cancel-row { padding: 5px 10px; background: var(--grey-lt); color: var(--grey); border: none; border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 11px; cursor: pointer; }
     .btn-edit-row { padding: 5px 12px; background: transparent; color: var(--grey); border: 1.5px solid var(--border); border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
     .btn-edit-row:hover { border-color: var(--yellow); color: var(--navy); }
-
-    /* Injection modal */
     .injection-modal { background: var(--white); border-radius: 16px; padding: 36px; max-width: 520px; width: 90%; box-shadow: 0 16px 48px rgba(0,0,0,0.25); }
     .injection-modal h2 { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
     .injection-modal .company-tag { display: inline-block; background: #FFF8E6; border: 1px solid var(--yellow); border-radius: 6px; padding: 4px 12px; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 20px; }
@@ -234,12 +190,9 @@
     .btn-inj-confirm { flex:1; padding:13px; background: var(--success); color:white; font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; border:none; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
     .btn-inj-confirm:hover { background: #238A4D; }
     .btn-inj-cancel { padding:13px 20px; background:var(--grey-lt); color:var(--grey); font-family:'Poppins',sans-serif; font-size:14px; font-weight:600; border:none; border-radius:10px; cursor:pointer; }
-
     .empty-state { text-align: center; padding: 48px 20px; color: var(--grey); }
     .empty-state .empty-icon { font-size: 40px; margin-bottom: 12px; }
     .empty-state p { font-size: 14px; }
-
-    /* ─── Admin PIN Screen ─── */
     .pin-screen { display: flex; align-items: center; justify-content: center; min-height: 420px; padding: 20px; }
     .pin-card { background: var(--white); border-radius: 16px; padding: 40px 36px; text-align: center; box-shadow: var(--shadow); max-width: 360px; width: 100%; }
     .pin-lock { font-size: 44px; margin-bottom: 14px; }
@@ -252,8 +205,6 @@
     .pin-error { font-size: 13px; color: var(--error); margin-top: 10px; display: none; }
     @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)} }
     .pin-shake { animation: shake 0.4s ease; }
-
-    /* ─── Admin Dashboard ─── */
     .admin-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
     .admin-topbar h2 { font-size: 20px; font-weight: 700; color: var(--navy); }
     .btn-admin-refresh { padding: 9px 18px; background: var(--grey-lt); border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--grey); cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; min-height: 44px; }
@@ -282,8 +233,6 @@
     .admin-sub { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 24px; margin-bottom: 14px; }
     .admin-sub-title { font-size: 12px; font-weight: 700; color: var(--grey); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
     .admin-divider { height: 2px; background: linear-gradient(to right, var(--border), transparent); margin: 32px 0; }
-
-    /* Pipeline cards */
     .admin-headline { font-size: 14px; color: var(--grey); margin-bottom: 14px; }
     .admin-headline strong { color: var(--navy); font-size: 26px; font-weight: 700; margin-right: 4px; }
     .pipeline-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
@@ -299,8 +248,7 @@
     .p-card.pc-topup         { background: #E0F5F8; border-color: #A8D9E2; } .p-card.pc-topup .p-num { color: #0C5460; }
     .p-card.pc-successful    { background: #DFF5EA; border-color: #A3D9B5; } .p-card.pc-successful .p-num { color: #1A6B3A; }
     .p-card.pc-rejected      { background: #FCEAEA; border-color: #F1AEB5; } .p-card.pc-rejected .p-num { color: #721C24; }
-
-    /* Admin tables */
+    .p-card.pc-stale         { background: #FFF0F0; border-color: #E8929C; border-width: 2px; } .p-card.pc-stale .p-num { color: #9B1C1C; }
     .admin-table-wrap { overflow-x: auto; border-radius: 10px; border: 1.5px solid var(--border); }
     .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .admin-table thead tr { background: var(--navy); color: var(--white); }
@@ -318,17 +266,11 @@
     .td-reject  { color: var(--error); font-weight: 700; }
     .td-hl      { color: var(--yellow-dk); font-weight: 700; }
     .td-grey    { color: var(--grey); font-size: 12px; }
-
-    /* RM drilldown controls */
     .drilldown-ctrl { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
     .drilldown-ctrl label { font-size: 13px; font-weight: 600; color: var(--navy); }
     .drilldown-ctrl select { padding: 9px 32px 9px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--black); background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 10px center; appearance: none; cursor: pointer; min-width: 160px; min-height: 44px; }
     .drilldown-ctrl select:focus { outline: none; border-color: var(--yellow); }
-
-    /* Admin note */
     .admin-note { background: #FFF8E6; border: 1px solid var(--yellow); border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #7A5C00; margin-bottom: 16px; line-height: 1.5; }
-
-    /* Chairman cards */
     .chairman-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
     .ch-card { border-radius: 12px; padding: 24px; border: 1.5px solid var(--border); }
     .ch-card.cc  { background: #EEF4FF; border-color: #B3CEFF; }
@@ -351,18 +293,12 @@
     .ch-seg-table td:not(:first-child) { text-align: center; font-weight: 600; color: var(--navy); }
     .ch-seg-table td.seg-rate { color: var(--yellow-dk); }
     .ch-seg-table tr:last-child td { border-bottom: none; }
-
-    /* Loading placeholder */
     .loading-row { text-align: center; padding: 24px; color: var(--grey); font-size: 13px; }
-
-    /* ─── Contact Section (optional, in form) ─── */
     .contact-toggle-btn { background: none; border: 1.5px dashed var(--border); border-radius: 8px; padding: 9px 16px; font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--grey); cursor: pointer; width: 100%; text-align: left; margin: 14px 0 4px; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
     .contact-toggle-btn:hover { border-color: var(--yellow); color: var(--navy); background: #FFFBEE; }
     .contact-toggle-btn.open { border-color: var(--yellow); color: var(--navy); background: #FFFBEE; border-style: solid; }
     .contact-section { margin-top: 12px; }
     .contact-optional-label { font-size: 11px; color: var(--grey); margin-bottom: 10px; font-style: italic; }
-
-    /* ─── Contact Drawer (client status tab) ─── */
     .drawer-row td { padding: 0 !important; border-bottom: 2px solid var(--yellow) !important; }
     .drawer-inner { background: #FAFCFF; padding: 16px 20px; border-top: 1px solid var(--border); }
     .drawer-inner .drawer-title { font-size: 12px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
@@ -380,16 +316,12 @@
     .cl-name-btn:hover { color: var(--yellow-dk); }
     .cl-name-btn .chevron { font-size: 10px; color: var(--grey); transition: transform 0.2s; display: inline-block; }
     .cl-name-btn.open .chevron { transform: rotate(180deg); }
-
-    /* ─── Responsive: iPad (581-1024px) ─── */
     @media (min-width: 581px) and (max-width: 1024px) {
       .page { padding: 0 16px 60px; margin: 20px auto; }
       .pipeline-grid { grid-template-columns: repeat(4, 1fr); }
       .chairman-grid { grid-template-columns: 1fr 1fr; }
       .header-inner { padding: 12px 20px; }
     }
-
-    /* ─── Responsive: Mobile (≤580px) ─── */
     @media (max-width: 580px) {
       .page { padding: 0 12px 60px; margin: 12px auto; }
       .form-grid { grid-template-columns: 1fr; }
@@ -420,14 +352,25 @@
       .ch-num { font-size: 26px; }
       .no-meeting-banner { flex-direction: column; align-items: flex-start; }
     }
-
-    /* ─── Admin Sub-tabs ─── */
     .admin-subtab-nav { display:flex; gap:4px; background:var(--grey-lt); border-radius:10px; padding:5px; margin-bottom:20px; overflow-x:auto; -webkit-overflow-scrolling:touch; }
     .admin-subtab-btn { flex:1; padding:10px 14px; border:none; border-radius:7px; font-family:'Poppins',sans-serif; font-size:13px; font-weight:500; cursor:pointer; color:var(--grey); background:transparent; transition:all 0.2s; white-space:nowrap; min-height:40px; }
     .admin-subtab-btn:hover { background:var(--white); color:var(--navy); }
     .admin-subtab-btn.active { background:var(--navy); color:var(--white); font-weight:600; box-shadow:0 2px 8px rgba(26,60,94,0.2); }
     .admin-subpanel { display:none; }
     .admin-subpanel.active { display:block; }
+    /* ── Upcoming Meetings ─────────────────────────────── */
+    .upcoming-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .upcoming-form-grid .full { grid-column: 1 / -1; }
+    .upcoming-toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .upcoming-badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .upcoming-today  { background: #FFF3CD; color: #856404; }
+    .upcoming-soon   { background: #D4EDDA; color: #1A6B3A; }
+    .upcoming-future { background: #E3F0FF; color: var(--navy); }
+    .upcoming-past   { background: #F8D7DA; color: #721C24; }
+    @media (max-width: 580px) {
+      .upcoming-form-grid { grid-template-columns: 1fr; }
+      .upcoming-form-grid .full { grid-column: 1; }
+    }
   </style>
 </head>
 <body>
@@ -444,10 +387,8 @@
   </div>
 </div>
 
-<!-- Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- Header -->
 <div class="header">
   <div class="header-bar"></div>
   <div class="header-inner">
@@ -579,22 +520,20 @@
   </div>
 </div>
 
-<!-- Page -->
 <div class="page">
-
-  <!-- Tab Navigation -->
   <div class="tab-nav">
     <button class="tab-btn active" id="tab-log" onclick="switchTab('log')">Log Meeting</button>
     <button class="tab-btn" id="tab-clients" onclick="switchTab('clients')">
       Client Status <span class="tab-count" id="tabClientCount">&#8212;</span>
+    </button>
+    <button class="tab-btn" id="tab-upcoming" onclick="switchTab('upcoming')">
+      Upcoming Meetings <span class="tab-count" id="tabUpcomingCount">&#8212;</span>
     </button>
     <button class="tab-btn" id="tab-admin" onclick="switchTab('admin')">Admin</button>
   </div>
 
   <!-- TAB 1: LOG MEETING -->
   <div class="tab-panel active" id="panel-log">
-
-    <!-- RM PIN Screen -->
     <div id="rmPinScreen" class="pin-screen">
       <div class="pin-card">
         <h2>Meeting Log</h2>
@@ -605,16 +544,11 @@
         <button class="btn-unlock" onclick="submitRMPin()">Unlock</button>
       </div>
     </div>
-
-    <!-- Log Content (shown after PIN) -->
     <div id="logContent" style="display:none;">
-
     <div class="card">
       <div class="card-title">Log a Client Meeting</div>
       <div class="card-sub">All fields are required. Entries are saved directly to the team database.</div>
-
       <div class="form-body" id="formBody">
-
         <div class="section-label">Meeting Details</div>
         <div class="form-grid">
           <div class="field full" id="fld-rm">
@@ -632,7 +566,6 @@
             <span class="err-msg">Please enter the meeting date and time.</span>
           </div>
         </div>
-
         <hr class="divider" />
         <div class="section-label">Client Information</div>
         <div class="form-grid">
@@ -650,7 +583,6 @@
             <div class="msii-badge" id="msiiBadge">MSII Command Council</div>
             <div class="hint">Start typing to search from the potential client database, or type a new name to add it.</div>
           </div>
-
           <div class="full">
             <button type="button" class="contact-toggle-btn" id="contactToggleBtn" onclick="toggleContactSection()">
               <span id="contactToggleIcon">&#43;</span> Add contact person details <em style="font-weight:400;">(optional)</em>
@@ -658,41 +590,26 @@
             <div class="contact-section" id="contactSection" style="display:none;">
               <div class="contact-optional-label">These fields are optional — fill in as much or as little as you have.</div>
               <div class="form-grid">
-                <div class="field">
-                  <label>Contact Person Name</label>
-                  <input type="text" id="contactName" placeholder="e.g. Ahmad bin Ali" />
-                </div>
-                <div class="field">
-                  <label>Position / Title</label>
-                  <input type="text" id="contactPosition" placeholder="e.g. CFO" />
-                </div>
-                <div class="field">
-                  <label>Phone Number</label>
-                  <input type="text" id="contactPhone" placeholder="e.g. 012-3456789" inputmode="tel" />
-                </div>
-                <div class="field">
-                  <label>Email</label>
-                  <input type="text" id="contactEmail" placeholder="e.g. ahmad@company.com" inputmode="email" />
-                </div>
+                <div class="field"><label>Contact Person Name</label><input type="text" id="contactName" placeholder="e.g. Ahmad bin Ali" /></div>
+                <div class="field"><label>Position / Title</label><input type="text" id="contactPosition" placeholder="e.g. CFO" /></div>
+                <div class="field"><label>Phone Number</label><input type="text" id="contactPhone" placeholder="e.g. 012-3456789" inputmode="tel" /></div>
+                <div class="field"><label>Email</label><input type="text" id="contactEmail" placeholder="e.g. ahmad@company.com" inputmode="email" /></div>
               </div>
             </div>
           </div>
-
           <div class="field" id="fld-segment">
             <label>Segment <span class="req">*</span></label>
             <select id="segmentSelect" onchange="clearError('segment')">
               <option value="">&#8212; Select segment &#8212;</option>
               <optgroup label="CC Coverage">
                 <option value="CONGLO">CONGLO</option><option value="MID CAP">MID CAP</option>
-                <option value="LARGE CAP">LARGE CAP</option>
-                <option value="MNC">MNC</option><option value="FIG">FIG</option>
-                <option value="GLIC">GLIC</option><option value="GOM">GOM</option>
+                <option value="LARGE CAP">LARGE CAP</option><option value="MNC">MNC</option>
+                <option value="FIG">FIG</option><option value="GLIC">GLIC</option><option value="GOM">GOM</option>
               </optgroup>
               <optgroup label="CBD Coverage">
                 <option value="PKP">PKP</option><option value="JM">JM</option>
                 <option value="PPKT">PPKT</option><option value="SNS">SNS</option>
-                <option value="FT">FT</option><option value="SBH">SBH</option>
-                <option value="SWK">SWK</option>
+                <option value="FT">FT</option><option value="SBH">SBH</option><option value="SWK">SWK</option>
               </optgroup>
               <optgroup label="Other">
                 <option value="CB">CB</option><option value="HNW">HNW</option>
@@ -702,7 +619,6 @@
             <span class="err-msg">Please select a segment.</span>
             <div class="autofill-badge" id="segmentAutoFill">Auto-filled &#8212; <a href="#" onclick="unlockSegment();return false;" style="color:var(--navy);">change</a></div>
           </div>
-
           <div class="field" id="fld-referral">
             <label>Referred By <span class="req">*</span></label>
             <select id="referralSelect" onchange="clearError('referral')">
@@ -714,23 +630,21 @@
             <span class="err-msg">Please select referral source.</span>
           </div>
         </div>
-
         <hr class="divider" />
         <div class="section-label">Opportunity Details</div>
         <div class="form-grid">
-
           <div class="field" id="fld-product">
             <label>Product / Fund <span class="req">*</span></label>
             <select id="productSelect" onchange="clearError('product')">
               <option value="">&#8212; Select product &#8212;</option>
               <option value="LMS">LMS (Liquidity Management Solution)</option>
               <option value="Private Mandate">Private Mandate</option>
-              <option value="Unit Trust">Unit Trust</option><option value="Sukuk">Sukuk</option>
+              <option value="Unit Trust">Unit Trust</option>
+              <option value="Sukuk">Sukuk</option>
               <option value="Other">Other</option>
             </select>
             <span class="err-msg">Please select a product.</span>
           </div>
-
           <div class="field" id="fld-status">
             <label>Status <span class="req">*</span></label>
             <select id="statusSelect" onchange="clearError('status')">
@@ -744,7 +658,6 @@
             </select>
             <span class="err-msg">Please select a status.</span>
           </div>
-
           <div class="field" id="fld-meetingType">
             <label>Meeting Type <span class="req">*</span></label>
             <select id="meetingTypeSelect" onchange="clearError('meetingType')">
@@ -755,22 +668,18 @@
             </select>
             <span class="err-msg">Please select the meeting type.</span>
           </div>
-
           <div class="field" id="fld-size">
             <label>Potential Size (RM' Mn) <span class="req">*</span></label>
             <input type="number" id="potentialSize" placeholder="e.g. 50" min="0" step="0.1" onchange="clearError('size')" />
             <span class="err-msg">Please enter a potential size (use 0 if unknown).</span>
           </div>
-
           <div class="field full" id="fld-remarks">
             <label>Remarks <span class="req">*</span></label>
             <textarea id="remarks" placeholder="Key discussion points, client concerns, next steps&#8230;" onchange="clearError('remarks')"></textarea>
             <span class="err-msg">Please add remarks for this meeting.</span>
           </div>
-
         </div>
-      </div><!-- /form-body -->
-
+      </div>
       <div class="submit-wrap">
         <button class="btn-submit" id="submitBtn" onclick="submitForm()">
           <span id="submitText">Save Meeting Log</span>
@@ -778,14 +687,12 @@
         </button>
         <button class="btn-reset" onclick="resetForm()">Reset</button>
       </div>
-    </div><!-- /card -->
-
+    </div>
     <div style="text-align:center;font-size:11px;color:var(--grey);margin-top:8px;">
       Maybank Asset Management Group &middot; Client Meeting Log Tracker &middot; <span id="footerDate"></span>
     </div>
-
-    </div><!-- /logContent -->
-  </div><!-- /panel-log -->
+    </div>
+  </div>
 
   <!-- TAB 2: CLIENT STATUS -->
   <div class="tab-panel" id="panel-clients">
@@ -795,7 +702,6 @@
       <div class="cl-stat highlight"><div class="stat-num" id="statPending">--</div><div class="stat-lbl">In Pursuit</div></div>
       <div class="cl-stat" style="background:#FFF8E6;border-color:var(--yellow);"><div class="stat-num" id="statMSII" style="color:var(--yellow-dk);">--</div><div class="stat-lbl">MSII CC</div></div>
     </div>
-
     <div class="cl-toolbar">
       <input class="cl-search" type="text" id="clSearch" placeholder="Search company name..." oninput="renderClientTable()" />
       <select class="cl-filter" id="clFilterStatus" onchange="renderClientTable()">
@@ -805,16 +711,16 @@
         <option value="Pending Board Approval">Pending Board Approval</option>
         <option value="Pending Onboarding">Pending Onboarding</option>
         <option value="Pending Injection">Pending Injection</option>
-        <option value="Rejected">Rejected</option><option value="Not Met">Not Met</option>
+        <option value="Rejected">Rejected</option>
+        <option value="Not Met">Not Met</option>
       </select>
-<select class="cl-filter" id="clFilterRM" onchange="renderClientTable()">
+      <select class="cl-filter" id="clFilterRM" onchange="renderClientTable()">
         <option value="">All RMs</option>
         <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
         <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
       </select>
       <button class="btn-refresh" onclick="loadClientStatuses()">Refresh</button>
     </div>
-
     <div class="card" style="padding:0;">
       <div class="cl-table-wrap">
         <table class="cl-table">
@@ -830,12 +736,83 @@
         </table>
       </div>
     </div>
-  </div><!-- /panel-clients -->
+  </div>
+
+  <!-- TAB 4: UPCOMING MEETINGS -->
+  <div class="tab-panel" id="panel-upcoming">
+    <div class="card">
+      <div class="card-title">Log Upcoming Meeting</div>
+      <div class="card-sub">Schedule a future client meeting. RM, client name and meeting date are required.</div>
+      <div class="upcoming-form-grid">
+        <div class="field" id="ufld-rm">
+          <label>RM Name <span class="req">*</span></label>
+          <select id="upcomingRM">
+            <option value="">&#8212; Select RM &#8212;</option>
+            <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
+            <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+          </select>
+        </div>
+        <div class="field" id="ufld-client">
+          <label>Client Name <span class="req">*</span></label>
+          <input type="text" id="upcomingClient" placeholder="Enter client name..." autocomplete="off"
+            oninput="const s=this.selectionStart,e=this.selectionEnd;this.value=this.value.toUpperCase();this.setSelectionRange(s,e);" />
+        </div>
+        <div class="field" id="ufld-date">
+          <label>Meeting Date <span class="req">*</span></label>
+          <input type="date" id="upcomingDate" />
+        </div>
+        <div class="field">
+          <label>Meeting Time <em style="font-weight:400;font-size:11px;">(optional)</em></label>
+          <input type="time" id="upcomingTime" />
+        </div>
+        <div class="field full">
+          <label>Purpose / Agenda <em style="font-weight:400;font-size:11px;">(optional)</em></label>
+          <textarea id="upcomingPurpose" placeholder="Meeting purpose or agenda..." style="min-height:70px;"></textarea>
+        </div>
+        <div class="field full">
+          <label>Notes <em style="font-weight:400;font-size:11px;">(optional)</em></label>
+          <textarea id="upcomingNotes" placeholder="Additional notes..." style="min-height:60px;"></textarea>
+        </div>
+      </div>
+      <div class="submit-wrap">
+        <button class="btn-submit" id="upcomingSubmitBtn" onclick="submitUpcomingMeeting()">
+          <span id="upcomingSubmitText">Save Upcoming Meeting</span>
+          <div class="spinner" id="upcomingSubmitSpinner" style="display:none;"></div>
+        </button>
+        <button class="btn-reset" onclick="resetUpcomingForm()">Reset</button>
+      </div>
+    </div>
+    <div class="card" style="padding:0;">
+      <div style="padding:20px 24px 14px;">
+        <div class="card-title" style="margin-bottom:14px;">Scheduled Upcoming Meetings</div>
+        <div class="upcoming-toolbar">
+          <input class="cl-search" type="text" id="upcomingSearch" placeholder="Search client name..." oninput="renderUpcomingTable()" />
+          <select class="cl-filter" id="upcomingFilterRM" onchange="renderUpcomingTable()">
+            <option value="">All RMs</option>
+            <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
+            <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+          </select>
+          <select class="cl-filter" id="upcomingFilterMonth" onchange="renderUpcomingTable()">
+            <option value="">All Months</option>
+          </select>
+          <button class="btn-refresh" onclick="loadUpcomingMeetings()">Refresh</button>
+        </div>
+      </div>
+      <div style="border-top:1.5px solid var(--border);overflow-x:auto;border-radius:0 0 12px 12px;">
+        <table class="cl-table">
+          <thead>
+            <tr><th>#</th><th>RM</th><th>Client Name</th><th>Meeting Date</th><th>Time</th><th>Purpose</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody id="upcomingTableBody">
+            <tr><td colspan="8"><div class="empty-state"><div class="empty-icon"></div><p>Loading upcoming meetings...</p></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
   <!-- TAB 3: ADMIN DASHBOARD -->
   <div class="tab-panel" id="panel-admin">
-
-    <!-- PIN Screen -->
     <div id="pinScreen" class="pin-screen">
       <div class="pin-card">
         <h2>Admin Dashboard</h2>
@@ -846,22 +823,16 @@
         <button class="btn-unlock" onclick="submitPin()">Unlock Dashboard</button>
       </div>
     </div>
-
-    <!-- Admin Content (shown after PIN) -->
     <div id="adminContent" style="display:none;">
       <div class="admin-topbar">
         <h2>Admin Dashboard</h2>
         <button class="btn-admin-refresh" onclick="loadAdminDashboard()">Refresh Data</button>
       </div>
-
-      <!-- Admin Sub-tab Navigation -->
       <div class="admin-subtab-nav">
         <button class="admin-subtab-btn active" id="asubtab-pipeline" onclick="switchAdminSubtab('pipeline')">Pipeline Summary</button>
         <button class="admin-subtab-btn" id="asubtab-overview" onclick="switchAdminSubtab('overview')">RM Overview</button>
         <button class="admin-subtab-btn" id="asubtab-drilldown" onclick="switchAdminSubtab('drilldown')">RM Pipeline</button>
       </div>
-
-      <!-- Sub-panel 1: Pipeline Summary + Conversion Summary -->
       <div class="admin-subpanel active" id="subpanel-pipeline">
         <div class="admin-sub">
           <div class="admin-sub-title">Pipeline Summary &mdash; Clients by Stage</div>
@@ -874,8 +845,6 @@
           <div id="chairmanContainer"><div class="loading-row">Loading...</div></div>
         </div>
       </div>
-
-      <!-- Sub-panel 2: All RMs Overview + Activity Tracker -->
       <div class="admin-subpanel" id="subpanel-overview">
         <div class="admin-sub">
           <div class="admin-sub-title">All RMs Overview</div>
@@ -885,9 +854,11 @@
           <div class="admin-sub-title">Activity Tracker &mdash; First Meetings</div>
           <div id="activityContainer"><div class="loading-row">Loading...</div></div>
         </div>
+        <div class="admin-sub">
+          <div class="admin-sub-title">Upcoming Meetings Tracker &mdash; by RM &amp; Month</div>
+          <div id="upcomingByRMContainer"><div class="loading-row">Loading...</div></div>
+        </div>
       </div>
-
-      <!-- Sub-panel 3: Individual RM Pipeline -->
       <div class="admin-subpanel" id="subpanel-drilldown">
         <div class="admin-sub">
           <div class="admin-sub-title">Individual RM Pipeline</div>
@@ -901,13 +872,14 @@
           </div>
           <div id="rmDrilldownContainer"><div class="loading-row">Loading...</div></div>
         </div>
+        <div class="admin-sub" style="margin-top:4px;">
+          <div class="admin-sub-title">Upcoming Meetings</div>
+          <div id="upcomingDrilldownContainer"><div class="loading-row">Loading...</div></div>
+        </div>
       </div>
-
-    </div><!-- /adminContent -->
-  </div><!-- /panel-admin -->
-
-</div><!-- /page -->
-
+    </div>
+  </div>
+</div>
 <script>
 // ─── CONFIG & SUPABASE ───────────────────────────────────────────
 let _sb = null;
@@ -1101,7 +1073,6 @@ async function submitForm() {
   try {
     if (demoMode || !_sb) {
       await new Promise(r => setTimeout(r, 800));
-      console.log('DEMO — would submit:', payload);
       showToast('Demo: Entry logged (not saved — connect Supabase to save).', 'info');
     } else {
       const {error} = await _sb.from('meeting_logs').insert(payload);
@@ -1169,8 +1140,9 @@ function switchTab(tab) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
   document.getElementById('panel-' + tab).classList.add('active');
-  if (tab === 'clients') loadClientStatuses();
-  if (tab === 'admin') checkAdminAccess();
+  if (tab === 'clients')  loadClientStatuses();
+  if (tab === 'upcoming') loadUpcomingMeetings();
+  if (tab === 'admin')    checkAdminAccess();
 }
 function switchAdminSubtab(name) {
   document.querySelectorAll('.admin-subtab-btn').forEach(b => b.classList.remove('active'));
@@ -1272,6 +1244,7 @@ function renderClientTable() {
     </tr>`;
   }).join('');
 }
+
 // ─── CONTACT SECTION TOGGLE (form) ───────────────────────────────
 function toggleContactSection() {
   const sec = document.getElementById('contactSection');
@@ -1289,14 +1262,10 @@ async function toggleContactDrawer(clientName, i) {
   const drawer = document.getElementById(`cl-drawer-${i}`);
   const btn    = document.getElementById(`cl-name-btn-${i}`);
   const isOpen = drawer.style.display !== 'none';
-  if (isOpen) {
-    drawer.style.display = 'none';
-    btn.classList.remove('open');
-    return;
-  }
+  if (isOpen) { drawer.style.display = 'none'; btn.classList.remove('open'); return; }
   drawer.style.display = 'table-row';
   btn.classList.add('open');
-  if (drawerLoaded[i]) return; // already fetched
+  if (drawerLoaded[i]) return;
   const inner = document.getElementById(`cl-drawer-inner-${i}`);
   try {
     let contacts = [];
@@ -1314,7 +1283,6 @@ async function toggleContactDrawer(clientName, i) {
       inner.innerHTML = `<div class="drawer-title">Contact Persons</div><div class="drawer-empty">No contact details have been logged for this client yet.</div>`;
       return;
     }
-    // Deduplicate by contact_name (case-insensitive), keep most recent
     const seen = new Map();
     contacts.forEach(c => {
       const key = (c.contact_name||'').toLowerCase().trim() || `__anon_${Math.random()}`;
@@ -1395,15 +1363,13 @@ async function confirmEditLog() {
   try {
     if (!demoMode && _sb) {
       const {data: latest, error: selErr} = await _sb.from('meeting_logs')
-        .select('id')
-        .eq('client_name_manual', clientName)
-        .eq('no_meeting_today', false)
-        .order('meeting_datetime', {ascending: false})
-        .limit(1)
-        .maybeSingle();
+        .select('id').eq('client_name_manual', clientName).eq('no_meeting_today', false)
+        .order('meeting_datetime', {ascending: false}).limit(1).maybeSingle();
       if (selErr) throw selErr;
       if (latest) {
-        const upd = {rm_name: rm, meeting_type: meetingType, product_fund: product || null, potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status, updated_at: new Date().toISOString(),
+        const upd = {rm_name: rm, meeting_type: meetingType, product_fund: product || null,
+          potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status,
+          updated_at: new Date().toISOString(),
           injected_amount: status === 'Successful' && injAmount !== '' ? parseFloat(injAmount) : null,
           injection_date: status === 'Successful' && injDate ? injDate : null,
           injection_remarks: status === 'Successful' ? injRemarks || null : null};
@@ -1414,7 +1380,8 @@ async function confirmEditLog() {
     const ci = clientStatusData.find(c => c.name === clientName);
     if (ci) {
       if (!ci.latestLog) ci.latestLog = {};
-      Object.assign(ci.latestLog, {rm_name: rm, meeting_type: meetingType, product_fund: product || null, potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status,
+      Object.assign(ci.latestLog, {rm_name: rm, meeting_type: meetingType, product_fund: product || null,
+        potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status,
         injected_amount: status === 'Successful' && injAmount !== '' ? parseFloat(injAmount) : null,
         injection_date: status === 'Successful' && injDate ? injDate : null,
         injection_remarks: status === 'Successful' ? injRemarks || null : null});
@@ -1457,14 +1424,9 @@ async function confirmInjection() {
   try {
     if (!demoMode && _sb) {
       const upd = {status:'Successful', product_fund:product, injected_amount:parseFloat(amount), injection_date:date, injection_remarks:remarks, updated_at:new Date().toISOString()};
-      // Fetch latest log id first, then update by id
       const {data: latest, error: selErr} = await _sb.from('meeting_logs')
-        .select('id')
-        .eq('client_name_manual', clientName)
-        .eq('no_meeting_today', false)
-        .order('meeting_datetime', {ascending: false})
-        .limit(1)
-        .maybeSingle();
+        .select('id').eq('client_name_manual', clientName).eq('no_meeting_today', false)
+        .order('meeting_datetime', {ascending: false}).limit(1).maybeSingle();
       if (selErr) throw selErr;
       if (latest) {
         const {error: updErr} = await _sb.from('meeting_logs').update(upd).eq('id', latest.id);
@@ -1482,7 +1444,6 @@ async function confirmInjection() {
 // ─── RM PIN ──────────────────────────────────────────────────────
 const RM_PIN_HASH = '1ea2f89d934cb4a2af0b486736609cf9cb4bdafdc6e946e79aecb02b9d9dceb4';
 let rmUnlocked = false;
-
 async function submitRMPin() {
   const pin = document.getElementById('rmPinInput').value;
   if (!pin) { showRMPinError('Please enter your PIN.'); return; }
@@ -1503,7 +1464,6 @@ function clearRMPinError() { document.getElementById('rmPinError').style.display
 
 // ─── ADMIN PIN ───────────────────────────────────────────────────
 const ADMIN_PIN_HASH = '158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab';
-
 async function hashPin(pin) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
@@ -1537,17 +1497,25 @@ function checkAdminAccess() {
 let adminAllLogs = [];
 let adminLatestPerClient = {};
 let adminFirstDatePerClient = {};
+let upcomingMeetingsData = [];
 
 async function loadAdminDashboard() {
   setAdminLoading();
   if (demoMode || !_sb) { renderAdminDemo(); return; }
   try {
-    const {data:logs, error} = await _sb.from('meeting_logs')
-      .select('id, rm_name, client_name_manual, msii_command_council, segment, referral, product_fund, status, potential_size_rm_mn, meeting_datetime, injected_amount, injection_date, meeting_type, no_meeting_today, updated_at')
-      .eq('no_meeting_today', false)
-      .order('meeting_datetime', {ascending:false});
+    const [{data:logs, error}, {data:upcoming, error:upErr}] = await Promise.all([
+      _sb.from('meeting_logs')
+        .select('id, rm_name, client_name_manual, msii_command_council, segment, referral, product_fund, status, potential_size_rm_mn, meeting_datetime, injected_amount, injection_date, meeting_type, no_meeting_today, updated_at')
+        .eq('no_meeting_today', false)
+        .order('meeting_datetime', {ascending:false}),
+      _sb.from('upcoming_meetings')
+        .select('*')
+        .order('meeting_date', {ascending:true}),
+    ]);
     if (error) throw error;
+    if (upErr) console.warn('Could not load upcoming meetings:', upErr.message);
     adminAllLogs = logs || [];
+    upcomingMeetingsData = upcoming || [];
     adminLatestPerClient = {};
     adminAllLogs.forEach(log => {
       const key = (log.client_name_manual||'').toUpperCase().trim();
@@ -1561,38 +1529,54 @@ async function loadAdminDashboard() {
     renderAllAdminSections();
   } catch(err) {
     showToast('Error loading admin data: '+err.message, 'error');
-    ['pipelineContainer','rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer'].forEach(id => {
+    ['pipelineContainer','rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer','upcomingByRMContainer','upcomingDrilldownContainer'].forEach(id => {
       document.getElementById(id).innerHTML = `<p style="color:var(--error);padding:16px 0;">Error loading data: ${err.message}</p>`;
     });
   }
 }
 
 function setAdminLoading() {
-  ['pipelineContainer','rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer'].forEach(id => {
+  ['pipelineContainer','rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer','upcomingByRMContainer','upcomingDrilldownContainer'].forEach(id => {
     document.getElementById(id).innerHTML = '<div class="loading-row">Loading...</div>';
   });
 }
-
 function renderAllAdminSections() {
   renderPipelineCards();
   renderRMOverviewTable();
   renderRMDrilldown(document.getElementById('rmDrilldownSelect')?.value || 'all');
   renderActivityTracker();
   renderChairmanSection();
+  renderUpcomingByRM();
+  renderUpcomingForDrilldown(document.getElementById('rmDrilldownSelect')?.value || 'all');
 }
-
-// Demo mode admin render
 function renderAdminDemo() {
   document.getElementById('pipelineContainer').innerHTML = '<div class="admin-note">Connect to Supabase to load live dashboard data. Showing placeholder in demo mode.</div>';
-  ['rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer'].forEach(id => {
+  ['rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer','upcomingByRMContainer','upcomingDrilldownContainer'].forEach(id => {
     document.getElementById(id).innerHTML = '<div class="admin-note">Live data unavailable in demo mode.</div>';
   });
+}
+
+// ─── STALE HELPERS ────────────────────────────────────────────────
+function getAgingThreshold(status) {
+  const thresholds = {'Pending Decision':60,'Pending Board Approval':90,'Pending Onboarding':60};
+  return thresholds[status] ?? null;
+}
+function isStaleClient(log) {
+  const threshold = getAgingThreshold(log.status);
+  if (threshold === null) return false;
+  const dateRef = log.updated_at || log.meeting_datetime;
+  if (!dateRef) return false;
+  return Math.floor((Date.now() - new Date(dateRef)) / 86400000) > threshold;
 }
 
 // ─── PIPELINE CARDS + WATERFALL ───────────────────────────────────
 function renderPipelineCards() {
   const clients = Object.values(adminLatestPerClient);
-  const total = clients.length;
+
+  // Separate stale clients (pending statuses over threshold)
+  const staleClients = clients.filter(log => isStaleClient(log));
+  const nonStaleClients = clients.filter(log => !isStaleClient(log));
+
   const stages = [
     {key:'Pending Decision',       cls:'pc-decision',   lbl:'Pending Decision',       barColor:'#4A2C8E'},
     {key:'Pending Board Approval', cls:'pc-board',      lbl:'Pending Board Approval', barColor:'#7A3C0E'},
@@ -1605,7 +1589,9 @@ function renderPipelineCards() {
   const clientsByStatus = {};
   let pendingInjectionTotal = 0;
   stages.forEach(s => { counts[s.key] = 0; clientsByStatus[s.key] = []; });
-  clients.forEach(log => {
+
+  // Only count non-stale clients in each stage
+  nonStaleClients.forEach(log => {
     if (counts.hasOwnProperty(log.status)) {
       counts[log.status]++;
       clientsByStatus[log.status].push(log.client_name_manual || 'Unknown');
@@ -1614,16 +1600,23 @@ function renderPipelineCards() {
   });
   stages.forEach(s => clientsByStatus[s.key].sort((a,b) => a.localeCompare(b)));
 
-  let html = `<div class="admin-headline"><strong>${total}</strong> total clients being pursued</div>
+  // Active pipeline = non-stale, excluding Successful and Rejected
+  const activePipelineCount = nonStaleClients.filter(l =>
+    l.status !== 'Successful' && l.status !== 'Rejected'
+  ).length;
+
+  let html = `<div class="admin-headline"><strong>${activePipelineCount}</strong> clients in active pipeline</div>
   <div class="pipeline-grid">`;
   stages.forEach(s => {
     const sub = s.key === 'Pending Injection' && pendingInjectionTotal > 0
       ? `<div class="p-sub">RM ${pendingInjectionTotal.toFixed(1)} Mn</div>` : '';
     html += `<div class="p-card ${s.cls}"><div class="p-num">${counts[s.key]}</div><div class="p-lbl">${s.lbl}</div>${sub}</div>`;
   });
+  // Stale card beside Rejected
+  html += `<div class="p-card pc-stale"><div class="p-num">${staleClients.length}</div><div class="p-lbl">Stale</div><div class="p-sub">&gt;60 / 90d threshold</div></div>`;
   html += '</div><div class="waterfall-wrap"><div id="pipelineWaterfallChart"></div></div>';
   document.getElementById('pipelineContainer').innerHTML = html;
-  renderWaterfallHTML(stages, counts, clientsByStatus, total);
+  renderWaterfallHTML(stages, counts, clientsByStatus, activePipelineCount);
 }
 
 function renderWaterfallHTML(stages, counts, clientsByStatus, total) {
@@ -1631,7 +1624,6 @@ function renderWaterfallHTML(stages, counts, clientsByStatus, total) {
   if (!container) return;
   const maxCount = Math.max(...stages.map(s => counts[s.key] || 0), 1);
   const maxBarPx = 130;
-
   let colsHtml = '', labelsHtml = '';
   stages.forEach(s => {
     const cnt = counts[s.key] || 0;
@@ -1643,7 +1635,6 @@ function renderWaterfallHTML(stages, counts, clientsByStatus, total) {
     </div>`;
     labelsHtml += `<div class="wf-col-lbl">${s.lbl}</div>`;
   });
-
   container.innerHTML = `
     <div class="wf-chart">${colsHtml}</div>
     <div class="wf-labels">${labelsHtml}</div>
@@ -1651,7 +1642,6 @@ function renderWaterfallHTML(stages, counts, clientsByStatus, total) {
       <div class="wf-drawer-title" id="wfDrawerTitle"></div>
       <ol class="wf-client-list" id="wfDrawerList"></ol>
     </div>`;
-
   container._stages = stages;
   container._clientsByStatus = clientsByStatus;
 }
@@ -1662,10 +1652,8 @@ function toggleWfDrawer(sk) {
   const titleEl = document.getElementById('wfDrawerTitle');
   const listEl = document.getElementById('wfDrawerList');
   if (!drawer) return;
-
   const isActive = drawer.classList.contains('open') && drawer.dataset.sk === sk;
   document.querySelectorAll('.wf-col').forEach(c => c.classList.remove('wf-active'));
-
   if (isActive) {
     drawer.classList.remove('open');
     drawer.dataset.sk = '';
@@ -1702,11 +1690,8 @@ function renderRMOverviewTable() {
     stats[rm].potential += parseFloat(log.potential_size_rm_mn)||0;
   });
   let html = `<div class="admin-table-wrap"><table class="admin-table"><thead>
-    <tr>
-      <th>RM</th>
-      <th>Active</th><th>Successful</th><th>Rejected</th>
-      <th>Total Potential (RM Mn)</th>
-    </tr></thead><tbody>`;
+    <tr><th>RM</th><th>Active</th><th>Successful</th><th>Rejected</th><th>Total Potential (RM Mn)</th></tr>
+    </thead><tbody>`;
   RM_LIST.forEach(rm => {
     const s = stats[rm];
     html += `<tr>
@@ -1719,7 +1704,6 @@ function renderRMOverviewTable() {
   });
   html += '</tbody></table></div>';
 
-  // ── Multi-RM flag ─────────────────────────────────────────────
   const rmsByClient = {};
   adminAllLogs.forEach(l => {
     const key = (l.client_name_manual||'').toUpperCase().trim();
@@ -1737,7 +1721,7 @@ function renderRMOverviewTable() {
         ${sharedClients.length} client${sharedClients.length>1?'s':''} logged by multiple RMs
       </div>
       <div style="font-size:11.5px;color:#555;margin-bottom:8px;">
-        These clients have log entries under more than one RM. The RM Overview credits the most recent RM; the Activity Tracker credits whoever logged the first meeting. This causes the count discrepancy.
+        These clients have log entries under more than one RM. The RM Overview credits the most recent RM; the Activity Tracker credits whoever logged the first meeting.
       </div>
       <table style="width:100%;border-collapse:collapse;font-size:12px;">
         <thead><tr style="background:#fff3cd;">
@@ -1759,18 +1743,20 @@ function renderRMOverviewTable() {
   } else {
     html += `<div style="margin-top:14px;font-size:12px;color:#4caf50;">No clients with multi-RM log history detected.</div>`;
   }
-
   document.getElementById('rmOverviewContainer').innerHTML = html;
 }
 
-// ─── RM DRILLDOWN ─────────────────────────────────────────────────
+// ─── RM DRILLDOWN (with stale section) ───────────────────────────
 function renderRMDrilldown(selectedRM) {
   const all = Object.values(adminLatestPerClient);
   const rows = selectedRM === 'all' ? all : all.filter(l => l.rm_name === selectedRM);
-
   if (!rows.length) { document.getElementById('rmDrilldownContainer').innerHTML = '<p style="color:var(--grey);padding:8px 0;">No clients found.</p>'; return; }
 
-  // Build map: clientKey -> earliest First Meeting date for the selected RM
+  // Separate stale from active pipeline
+  const staleRows = rows.filter(l => isStaleClient(l));
+  const activeRows = rows.filter(l => !isStaleClient(l));
+
+  // Build first-meeting date map
   const firstMeetingDateMap = {};
   adminAllLogs.forEach(l => {
     if (l.meeting_type !== 'First Meeting') return;
@@ -1794,8 +1780,8 @@ function renderRMDrilldown(selectedRM) {
     });
   }
 
-  const newRows = sortRows(rows.filter(l => newClientKeys.has((l.client_name_manual||'').toUpperCase().trim())));
-  const followupRows = sortRows(rows.filter(l => !newClientKeys.has((l.client_name_manual||'').toUpperCase().trim())));
+  const newRows      = sortRows(activeRows.filter(l =>  newClientKeys.has((l.client_name_manual||'').toUpperCase().trim())));
+  const followupRows = sortRows(activeRows.filter(l => !newClientKeys.has((l.client_name_manual||'').toUpperCase().trim())));
 
   function buildTable(tableRows, isNew) {
     const dateColHdr = isNew ? 'First Meeting' : 'Last Meeting';
@@ -1821,7 +1807,35 @@ function renderRMDrilldown(selectedRM) {
         <td class="td-grey">${log.potential_size_rm_mn != null ? 'RM ' + parseFloat(log.potential_size_rm_mn).toFixed(1) + ' Mn' : '&#8212;'}</td>
       </tr>`;
     });
-    return `<div class="admin-table-wrap" style="max-height:440px;overflow-y:auto;"><table class="admin-table"><thead><tr style="position:sticky;top:0;z-index:1;"><th>Client Name</th><th>RM</th><th>${dateColHdr}</th><th>Days Since</th><th>Status</th><th>Product</th><th>Potential (RM Mn)</th></tr></thead><tbody>${tbody}</tbody></table></div>`;
+    return `<div class="admin-table-wrap" style="max-height:440px;overflow-y:auto;">
+      <table class="admin-table"><thead><tr style="position:sticky;top:0;z-index:1;">
+        <th>Client Name</th><th>RM</th><th>${dateColHdr}</th><th>Days Since</th><th>Status</th><th>Product</th><th>Potential (RM Mn)</th>
+      </tr></thead><tbody>${tbody}</tbody></table></div>`;
+  }
+
+  function buildStaleTable(tableRows) {
+    let tbody = '';
+    tableRows.forEach(log => {
+      const cls = getStatusBadgeCls(log.status || 'Not Met');
+      const dateSource = log.updated_at || log.meeting_datetime;
+      const dateDt = dateSource ? new Date(dateSource).toLocaleDateString('en-MY', {day:'2-digit', month:'short', year:'2-digit'}) : '&#8212;';
+      const daysSince = dateSource ? Math.floor((Date.now() - new Date(dateSource)) / 86400000) : null;
+      const threshold = getAgingThreshold(log.status);
+      tbody += `<tr style="background:#FFF5F5;">
+        <td class="td-rm" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${log.client_name_manual||'&#8212;'}</td>
+        <td class="td-grey">${log.rm_name||'&#8212;'}</td>
+        <td class="td-grey">${dateDt}</td>
+        <td class="td-aged-red" style="font-weight:700;">${daysSince !== null ? daysSince + 'd' : '&#8212;'}</td>
+        <td><span class="status-pill ${cls}">${log.status||'Not Met'}</span></td>
+        <td class="td-grey" style="font-size:11px;">${threshold ? '&gt;' + threshold + 'd limit' : '&#8212;'}</td>
+        <td class="td-grey">${log.product_fund||'&#8212;'}</td>
+        <td class="td-grey">${log.potential_size_rm_mn != null ? 'RM ' + parseFloat(log.potential_size_rm_mn).toFixed(1) + ' Mn' : '&#8212;'}</td>
+      </tr>`;
+    });
+    return `<div class="admin-table-wrap" style="max-height:440px;overflow-y:auto;">
+      <table class="admin-table"><thead><tr style="background:#9B1C1C;position:sticky;top:0;z-index:1;">
+        <th>Client Name</th><th>RM</th><th>Last Activity</th><th>Days Elapsed</th><th>Status</th><th>Threshold</th><th>Product</th><th>Potential (RM Mn)</th>
+      </tr></thead><tbody>${tbody}</tbody></table></div>`;
   }
 
   const sectionHdr = (label, count, color) =>
@@ -1833,9 +1847,23 @@ function renderRMDrilldown(selectedRM) {
   html += '<div style="margin-top:28px;"></div>';
   html += sectionHdr('Follow Up / Other', followupRows.length, 'var(--grey)');
   html += followupRows.length ? buildTable(followupRows, false) : '<p style="color:var(--grey);font-size:13px;">No follow-up clients.</p>';
-  html = `<div style="margin-top:4px;">${html}</div>`;
 
-  document.getElementById('rmDrilldownContainer').innerHTML = html;
+  // ── Stale section at the bottom ──
+  html += '<div style="margin-top:32px;"></div>';
+  html += `<div style="background:#FFF5F5;border:1.5px solid #F1AEB5;border-radius:10px;padding:16px 20px;">`;
+  html += sectionHdr('Stale Clients', staleRows.length, '#9B1C1C');
+  html += `<div style="font-size:12px;color:#721C24;margin-bottom:14px;line-height:1.6;">
+    Clients that have exceeded the follow-up threshold without a status change.<br>
+    <strong>Pending Decision</strong> &amp; <strong>Pending Onboarding</strong>: &gt;60 days &nbsp;&bull;&nbsp;
+    <strong>Pending Board Approval</strong>: &gt;90 days
+  </div>`;
+  html += staleRows.length
+    ? buildStaleTable(sortRows(staleRows))
+    : '<p style="color:var(--grey);font-size:13px;">No stale clients — all within threshold.</p>';
+  html += '</div>';
+
+  document.getElementById('rmDrilldownContainer').innerHTML = `<div style="margin-top:4px;">${html}</div>`;
+  renderUpcomingForDrilldown(selectedRM);
 }
 
 // ─── ACTIVITY TRACKER ─────────────────────────────────────────────
@@ -1846,22 +1874,14 @@ function getWeekBounds(weeksAgo) {
   const sun = new Date(mon); sun.setDate(mon.getDate()+6); sun.setHours(23,59,59,999);
   return {start:mon, end:sun};
 }
-function getMonthBounds(monthsAgo) {
-  const now = new Date(); const m = now.getMonth()-monthsAgo; const y = now.getFullYear();
-  return {start:new Date(y,m,1,0,0,0,0), end:new Date(y,m+1,0,23,59,59,999)};
-}
 function getYTDBounds() { return {start:new Date(new Date().getFullYear(),0,1), end:new Date()}; }
 function inRange(dt, b) { const d=new Date(dt); return d>=b.start && d<=b.end; }
 
 function renderActivityTracker() {
   const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth(); // 0-based
-
   const allFirstMeetings = adminAllLogs.filter(l => l.meeting_type === 'First Meeting');
   const hasData = allFirstMeetings.length > 0;
-
-  // Deduplicate per RM: each RM gets credit for their own earliest first-meeting with each client
   const clientFirstLog = {};
   allFirstMeetings.forEach(l => {
     const clientKey = (l.client_name_manual || '').toUpperCase().trim();
@@ -1871,7 +1891,6 @@ function renderActivityTracker() {
       clientFirstLog[key] = l;
   });
   const firstMeetings = Object.values(clientFirstLog);
-
   const ytd = getYTDBounds();
   const counts = {};
   RM_LIST.forEach(rm => counts[rm] = {ytd:0, months:Array(12).fill(0)});
@@ -1882,8 +1901,6 @@ function renderActivityTracker() {
     if (inRange(l.meeting_datetime, ytd)) counts[rm].ytd++;
     if (dt.getFullYear() === currentYear)  counts[rm].months[dt.getMonth()]++;
   });
-
-  // Detect clients where more than one RM tagged "First Meeting"
   const firstMeetingRMsByClient = {};
   allFirstMeetings.forEach(l => {
     const key = (l.client_name_manual || '').toUpperCase().trim();
@@ -1892,7 +1909,6 @@ function renderActivityTracker() {
     firstMeetingRMsByClient[key].rms.add(l.rm_name);
   });
   const sharedFirstMeetings = Object.values(firstMeetingRMsByClient).filter(c => c.rms.size > 1).sort((a,b) => a.displayName.localeCompare(b.displayName));
-
   let html = '';
   html += `<div style="font-size:12px;color:var(--grey);background:#f8f9fa;border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:16px;">
     <strong style="color:var(--navy);">Note:</strong> Counts below reflect only logs tagged as <strong>First Meeting</strong>. Each client is counted once per RM at their earliest first-meeting date.
@@ -1904,28 +1920,21 @@ function renderActivityTracker() {
       <th rowspan="2" style="vertical-align:middle;background:#1E4A73;color:#fff;">YTD</th>
       <th colspan="12" style="background:#1E4A73;text-align:center;border-bottom:1px solid rgba(255,255,255,0.2);">First Meetings</th>
     </tr>
-    <tr>
-      ${MONTH_NAMES.map(m => `<th>${m}</th>`).join('')}
-    </tr>
+    <tr>${MONTH_NAMES.map(m => `<th>${m}</th>`).join('')}</tr>
   </thead><tbody>`;
   RM_LIST.forEach(rm => {
     const c = counts[rm];
     const montCells = MONTH_NAMES.map((_,i) => `<td class="${c.months[i]>0?'td-hl':''}">${c.months[i]}</td>`).join('');
-    html += `<tr>
-      <td class="td-rm">${rm}</td>
-      <td class="${c.ytd>0?'td-hl':''}">${c.ytd}</td>
-      ${montCells}
-    </tr>`;
+    html += `<tr><td class="td-rm">${rm}</td><td class="${c.ytd>0?'td-hl':''}">${c.ytd}</td>${montCells}</tr>`;
   });
   html += '</tbody></table></div>';
-
   if (sharedFirstMeetings.length) {
     html += `<div style="margin-top:18px;background:#fff8e1;border:1px solid #f9a825;border-radius:8px;padding:14px 16px;">
       <div style="font-weight:700;color:#e65100;font-size:13px;margin-bottom:6px;">
         ${sharedFirstMeetings.length} client${sharedFirstMeetings.length>1?'s':''} tagged as First Meeting by multiple RMs
       </div>
       <div style="font-size:11.5px;color:#555;margin-bottom:10px;">
-        These clients have "First Meeting" logs under more than one RM. Each RM is counted separately in the table above — verify if this is intentional or a duplicate entry.
+        These clients have "First Meeting" logs under more than one RM. Each RM is counted separately — verify if intentional.
       </div>
       <table style="width:100%;border-collapse:collapse;font-size:12px;">
         <thead><tr style="background:#fff3cd;">
@@ -1942,7 +1951,6 @@ function renderActivityTracker() {
   } else if (hasData) {
     html += `<div style="margin-top:14px;font-size:12px;color:#4caf50;">No clients with duplicate First Meeting tags detected.</div>`;
   }
-
   document.getElementById('activityContainer').innerHTML = html;
 }
 
@@ -2010,6 +2018,249 @@ function renderChairmanSection() {
   document.getElementById('chairmanContainer').innerHTML = html;
 }
 
+// ─── UPCOMING MEETINGS ────────────────────────────────────────────
+async function loadUpcomingMeetings() {
+  const tbody = document.getElementById('upcomingTableBody');
+  if (tbody) tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><p>Loading...</p></div></td></tr>';
+  if (demoMode || !_sb) {
+    upcomingMeetingsData = [];
+    renderUpcomingTable();
+    return;
+  }
+  try {
+    const {data, error} = await _sb.from('upcoming_meetings')
+      .select('*').order('meeting_date', {ascending:true});
+    if (error) throw error;
+    upcomingMeetingsData = data || [];
+    const today = new Date(); today.setHours(0,0,0,0);
+    const futureCount = upcomingMeetingsData.filter(m => new Date(m.meeting_date + 'T00:00:00') >= today).length;
+    const badge = document.getElementById('tabUpcomingCount');
+    if (badge) badge.textContent = futureCount || '0';
+    renderUpcomingTable();
+  } catch(err) {
+    showToast('Error loading upcoming meetings: ' + err.message, 'error');
+    if (tbody) tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><p style="color:var(--error);">Error: ${err.message}</p></div></td></tr>`;
+  }
+}
+
+async function submitUpcomingMeeting() {
+  const rm     = document.getElementById('upcomingRM').value;
+  const client = document.getElementById('upcomingClient').value.trim();
+  const date   = document.getElementById('upcomingDate').value;
+  if (!rm || !client || !date) {
+    showToast('RM, Client Name and Meeting Date are required.', 'error');
+    if (!rm)     document.getElementById('upcomingRM').classList.add('error');
+    if (!client) document.getElementById('upcomingClient').classList.add('error');
+    if (!date)   document.getElementById('upcomingDate').classList.add('error');
+    return;
+  }
+  ['upcomingRM','upcomingClient','upcomingDate'].forEach(id => document.getElementById(id).classList.remove('error'));
+  const btn = document.getElementById('upcomingSubmitBtn');
+  document.getElementById('upcomingSubmitText').style.display = 'none';
+  document.getElementById('upcomingSubmitSpinner').style.display = 'block';
+  btn.disabled = true;
+  const payload = {
+    rm_name:      rm,
+    client_name:  client,
+    meeting_date: date,
+    meeting_time: document.getElementById('upcomingTime').value   || null,
+    purpose:      document.getElementById('upcomingPurpose').value.trim() || null,
+    notes:        document.getElementById('upcomingNotes').value.trim()   || null,
+  };
+  try {
+    if (demoMode || !_sb) {
+      showToast('Demo mode — upcoming meeting not saved. Connect Supabase to save.', 'info');
+    } else {
+      const {error} = await _sb.from('upcoming_meetings').insert(payload);
+      if (error) throw error;
+      showToast('Upcoming meeting saved!', 'success');
+      resetUpcomingForm();
+      await loadUpcomingMeetings();
+    }
+  } catch(err) {
+    showToast('Error saving: ' + err.message, 'error');
+  } finally {
+    document.getElementById('upcomingSubmitText').style.display = 'inline';
+    document.getElementById('upcomingSubmitSpinner').style.display = 'none';
+    btn.disabled = false;
+  }
+}
+
+function resetUpcomingForm() {
+  ['upcomingRM','upcomingClient','upcomingDate','upcomingTime','upcomingPurpose','upcomingNotes'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  ['upcomingRM','upcomingClient','upcomingDate'].forEach(id => document.getElementById(id)?.classList.remove('error'));
+}
+
+const MONTH_LABELS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function _upcomingStatusBadge(diffDays) {
+  if (diffDays < 0)  return {cls:'upcoming-past',   label:'Past Due'};
+  if (diffDays === 0) return {cls:'upcoming-today',  label:'Today'};
+  if (diffDays <= 7)  return {cls:'upcoming-soon',   label:`In ${diffDays}d`};
+  return                     {cls:'upcoming-future', label:`In ${diffDays}d`};
+}
+
+function renderUpcomingTable() {
+  const q      = (document.getElementById('upcomingSearch')?.value    || '').toLowerCase();
+  const fRM    = document.getElementById('upcomingFilterRM')?.value    || '';
+  const fMonth = document.getElementById('upcomingFilterMonth')?.value || '';
+  const tbody  = document.getElementById('upcomingTableBody');
+  if (!tbody) return;
+
+  // Rebuild month filter options
+  const monthSel = document.getElementById('upcomingFilterMonth');
+  if (monthSel && upcomingMeetingsData.length > 0) {
+    const months = new Set();
+    upcomingMeetingsData.forEach(m => {
+      const d = new Date(m.meeting_date + 'T00:00:00');
+      months.add(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);
+    });
+    const cur = monthSel.value;
+    monthSel.innerHTML = '<option value="">All Months</option>' +
+      [...months].sort().map(mk => {
+        const [y,mo] = mk.split('-');
+        const lbl = new Date(parseInt(y), parseInt(mo)-1, 1).toLocaleDateString('en-MY',{month:'short',year:'numeric'});
+        return `<option value="${mk}"${cur===mk?' selected':''}>${lbl}</option>`;
+      }).join('');
+  }
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  let rows = upcomingMeetingsData.filter(m => {
+    const matchQ  = !q    || (m.client_name||'').toLowerCase().includes(q);
+    const matchRM = !fRM  || m.rm_name === fRM;
+    if (fMonth) {
+      const d  = new Date(m.meeting_date + 'T00:00:00');
+      const mk = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+      if (mk !== fMonth) return false;
+    }
+    return matchQ && matchRM;
+  });
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="empty-icon"></div><p>No upcoming meetings found.</p></div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map((m, i) => {
+    const meetDate = new Date(m.meeting_date + 'T00:00:00');
+    const diffDays = Math.round((meetDate - today) / 86400000);
+    const {cls, label} = _upcomingStatusBadge(diffDays);
+    const dateStr = `${meetDate.getDate()} ${MONTH_LABELS[meetDate.getMonth()]} ${meetDate.getFullYear()}`;
+    const timeStr = m.meeting_time ? m.meeting_time.substring(0,5) : '&#8212;';
+    const purpose = m.purpose ? `<span title="${escQ(m.purpose)}" style="max-width:160px;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle;">${escQ(m.purpose)}</span>` : '&#8212;';
+    return `<tr>
+      <td class="td-num">${i+1}</td>
+      <td class="td-bold">${m.rm_name}</td>
+      <td class="company-name" style="text-align:left;">${m.client_name}</td>
+      <td class="td-bold">${dateStr}</td>
+      <td class="td-grey">${timeStr}</td>
+      <td class="td-grey">${purpose}</td>
+      <td><span class="upcoming-badge ${cls}">${label}</span></td>
+      <td><button class="btn-edit-row" onclick="deleteUpcomingMeeting('${m.id}','${escQ(m.client_name)}')" style="color:var(--error);border-color:var(--error);">Remove</button></td>
+    </tr>`;
+  }).join('');
+}
+
+async function deleteUpcomingMeeting(id, clientName) {
+  if (!confirm(`Remove upcoming meeting for ${clientName}?`)) return;
+  try {
+    if (!demoMode && _sb) {
+      const {error} = await _sb.from('upcoming_meetings').delete().eq('id', id);
+      if (error) throw error;
+    }
+    upcomingMeetingsData = upcomingMeetingsData.filter(m => m.id !== id);
+    const today = new Date(); today.setHours(0,0,0,0);
+    const futureCount = upcomingMeetingsData.filter(m => new Date(m.meeting_date + 'T00:00:00') >= today).length;
+    const badge = document.getElementById('tabUpcomingCount');
+    if (badge) badge.textContent = futureCount || '0';
+    renderUpcomingTable();
+    showToast(`Removed upcoming meeting for ${clientName}`, 'success');
+  } catch(err) {
+    showToast('Error removing: ' + err.message, 'error');
+  }
+}
+
+// Upcoming meetings tracker in RM Overview (like Activity Tracker)
+function renderUpcomingByRM() {
+  const container = document.getElementById('upcomingByRMContainer');
+  if (!container) return;
+  const currentYear = new Date().getFullYear();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  const future = upcomingMeetingsData.filter(m => new Date(m.meeting_date + 'T00:00:00') >= today);
+
+  if (!upcomingMeetingsData.length) {
+    container.innerHTML = '<div class="admin-note">No upcoming meetings logged yet. Use the <strong>Upcoming Meetings</strong> tab to schedule future meetings.</div>';
+    return;
+  }
+
+  const counts = {};
+  RM_LIST.forEach(rm => counts[rm] = {total:0, months:Array(12).fill(0)});
+  future.forEach(m => {
+    const rm = m.rm_name;
+    if (!counts[rm]) counts[rm] = {total:0, months:Array(12).fill(0)};
+    const d = new Date(m.meeting_date + 'T00:00:00');
+    if (d.getFullYear() === currentYear) counts[rm].months[d.getMonth()]++;
+    counts[rm].total++;
+  });
+
+  let html = `<div style="font-size:12px;color:var(--grey);background:#f8f9fa;border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:16px;">
+    <strong style="color:var(--navy);">Note:</strong> Shows future meetings logged in the <strong>Upcoming Meetings</strong> tab, counted by RM per month. Past-due meetings are excluded.
+  </div>`;
+  html += `<div class="admin-table-wrap"><table class="admin-table"><thead>
+    <tr>
+      <th rowspan="2" style="vertical-align:middle;">RM</th>
+      <th rowspan="2" style="vertical-align:middle;background:#1E4A73;">Total</th>
+      <th colspan="12" style="background:#1E4A73;text-align:center;border-bottom:1px solid rgba(255,255,255,0.2);">Upcoming Meetings by Month</th>
+    </tr>
+    <tr>${MONTH_LABELS.map(m => `<th>${m}</th>`).join('')}</tr>
+  </thead><tbody>`;
+  RM_LIST.forEach(rm => {
+    const c = counts[rm];
+    const monthCells = MONTH_LABELS.map((_,i) => `<td class="${c.months[i]>0?'td-hl':''}">${c.months[i]||0}</td>`).join('');
+    html += `<tr><td class="td-rm">${rm}</td><td class="${c.total>0?'td-hl':''}">${c.total}</td>${monthCells}</tr>`;
+  });
+  html += '</tbody></table></div>';
+  container.innerHTML = html;
+}
+
+// Upcoming meetings for RM Drilldown panel
+function renderUpcomingForDrilldown(selectedRM) {
+  const container = document.getElementById('upcomingDrilldownContainer');
+  if (!container) return;
+  const today = new Date(); today.setHours(0,0,0,0);
+  let meetings = upcomingMeetingsData.filter(m => new Date(m.meeting_date + 'T00:00:00') >= today);
+  if (selectedRM !== 'all') meetings = meetings.filter(m => m.rm_name === selectedRM);
+  meetings.sort((a,b) => a.meeting_date.localeCompare(b.meeting_date));
+
+  if (!meetings.length) {
+    container.innerHTML = '<p style="color:var(--grey);font-size:13px;padding:4px 0;">No upcoming meetings scheduled' + (selectedRM !== 'all' ? ' for ' + selectedRM : '') + '.</p>';
+    return;
+  }
+  let tbody = '';
+  meetings.forEach(m => {
+    const meetDate = new Date(m.meeting_date + 'T00:00:00');
+    const diffDays = Math.round((meetDate - today) / 86400000);
+    const {cls, label} = _upcomingStatusBadge(diffDays);
+    const dateStr = `${meetDate.getDate()} ${MONTH_LABELS[meetDate.getMonth()]} ${meetDate.getFullYear()}`;
+    const timeStr = m.meeting_time ? m.meeting_time.substring(0,5) : '&#8212;';
+    tbody += `<tr>
+      <td class="td-rm" style="text-align:left;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.client_name}</td>
+      <td class="td-grey">${m.rm_name}</td>
+      <td class="td-bold">${dateStr}</td>
+      <td class="td-grey">${timeStr}</td>
+      <td class="td-grey" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.purpose || '&#8212;'}</td>
+      <td><span class="upcoming-badge ${cls}">${label}</span></td>
+    </tr>`;
+  });
+  container.innerHTML = `<div class="admin-table-wrap" style="max-height:360px;overflow-y:auto;">
+    <table class="admin-table"><thead><tr>
+      <th>Client Name</th><th>RM</th><th>Meeting Date</th><th>Time</th><th>Purpose</th><th>Status</th>
+    </tr></thead><tbody>${tbody}</tbody></table></div>`;
+}
+
 // ─── PDF EXPORT ───────────────────────────────────────────────────
 async function exportSectionPDF(sectionId, filename, btn) {
   if (!window.html2canvas || !window.jspdf) {
@@ -2038,7 +2289,6 @@ async function exportSectionPDF(sectionId, filename, btn) {
     btn.disabled = false; btn.innerHTML = 'Export PDF';
   }
 }
-
 function exportConversionPDF(btn) {
   const date = new Date().toISOString().slice(0,10);
   exportSectionPDF('conversionSummarySection', `Conversion-Summary-${date}.pdf`, btn);
