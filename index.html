@@ -757,13 +757,53 @@
           <input type="text" id="upcomingClient" placeholder="Enter client name..." autocomplete="off"
             oninput="const s=this.selectionStart,e=this.selectionEnd;this.value=this.value.toUpperCase();this.setSelectionRange(s,e);" />
         </div>
-        <div class="field" id="ufld-date">
+        <div class="field full" id="ufld-date">
           <label>Meeting Date <span class="req">*</span></label>
-          <input type="date" id="upcomingDate" />
+          <div style="display:flex;gap:8px;margin-bottom:8px;">
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--navy);cursor:pointer;">
+              <input type="radio" name="upcomingDateMode" id="dateModeSpecific" value="specific" checked onchange="toggleDateMode()" style="accent-color:var(--yellow);width:15px;height:15px;" />
+              Specific Date
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--navy);cursor:pointer;">
+              <input type="radio" name="upcomingDateMode" id="dateModeMonth" value="month" onchange="toggleDateMode()" style="accent-color:var(--yellow);width:15px;height:15px;" />
+              Month Only
+            </label>
+          </div>
+          <input type="date"  id="upcomingDate"      style="width:100%;" />
+          <input type="month" id="upcomingDateMonth" style="width:100%;display:none;" />
         </div>
         <div class="field">
           <label>Meeting Time <em style="font-weight:400;font-size:11px;">(optional)</em></label>
           <input type="time" id="upcomingTime" />
+        </div>
+        <div class="field" id="ufld-usegment">
+          <label>Segment <span class="req">*</span></label>
+          <select id="upcomingSegment">
+            <option value="">&#8212; Select segment &#8212;</option>
+            <optgroup label="CC Coverage">
+              <option value="CONGLO">CONGLO</option><option value="MID CAP">MID CAP</option>
+              <option value="LARGE CAP">LARGE CAP</option><option value="MNC">MNC</option>
+              <option value="FIG">FIG</option><option value="GLIC">GLIC</option><option value="GOM">GOM</option>
+            </optgroup>
+            <optgroup label="CBD Coverage">
+              <option value="PKP">PKP</option><option value="JM">JM</option>
+              <option value="PPKT">PPKT</option><option value="SNS">SNS</option>
+              <option value="FT">FT</option><option value="SBH">SBH</option><option value="SWK">SWK</option>
+            </optgroup>
+            <optgroup label="Other">
+              <option value="CB">CB</option><option value="HNW">HNW</option>
+              <option value="INSTITUTIONAL">INSTITUTIONAL</option><option value="OTHER">OTHER</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field" id="ufld-ureferral">
+          <label>Referred By <span class="req">*</span></label>
+          <select id="upcomingReferral">
+            <option value="">&#8212; Select &#8212;</option>
+            <option value="CC">CC</option><option value="CBD">CBD</option><option value="CB">CB</option>
+            <option value="Direct">Direct</option><option value="Private Banking">Private Banking</option>
+            <option value="Premier Banking">Premier Banking</option><option value="Other">Other</option>
+          </select>
         </div>
         <div class="field full">
           <label>Purpose / Agenda <em style="font-weight:400;font-size:11px;">(optional)</em></label>
@@ -801,10 +841,10 @@
       <div style="border-top:1.5px solid var(--border);overflow-x:auto;border-radius:0 0 12px 12px;">
         <table class="cl-table">
           <thead>
-            <tr><th>#</th><th>RM</th><th>Client Name</th><th>Meeting Date</th><th>Time</th><th>Purpose</th><th>Status</th><th>Action</th></tr>
+            <tr><th>#</th><th>RM</th><th>Client Name</th><th>Segment</th><th>Referred By</th><th>Meeting Date</th><th>Time</th><th>Purpose</th><th>Status</th><th>Action</th></tr>
           </thead>
           <tbody id="upcomingTableBody">
-            <tr><td colspan="8"><div class="empty-state"><div class="empty-icon"></div><p>Loading upcoming meetings...</p></div></td></tr>
+            <tr><td colspan="10"><div class="empty-state"><div class="empty-icon"></div><p>Loading upcoming meetings...</p></div></td></tr>
           </tbody>
         </table>
       </div>
@@ -2021,7 +2061,7 @@ function renderChairmanSection() {
 // ─── UPCOMING MEETINGS ────────────────────────────────────────────
 async function loadUpcomingMeetings() {
   const tbody = document.getElementById('upcomingTableBody');
-  if (tbody) tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><p>Loading...</p></div></td></tr>';
+  if (tbody) tbody.innerHTML = '<tr><td colspan="10"><div class="empty-state"><p>Loading...</p></div></td></tr>';
   if (demoMode || !_sb) {
     upcomingMeetingsData = [];
     renderUpcomingTable();
@@ -2039,33 +2079,46 @@ async function loadUpcomingMeetings() {
     renderUpcomingTable();
   } catch(err) {
     showToast('Error loading upcoming meetings: ' + err.message, 'error');
-    if (tbody) tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><p style="color:var(--error);">Error: ${err.message}</p></div></td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><p style="color:var(--error);">Error: ${err.message}</p></div></td></tr>`;
   }
 }
 
 async function submitUpcomingMeeting() {
-  const rm     = document.getElementById('upcomingRM').value;
-  const client = document.getElementById('upcomingClient').value.trim();
-  const date   = document.getElementById('upcomingDate').value;
-  if (!rm || !client || !date) {
-    showToast('RM, Client Name and Meeting Date are required.', 'error');
-    if (!rm)     document.getElementById('upcomingRM').classList.add('error');
-    if (!client) document.getElementById('upcomingClient').classList.add('error');
-    if (!date)   document.getElementById('upcomingDate').classList.add('error');
+  const rm        = document.getElementById('upcomingRM').value;
+  const client    = document.getElementById('upcomingClient').value.trim();
+  const segment   = document.getElementById('upcomingSegment').value;
+  const referral  = document.getElementById('upcomingReferral').value;
+  const dateMode  = document.querySelector('input[name="upcomingDateMode"]:checked')?.value || 'specific';
+  const rawDate   = dateMode === 'month'
+    ? document.getElementById('upcomingDateMonth').value   // "YYYY-MM"
+    : document.getElementById('upcomingDate').value;       // "YYYY-MM-DD"
+  // Convert month-only to first-of-month date string for storage
+  const meetingDate = (dateMode === 'month' && rawDate) ? rawDate + '-01' : rawDate;
+  const missing = !rm || !client || !rawDate || !segment || !referral;
+  if (missing) {
+    showToast('RM, Client Name, Meeting Date, Segment and Referred By are required.', 'error');
+    if (!rm)      document.getElementById('upcomingRM').classList.add('error');
+    if (!client)  document.getElementById('upcomingClient').classList.add('error');
+    if (!rawDate) document.getElementById(dateMode === 'month' ? 'upcomingDateMonth' : 'upcomingDate').classList.add('error');
+    if (!segment)  document.getElementById('upcomingSegment').classList.add('error');
+    if (!referral) document.getElementById('upcomingReferral').classList.add('error');
     return;
   }
-  ['upcomingRM','upcomingClient','upcomingDate'].forEach(id => document.getElementById(id).classList.remove('error'));
+  ['upcomingRM','upcomingClient','upcomingDate','upcomingDateMonth','upcomingSegment','upcomingReferral'].forEach(id => document.getElementById(id)?.classList.remove('error'));
   const btn = document.getElementById('upcomingSubmitBtn');
   document.getElementById('upcomingSubmitText').style.display = 'none';
   document.getElementById('upcomingSubmitSpinner').style.display = 'block';
   btn.disabled = true;
   const payload = {
-    rm_name:      rm,
-    client_name:  client,
-    meeting_date: date,
-    meeting_time: document.getElementById('upcomingTime').value   || null,
-    purpose:      document.getElementById('upcomingPurpose').value.trim() || null,
-    notes:        document.getElementById('upcomingNotes').value.trim()   || null,
+    rm_name:        rm,
+    client_name:    client,
+    meeting_date:   meetingDate,
+    date_precision: dateMode,   // 'specific' or 'month'
+    segment:        segment,
+    referral:       referral,
+    meeting_time:   document.getElementById('upcomingTime').value          || null,
+    purpose:        document.getElementById('upcomingPurpose').value.trim() || null,
+    notes:          document.getElementById('upcomingNotes').value.trim()   || null,
   };
   try {
     if (demoMode || !_sb) {
@@ -2087,10 +2140,20 @@ async function submitUpcomingMeeting() {
 }
 
 function resetUpcomingForm() {
-  ['upcomingRM','upcomingClient','upcomingDate','upcomingTime','upcomingPurpose','upcomingNotes'].forEach(id => {
+  ['upcomingRM','upcomingClient','upcomingDate','upcomingDateMonth','upcomingTime','upcomingSegment','upcomingReferral','upcomingPurpose','upcomingNotes'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
-  ['upcomingRM','upcomingClient','upcomingDate'].forEach(id => document.getElementById(id)?.classList.remove('error'));
+  ['upcomingRM','upcomingClient','upcomingDate','upcomingDateMonth','upcomingSegment','upcomingReferral'].forEach(id => document.getElementById(id)?.classList.remove('error'));
+  // Reset date mode to Specific Date
+  const specific = document.getElementById('dateModeSpecific');
+  if (specific) { specific.checked = true; toggleDateMode(); }
+}
+
+function toggleDateMode() {
+  const mode = document.querySelector('input[name="upcomingDateMode"]:checked')?.value || 'specific';
+  document.getElementById('upcomingDate').style.display      = mode === 'specific' ? '' : 'none';
+  document.getElementById('upcomingDateMonth').style.display = mode === 'month'    ? '' : 'none';
+  document.getElementById('upcomingTime').closest('.field').style.display = mode === 'specific' ? '' : 'none';
 }
 
 const MONTH_LABELS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -2139,21 +2202,38 @@ function renderUpcomingTable() {
   });
 
   if (!rows.length) {
-    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="empty-icon"></div><p>No upcoming meetings found.</p></div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="10"><div class="empty-state"><div class="empty-icon"></div><p>No upcoming meetings found.</p></div></td></tr>';
     return;
   }
 
   tbody.innerHTML = rows.map((m, i) => {
     const meetDate = new Date(m.meeting_date + 'T00:00:00');
-    const diffDays = Math.round((meetDate - today) / 86400000);
-    const {cls, label} = _upcomingStatusBadge(diffDays);
-    const dateStr = `${meetDate.getDate()} ${MONTH_LABELS[meetDate.getMonth()]} ${meetDate.getFullYear()}`;
-    const timeStr = m.meeting_time ? m.meeting_time.substring(0,5) : '&#8212;';
+    const isMonthOnly = m.date_precision === 'month';
+    // For month-only, compare against start of that month
+    const compareDate = isMonthOnly
+      ? new Date(meetDate.getFullYear(), meetDate.getMonth(), 1)
+      : meetDate;
+    const diffDays = Math.round((compareDate - today) / 86400000);
+    let cls, label;
+    if (isMonthOnly) {
+      // Badge shows month status: current month, future month, past
+      if (diffDays < 0 && meetDate.getMonth() !== today.getMonth()) { cls = 'upcoming-past'; label = 'Past'; }
+      else if (meetDate.getFullYear() === today.getFullYear() && meetDate.getMonth() === today.getMonth()) { cls = 'upcoming-today'; label = 'This Month'; }
+      else { cls = 'upcoming-future'; label = `${MONTH_LABELS[meetDate.getMonth()]} ${meetDate.getFullYear()}`; }
+    } else {
+      ({cls, label} = _upcomingStatusBadge(diffDays));
+    }
+    const dateStr = isMonthOnly
+      ? `<span style="font-size:11px;background:#E3F0FF;color:var(--navy);padding:2px 8px;border-radius:20px;font-weight:600;">Month</span> ${MONTH_LABELS[meetDate.getMonth()]} ${meetDate.getFullYear()}`
+      : `${meetDate.getDate()} ${MONTH_LABELS[meetDate.getMonth()]} ${meetDate.getFullYear()}`;
+    const timeStr = (!isMonthOnly && m.meeting_time) ? m.meeting_time.substring(0,5) : '&#8212;';
     const purpose = m.purpose ? `<span title="${escQ(m.purpose)}" style="max-width:160px;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle;">${escQ(m.purpose)}</span>` : '&#8212;';
     return `<tr>
       <td class="td-num">${i+1}</td>
       <td class="td-bold">${m.rm_name}</td>
       <td class="company-name" style="text-align:left;">${m.client_name}</td>
+      <td class="td-grey">${m.segment || '&#8212;'}</td>
+      <td class="td-grey">${m.referral || '&#8212;'}</td>
       <td class="td-bold">${dateStr}</td>
       <td class="td-grey">${timeStr}</td>
       <td class="td-grey">${purpose}</td>
@@ -2241,11 +2321,22 @@ function renderUpcomingForDrilldown(selectedRM) {
   }
   let tbody = '';
   meetings.forEach(m => {
-    const meetDate = new Date(m.meeting_date + 'T00:00:00');
-    const diffDays = Math.round((meetDate - today) / 86400000);
-    const {cls, label} = _upcomingStatusBadge(diffDays);
-    const dateStr = `${meetDate.getDate()} ${MONTH_LABELS[meetDate.getMonth()]} ${meetDate.getFullYear()}`;
-    const timeStr = m.meeting_time ? m.meeting_time.substring(0,5) : '&#8212;';
+    const meetDate   = new Date(m.meeting_date + 'T00:00:00');
+    const isMonthOnly = m.date_precision === 'month';
+    const compareDate = isMonthOnly ? new Date(meetDate.getFullYear(), meetDate.getMonth(), 1) : meetDate;
+    const diffDays   = Math.round((compareDate - today) / 86400000);
+    let cls, label;
+    if (isMonthOnly) {
+      if (diffDays < 0 && meetDate.getMonth() !== today.getMonth()) { cls = 'upcoming-past'; label = 'Past'; }
+      else if (meetDate.getFullYear() === today.getFullYear() && meetDate.getMonth() === today.getMonth()) { cls = 'upcoming-today'; label = 'This Month'; }
+      else { cls = 'upcoming-future'; label = `${MONTH_LABELS[meetDate.getMonth()]} ${meetDate.getFullYear()}`; }
+    } else {
+      ({cls, label} = _upcomingStatusBadge(diffDays));
+    }
+    const dateStr = isMonthOnly
+      ? `<span style="font-size:10px;background:#E3F0FF;color:var(--navy);padding:1px 6px;border-radius:20px;font-weight:600;">Month</span> ${MONTH_LABELS[meetDate.getMonth()]} ${meetDate.getFullYear()}`
+      : `${meetDate.getDate()} ${MONTH_LABELS[meetDate.getMonth()]} ${meetDate.getFullYear()}`;
+    const timeStr = (!isMonthOnly && m.meeting_time) ? m.meeting_time.substring(0,5) : '&#8212;';
     tbody += `<tr>
       <td class="td-rm" style="text-align:left;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.client_name}</td>
       <td class="td-grey">${m.rm_name}</td>
