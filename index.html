@@ -228,6 +228,18 @@
     .wf-drawer-title { font-size: 11px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
     .wf-client-list { list-style: decimal; padding: 0 0 0 18px; margin: 0; display: flex; flex-direction: column; gap: 5px; max-height: 220px; overflow-y: auto; }
     .wf-client-list li { font-size: 12px; color: var(--navy); font-weight: 500; padding: 1px 0; }
+    .p-card-clickable { cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+    .p-card-clickable:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.13); }
+    .p-card-clickable.p-card-active { outline: 2.5px solid var(--navy); outline-offset: 2px; }
+    .p-inj { font-size: 10px; color: var(--grey); margin-top: 6px; font-weight: 600; line-height: 1.4; }
+    .p-drawer { margin-top: 12px; display: none; background: #FAFCFF; border: 1.5px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+    .p-drawer.open { display: block; }
+    .p-drawer-title { font-size: 11px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+    .p-drawer-close { cursor: pointer; color: var(--grey); font-size: 13px; line-height: 1; padding: 2px 4px; }
+    .p-drawer-close:hover { color: var(--navy); }
+    .p-client-list { list-style: decimal; padding: 0 0 0 18px; margin: 0; display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow-y: auto; }
+    .p-client-list li { font-size: 12px; color: var(--navy); font-weight: 500; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 2px 0; }
+    .p-client-pot { font-size: 11px; color: var(--grey); font-weight: 400; flex-shrink: 0; }
     .hos-hdr { background: var(--navy); color: var(--white); }
     .chairman-hdr { background: #5C2E00; color: var(--white); }
     .admin-sub { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 24px; margin-bottom: 14px; }
@@ -271,10 +283,11 @@
     .drilldown-ctrl select { padding: 9px 32px 9px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--black); background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 10px center; appearance: none; cursor: pointer; min-width: 160px; min-height: 44px; }
     .drilldown-ctrl select:focus { outline: none; border-color: var(--yellow); }
     .admin-note { background: #FFF8E6; border: 1px solid var(--yellow); border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #7A5C00; margin-bottom: 16px; line-height: 1.5; }
-    .chairman-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .chairman-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
     .ch-card { border-radius: 12px; padding: 24px; border: 1.5px solid var(--border); }
-    .ch-card.cc  { background: #EEF4FF; border-color: #B3CEFF; }
-    .ch-card.cbd { background: #F0FFF6; border-color: #A3D9B5; }
+    .ch-card.cc   { background: #EEF4FF; border-color: #B3CEFF; }
+    .ch-card.cbd  { background: #F0FFF6; border-color: #A3D9B5; }
+    .ch-card.msii { background: #FFFBE0; border-color: #FFE08A; }
     .ch-card-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.08); letter-spacing: 0.3px; }
     .ch-metric { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
     .ch-num { font-size: 34px; font-weight: 700; color: var(--navy); line-height: 1; }
@@ -492,6 +505,10 @@
         <option value="Rejected">Rejected</option>
       </select>
     </div>
+    <div class="field" style="margin-top:4px;">
+      <label>Remarks</label>
+      <textarea id="editLogRemarks" placeholder="Add or update remarks..." style="min-height:80px;width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'Poppins',sans-serif;font-size:14px;color:var(--black);resize:vertical;"></textarea>
+    </div>
     <div id="editInjectedFields" style="display:none;border-top:1px solid var(--border);margin-top:4px;padding-top:16px;">
       <div class="inj-modal-row">
         <div class="field" style="flex:1;">
@@ -668,6 +685,16 @@
             </select>
             <span class="err-msg">Please select the meeting type.</span>
           </div>
+          <div class="field" id="fld-interest">
+            <label>Client Interest <span class="req">*</span></label>
+            <select id="interestSelect" onchange="clearError('interest')">
+              <option value="">&#8212; Select interest level &#8212;</option>
+              <option value="Cold">Cold &#x2744;</option>
+              <option value="Warm">Warm &#x1F7E1;</option>
+              <option value="Hot">Hot &#x1F525;</option>
+            </select>
+            <span class="err-msg">Please indicate the client's interest level.</span>
+          </div>
           <div class="field" id="fld-size">
             <label>Potential Size (RM' Mn) <span class="req">*</span></label>
             <input type="number" id="potentialSize" placeholder="e.g. 50" min="0" step="0.1" onchange="clearError('size')" />
@@ -719,6 +746,11 @@
         <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
         <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
       </select>
+      <select class="cl-filter" id="clFilterMSII" onchange="renderClientTable()">
+        <option value="">All Clients</option>
+        <option value="msii">MSII Command Council</option>
+        <option value="non-msii">Non-MSII</option>
+      </select>
       <button class="btn-refresh" onclick="loadClientStatuses()">Refresh</button>
     </div>
     <div class="card" style="padding:0;">
@@ -727,11 +759,11 @@
           <thead>
             <tr>
               <th>#</th><th>Client</th><th class="col-msii">MSII</th><th>Last RM</th>
-              <th class="cl-col-product">Product</th><th class="cl-col-potential">Potential (RM Mn)</th><th>Status</th><th>Action</th>
+              <th class="cl-col-product">Product</th><th class="cl-col-potential">Potential (RM Mn)</th><th>Status</th><th>Remarks</th><th>Action</th>
             </tr>
           </thead>
           <tbody id="clTableBody">
-            <tr><td colspan="9"><div class="empty-state"><div class="empty-icon"></div><p>Loading client data...</p></div></td></tr>
+            <tr><td colspan="10"><div class="empty-state"><div class="empty-icon"></div><p>Loading client data...</p></div></td></tr>
           </tbody>
         </table>
       </div>
@@ -879,7 +911,7 @@
           <div id="pipelineContainer"><div class="loading-row">Loading...</div></div>
         </div>
         <div class="admin-sub">
-          <div class="admin-sub-title">Conversion Summary &mdash; CC &amp; CBD Referrals
+          <div class="admin-sub-title">Conversion Summary &mdash; CC, CBD &amp; MSII Command Council
             <button class="btn-export-pdf" onclick="exportConversionPDF(this)" style="margin-left:12px;background:var(--navy);border:none;color:var(--white);">Export PDF</button>
           </div>
           <div id="chairmanContainer"><div class="loading-row">Loading...</div></div>
@@ -1056,7 +1088,7 @@ function validateForm() {
     {id:'rmName', fld:'fld-rm'}, {id:'meetingDatetime', fld:'fld-datetime'},
     {id:'segmentSelect', fld:'fld-segment'}, {id:'referralSelect', fld:'fld-referral'},
     {id:'productSelect', fld:'fld-product'}, {id:'statusSelect', fld:'fld-status'},
-    {id:'meetingTypeSelect', fld:'fld-meetingType'},
+    {id:'meetingTypeSelect', fld:'fld-meetingType'}, {id:'interestSelect', fld:'fld-interest'},
   ];
   checks.forEach(c => {
     const el = document.getElementById(c.id);
@@ -1076,6 +1108,7 @@ function clearError(key) {
     segment:['fld-segment','segmentSelect'], referral:['fld-referral','referralSelect'],
     product:['fld-product','productSelect'], status:['fld-status','statusSelect'],
     meetingType:['fld-meetingType','meetingTypeSelect'],
+    interest:['fld-interest','interestSelect'],
     size:['fld-size','potentialSize'], remarks:['fld-remarks','remarks'],
   };
   if (map[key]) { document.getElementById(map[key][0])?.classList.remove('has-error'); document.getElementById(map[key][1])?.classList.remove('error'); }
@@ -1101,6 +1134,7 @@ async function submitForm() {
     product_fund: document.getElementById('productSelect').value,
     status: document.getElementById('statusSelect').value,
     meeting_type: document.getElementById('meetingTypeSelect').value,
+    client_interest: document.getElementById('interestSelect').value,
     potential_size_rm_mn: parseFloat(document.getElementById('potentialSize').value),
     meeting_datetime: document.getElementById('meetingDatetime').value,
     remarks: document.getElementById('remarks').value.trim(),
@@ -1131,7 +1165,7 @@ function setLoading(s) {
   document.getElementById('submitSpinner').style.display = s ? 'block' : 'none';
 }
 function resetForm() {
-  ['rmName','meetingDatetime','segmentSelect','referralSelect','productSelect','statusSelect','meetingTypeSelect','potentialSize','remarks'].forEach(id => {
+  ['rmName','meetingDatetime','segmentSelect','referralSelect','productSelect','statusSelect','meetingTypeSelect','interestSelect','potentialSize','remarks'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
   document.getElementById('companySearch').value = '';
@@ -1201,14 +1235,14 @@ async function loadClientStatuses() {
     clientStatusData = potentialClientsData.map((c,i) => ({
       id:'demo-'+i, name:c.client_name, gb_cbd:c.gb_cbd, segment:c.segment,
       msii_command_council:c.msii_command_council||false,
-      latestLog: i<20 ? {rm_name:['Azmi','Iskandar','Nasya','Lei Khim','Izzati','Filzah','Colin'][i%7], product_fund:['LMS','Private Mandate','Unit Trust','Sukuk'][i%4], potential_size_rm_mn:(Math.random()*200).toFixed(1), status:statuses[i%statuses.length], meeting_datetime:new Date(Date.now()-i*86400000*3).toISOString(), injected_amount:null} : null,
+      latestLog: i<20 ? {rm_name:['Azmi','Iskandar','Nasya','Lei Khim','Izzati','Filzah','Colin'][i%7], product_fund:['LMS','Private Mandate','Unit Trust','Sukuk'][i%4], potential_size_rm_mn:(Math.random()*200).toFixed(1), status:statuses[i%statuses.length], meeting_datetime:new Date(Date.now()-i*86400000*3).toISOString(), injected_amount:null, remarks:'Demo remarks for client '+i} : null,
     }));
     updateClientStats(); renderClientTable(); return;
   }
   try {
     const {data:clients, error:cErr} = await _sb.from('potential_clients').select('id, client_name, gb_cbd, segment, msii_command_council').order('client_name');
     if (cErr) throw cErr;
-    const {data:logs, error:lErr} = await _sb.from('meeting_logs').select('client_name_manual, rm_name, product_fund, potential_size_rm_mn, status, meeting_datetime, updated_at, injected_amount, injection_date').eq('no_meeting_today', false).order('meeting_datetime', {ascending:false});
+    const {data:logs, error:lErr} = await _sb.from('meeting_logs').select('client_name_manual, rm_name, product_fund, potential_size_rm_mn, status, meeting_datetime, updated_at, injected_amount, injection_date, remarks').eq('no_meeting_today', false).order('meeting_datetime', {ascending:false});
     if (lErr) throw lErr;
     const logMap = {};
     logs.forEach(log => { const key=(log.client_name_manual||'').toUpperCase(); if (key && !logMap[key]) logMap[key]=log; });
@@ -1239,15 +1273,17 @@ function renderClientTable() {
   const q = (document.getElementById('clSearch')?.value||'').toLowerCase();
   const fStatus = document.getElementById('clFilterStatus')?.value||'';
   const fRM = document.getElementById('clFilterRM')?.value||'';
+  const fMSII = document.getElementById('clFilterMSII')?.value||'';
   const tbody = document.getElementById('clTableBody');
   let rows = clientStatusData.filter(c => {
     const matchQ = !q || c.name.toLowerCase().includes(q);
     const st = c.latestLog ? c.latestLog.status : 'Not Met';
     const matchS = !fStatus || st===fStatus;
     const matchRM = !fRM || (c.latestLog?.rm_name === fRM);
-    return matchQ && matchS && matchRM;
+    const matchMSII = !fMSII || (fMSII==='msii' ? c.msii_command_council===true : c.msii_command_council!==true);
+    return matchQ && matchS && matchRM && matchMSII;
   });
-  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><div class="empty-icon"></div><p>No clients match your filters.</p></div></td></tr>'; return; }
+  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="10"><div class="empty-state"><div class="empty-icon"></div><p>No clients match your filters.</p></div></td></tr>'; return; }
   const priority = {'Successful':0,'Pending Decision':1,'Pending Board Approval':1,'Pending Onboarding':1,'Pending Injection':1,'Rejected':2,'Not Met':3};
   rows.sort((a,b) => { const ap=priority[a.latestLog?.status||'Not Met']??7; const bp=priority[b.latestLog?.status||'Not Met']??7; return ap!==bp?ap-bp:a.name.localeCompare(b.name); });
   tbody.innerHTML = rows.map((c,i) => {
@@ -1277,10 +1313,11 @@ function renderClientTable() {
       <td class="cl-col-product td-bold">${log?.product_fund||'&#8212;'}</td>
       <td class="cl-col-potential">${potential}</td>
       <td>${statusCell}</td>
+      <td style="max-width:200px;font-size:11px;color:var(--grey);text-align:left;white-space:normal;line-height:1.4;">${log?.remarks ? (log.remarks.length>100 ? log.remarks.substring(0,100)+'…' : log.remarks) : '&#8212;'}</td>
       <td>${actionCell}</td>
     </tr>
     <tr class="drawer-row" id="cl-drawer-${i}" style="display:none;">
-      <td colspan="9"><div class="drawer-inner" id="cl-drawer-inner-${i}"><div class="drawer-loading">Loading contacts...</div></div></td>
+      <td colspan="10"><div class="drawer-inner" id="cl-drawer-inner-${i}"><div class="drawer-loading">Loading contacts...</div></div></td>
     </tr>`;
   }).join('');
 }
@@ -1382,6 +1419,7 @@ function openEditModal(clientId, clientName) {
   document.getElementById('editLogInjAmount').value = log?.injected_amount != null ? log.injected_amount : '';
   document.getElementById('editLogInjDate').value = log?.injection_date || '';
   document.getElementById('editLogInjRemarks').value = log?.injection_remarks || '';
+  document.getElementById('editLogRemarks').value = log?.remarks || '';
   toggleEditInjectedFields();
   document.getElementById('editLogModal').classList.remove('hidden');
 }
@@ -1396,6 +1434,7 @@ async function confirmEditLog() {
   const injAmount = document.getElementById('editLogInjAmount').value;
   const injDate = document.getElementById('editLogInjDate').value;
   const injRemarks = document.getElementById('editLogInjRemarks').value.trim();
+  const remarks = document.getElementById('editLogRemarks').value.trim();
   const btn = document.getElementById('editLogConfirmBtn');
   document.getElementById('editLogBtnText').style.display = 'none';
   document.getElementById('editLogSpinner').style.display = 'block';
@@ -1409,6 +1448,7 @@ async function confirmEditLog() {
       if (latest) {
         const upd = {rm_name: rm, meeting_type: meetingType, product_fund: product || null,
           potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status,
+          remarks: remarks || null,
           updated_at: new Date().toISOString(),
           injected_amount: status === 'Successful' && injAmount !== '' ? parseFloat(injAmount) : null,
           injection_date: status === 'Successful' && injDate ? injDate : null,
@@ -1422,6 +1462,7 @@ async function confirmEditLog() {
       if (!ci.latestLog) ci.latestLog = {};
       Object.assign(ci.latestLog, {rm_name: rm, meeting_type: meetingType, product_fund: product || null,
         potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status,
+        remarks: remarks || null,
         injected_amount: status === 'Successful' && injAmount !== '' ? parseFloat(injAmount) : null,
         injection_date: status === 'Successful' && injDate ? injDate : null,
         injection_remarks: status === 'Successful' ? injRemarks || null : null});
@@ -1634,11 +1675,26 @@ function renderPipelineCards() {
   nonStaleClients.forEach(log => {
     if (counts.hasOwnProperty(log.status)) {
       counts[log.status]++;
-      clientsByStatus[log.status].push(log.client_name_manual || 'Unknown');
+      clientsByStatus[log.status].push({
+        name: log.client_name_manual || 'Unknown',
+        rm: log.rm_name || '',
+        potential: parseFloat(log.potential_size_rm_mn) || 0,
+        injected: parseFloat(log.injected_amount) || 0,
+        product: log.product_fund || ''
+      });
       if (log.status === 'Pending Injection') pendingInjectionTotal += parseFloat(log.potential_size_rm_mn) || 0;
     }
   });
-  stages.forEach(s => clientsByStatus[s.key].sort((a,b) => a.localeCompare(b)));
+  stages.forEach(s => clientsByStatus[s.key].sort((a,b) => a.name.localeCompare(b.name)));
+
+  // Stale clients data
+  const staleClientData = staleClients.map(log => ({
+    name: log.client_name_manual || 'Unknown',
+    rm: log.rm_name || '',
+    potential: parseFloat(log.potential_size_rm_mn) || 0,
+    injected: parseFloat(log.injected_amount) || 0,
+    product: log.product_fund || ''
+  })).sort((a,b) => a.name.localeCompare(b.name));
 
   // Active pipeline = non-stale, excluding Successful and Rejected
   const activePipelineCount = nonStaleClients.filter(l =>
@@ -1648,14 +1704,29 @@ function renderPipelineCards() {
   let html = `<div class="admin-headline"><strong>${activePipelineCount}</strong> clients in active pipeline</div>
   <div class="pipeline-grid">`;
   stages.forEach(s => {
-    const sub = s.key === 'Pending Injection' && pendingInjectionTotal > 0
-      ? `<div class="p-sub">RM ${pendingInjectionTotal.toFixed(1)} Mn</div>` : '';
-    html += `<div class="p-card ${s.cls}"><div class="p-num">${counts[s.key]}</div><div class="p-lbl">${s.lbl}</div>${sub}</div>`;
+    const sk = s.key.replace(/\s+/g, '_');
+    const isSuccessfulStage = s.key === 'Successful';
+    const totalAmt = isSuccessfulStage
+      ? clientsByStatus[s.key].reduce((sum, c) => sum + c.injected, 0)
+      : clientsByStatus[s.key].reduce((sum, c) => sum + c.potential, 0);
+    const amtLabel = isSuccessfulStage ? 'injected' : 'potential injection';
+    const potSub = totalAmt > 0 ? `<div class="p-inj">RM ${totalAmt.toFixed(1)} Mn ${amtLabel}</div>` : '';
+    html += `<div class="p-card ${s.cls} p-card-clickable" id="pcard-${sk}" onclick="togglePipelineCardDrawer('${sk}')"><div class="p-num">${counts[s.key]}</div><div class="p-lbl">${s.lbl}</div>${potSub}</div>`;
   });
-  // Stale card beside Rejected
-  html += `<div class="p-card pc-stale"><div class="p-num">${staleClients.length}</div><div class="p-lbl">Stale</div><div class="p-sub">&gt;60 / 90d threshold</div></div>`;
-  html += '</div><div class="waterfall-wrap"><div id="pipelineWaterfallChart"></div></div>';
+  // Stale card
+  const stalePot = staleClientData.reduce((sum, c) => sum + c.potential, 0);
+  const stalePotSub = stalePot > 0 ? `<div class="p-inj">RM ${stalePot.toFixed(1)} Mn potential injection</div>` : '';
+  html += `<div class="p-card pc-stale p-card-clickable" id="pcard-__stale__" onclick="togglePipelineCardDrawer('__stale__')"><div class="p-num">${staleClients.length}</div><div class="p-lbl">Stale</div><div class="p-sub">&gt;60 / 90d threshold</div>${stalePotSub}</div>`;
+  html += '</div>';
+  html += `<div class="p-drawer" id="pipelineCardDrawer"><div class="p-drawer-title"><span id="pipelineDrawerTitle"></span><span class="p-drawer-close" onclick="closePipelineCardDrawer()">&#x2715;</span></div><ol class="p-client-list" id="pipelineClientList"></ol></div>`;
+  html += '<div class="waterfall-wrap"><div id="pipelineWaterfallChart"></div></div>';
   document.getElementById('pipelineContainer').innerHTML = html;
+
+  // Store client data for card drawer
+  const cont = document.getElementById('pipelineContainer');
+  cont._pClientsByStatus = clientsByStatus;
+  cont._pStaleClientData = staleClientData;
+
   renderWaterfallHTML(stages, counts, clientsByStatus, activePipelineCount);
 }
 
@@ -1706,9 +1777,93 @@ function toggleWfDrawer(sk) {
     titleEl.textContent = stage ? stage.lbl : sk.replace(/_/g, ' ');
     const names = ((container._clientsByStatus || {})[stage?.key] || []);
     listEl.innerHTML = names.length
-      ? names.map(n => `<li>${n}</li>`).join('')
+      ? names.map(n => `<li>${typeof n === 'object' ? n.name : n}</li>`).join('')
       : '<li style="color:var(--grey);font-size:12px;list-style:none;padding:2px 0;">No clients at this stage</li>';
   }
+}
+
+function togglePipelineCardDrawer(sk) {
+  const drawer = document.getElementById('pipelineCardDrawer');
+  const titleEl = document.getElementById('pipelineDrawerTitle');
+  const listEl = document.getElementById('pipelineClientList');
+  if (!drawer) return;
+  const isActive = drawer.classList.contains('open') && drawer.dataset.sk === sk;
+  document.querySelectorAll('.p-card-clickable').forEach(c => c.classList.remove('p-card-active'));
+  if (isActive) {
+    drawer.classList.remove('open');
+    drawer.dataset.sk = '';
+    const bd = drawer.querySelector('.p-product-breakdown'); if (bd) bd.innerHTML = '';
+  } else {
+    drawer.dataset.sk = sk;
+    drawer.classList.add('open');
+    document.getElementById(`pcard-${sk}`)?.classList.add('p-card-active');
+    const cont = document.getElementById('pipelineContainer');
+    const cbs = cont?._pClientsByStatus || {};
+    const staleData = cont?._pStaleClientData || [];
+    let clients, title;
+    if (sk === '__stale__') {
+      clients = staleData;
+      title = 'Stale Clients';
+    } else {
+      const matchKey = Object.keys(cbs).find(k => k.replace(/\s+/g, '_') === sk) || sk.replace(/_/g, ' ');
+      clients = cbs[matchKey] || [];
+      title = matchKey;
+    }
+    titleEl.textContent = title;
+    const isSuccessfulCard = sk === 'Successful';
+    const amtKey = isSuccessfulCard ? 'injected' : 'potential';
+    const amtLabel = isSuccessfulCard ? 'Injected' : 'Potential Injection';
+
+    // Build product breakdown
+    const byProduct = {};
+    clients.forEach(c => {
+      const p = c.product || 'Other';
+      if (!byProduct[p]) byProduct[p] = {count: 0, amount: 0};
+      byProduct[p].count++;
+      byProduct[p].amount += c[amtKey] || 0;
+    });
+    const productEntries = Object.entries(byProduct).sort((a,b) => b[1].amount - a[1].amount);
+    const productBreakdown = productEntries.length ? `
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
+        <div style="font-size:10px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">${amtLabel} by Product</div>
+        <table style="width:100%;border-collapse:collapse;font-size:11px;">
+          ${productEntries.map(([prod, d]) => {
+            const isLMS = prod === 'LMS';
+            const bg = isLMS ? 'background:#FFF8E6;' : '';
+            const fw = isLMS ? 'font-weight:700;' : '';
+            const lmsTag = isLMS ? ' <span style="background:var(--yellow);color:var(--navy);font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;">LMS</span>' : '';
+            return `<tr style="${bg}">
+              <td style="padding:4px 6px;${fw}color:var(--navy);">${prod}${lmsTag}</td>
+              <td style="padding:4px 6px;text-align:right;color:var(--grey);">${d.count} client${d.count!==1?'s':''}</td>
+              <td style="padding:4px 6px;text-align:right;${fw}color:var(--navy);">${d.amount > 0 ? 'RM ' + d.amount.toFixed(1) + ' Mn' : '—'}</td>
+            </tr>`;
+          }).join('')}
+        </table>
+      </div>` : '';
+
+    listEl.innerHTML = clients.length
+      ? clients.map(c => {
+          const amt = c[amtKey] || 0;
+          const potText = amt > 0 ? `RM ${amt.toFixed(1)} Mn` : '\u2014';
+          const rmText = c.rm ? ` <span style="color:var(--grey);font-size:10px;font-weight:400;">(${c.rm})</span>` : '';
+          const isLMSClient = c.product === 'LMS';
+          const lmsTag = isLMSClient ? ' <span style="background:var(--yellow);color:var(--navy);font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;vertical-align:middle;">LMS</span>' : '';
+          return `<li style="${isLMSClient ? 'background:#FFF8E6;border-radius:4px;padding:2px 4px;margin:-2px -4px;' : ''}"><span>${c.name}${rmText}${lmsTag}</span><span class="p-client-pot">${potText}</span></li>`;
+        }).join('')
+      : '<li style="color:var(--grey);font-size:12px;list-style:none;padding:2px 0;">No clients at this stage</li>';
+    // Append product breakdown after client list
+    const drawerEl = document.getElementById('pipelineCardDrawer');
+    let breakdownEl = drawerEl.querySelector('.p-product-breakdown');
+    if (!breakdownEl) { breakdownEl = document.createElement('div'); breakdownEl.className = 'p-product-breakdown'; drawerEl.appendChild(breakdownEl); }
+    breakdownEl.innerHTML = productBreakdown;
+  }
+}
+
+function closePipelineCardDrawer() {
+  const drawer = document.getElementById('pipelineCardDrawer');
+  if (drawer) { drawer.classList.remove('open'); drawer.dataset.sk = '';
+    const bd = drawer.querySelector('.p-product-breakdown'); if (bd) bd.innerHTML = ''; }
+  document.querySelectorAll('.p-card-clickable').forEach(c => c.classList.remove('p-card-active'));
 }
 
 // ─── ALL RMs OVERVIEW TABLE ───────────────────────────────────────
@@ -1857,14 +2012,20 @@ function renderRMDrilldown(selectedRM) {
     let tbody = '';
     tableRows.forEach(log => {
       const cls = getStatusBadgeCls(log.status || 'Not Met');
-      const dateSource = log.updated_at || log.meeting_datetime;
-      const dateDt = dateSource ? new Date(dateSource).toLocaleDateString('en-MY', {day:'2-digit', month:'short', year:'2-digit'}) : '&#8212;';
-      const daysSince = dateSource ? Math.floor((Date.now() - new Date(dateSource)) / 86400000) : null;
+      const clientKey = (log.client_name_manual || '').toUpperCase().trim();
+      // First Meeting date
+      const firstMeetingDate = firstMeetingDateMap[clientKey] || adminFirstDatePerClient[clientKey];
+      const firstMeetingDt = firstMeetingDate ? new Date(firstMeetingDate).toLocaleDateString('en-MY', {day:'2-digit', month:'short', year:'2-digit'}) : '&#8212;';
+      // Last Activity = updated_at (when RM changed status) or meeting_datetime
+      const lastActivityDate = log.updated_at || log.meeting_datetime;
+      const lastActivityDt = lastActivityDate ? new Date(lastActivityDate).toLocaleDateString('en-MY', {day:'2-digit', month:'short', year:'2-digit'}) : '&#8212;';
+      const daysSince = lastActivityDate ? Math.floor((Date.now() - new Date(lastActivityDate)) / 86400000) : null;
       const threshold = getAgingThreshold(log.status);
       tbody += `<tr style="background:#FFF5F5;">
         <td class="td-rm" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${log.client_name_manual||'&#8212;'}</td>
         <td class="td-grey">${log.rm_name||'&#8212;'}</td>
-        <td class="td-grey">${dateDt}</td>
+        <td class="td-grey">${firstMeetingDt}</td>
+        <td class="td-grey">${lastActivityDt}</td>
         <td class="td-aged-red" style="font-weight:700;">${daysSince !== null ? daysSince + 'd' : '&#8212;'}</td>
         <td><span class="status-pill ${cls}">${log.status||'Not Met'}</span></td>
         <td class="td-grey" style="font-size:11px;">${threshold ? '&gt;' + threshold + 'd limit' : '&#8212;'}</td>
@@ -1874,7 +2035,7 @@ function renderRMDrilldown(selectedRM) {
     });
     return `<div class="admin-table-wrap" style="max-height:440px;overflow-y:auto;">
       <table class="admin-table"><thead><tr style="background:#9B1C1C;position:sticky;top:0;z-index:1;">
-        <th>Client Name</th><th>RM</th><th>Last Activity</th><th>Days Elapsed</th><th>Status</th><th>Threshold</th><th>Product</th><th>Potential (RM Mn)</th>
+        <th>Client Name</th><th>RM</th><th>First Meeting</th><th>Last Activity</th><th>Aging</th><th>Status</th><th>Threshold</th><th>Product</th><th>Potential (RM Mn)</th>
       </tr></thead><tbody>${tbody}</tbody></table></div>`;
   }
 
@@ -2011,7 +2172,21 @@ function renderChairmanSection() {
     });
     return {n:referred.length, c:converted.length, rate:referred.length?((converted.length/referred.length)*100).toFixed(1):'0.0', pot, inj, bySegment};
   }
-  const cc = funnel('CC'); const cbd = funnel('CBD');
+  function funnelMSII() {
+    const referred = clients.filter(l => l.msii_command_council === true);
+    const converted = referred.filter(l => l.status === 'Successful');
+    const pot = referred.reduce((s,l) => s+(parseFloat(l.potential_size_rm_mn)||0),0);
+    const inj = referred.reduce((s,l) => s+(parseFloat(l.injected_amount)||0),0);
+    const bySegment = {};
+    referred.forEach(l => {
+      const seg = l.segment || 'Unknown';
+      if (!bySegment[seg]) bySegment[seg] = {n:0, c:0};
+      bySegment[seg].n++;
+      if (l.status==='Successful') bySegment[seg].c++;
+    });
+    return {n:referred.length, c:converted.length, rate:referred.length?((converted.length/referred.length)*100).toFixed(1):'0.0', pot, inj, bySegment};
+  }
+  const cc = funnel('CC'); const cbd = funnel('CBD'); const msii = funnelMSII();
   const combined = {
     n: cc.n+cbd.n, c: cc.c+cbd.c,
     rate: (cc.n+cbd.n) ? (((cc.c+cbd.c)/(cc.n+cbd.n))*100).toFixed(1) : '0.0',
@@ -2048,12 +2223,17 @@ function renderChairmanSection() {
   let html = `<div class="chairman-grid">
     ${card('CC Referrals', cc, 'cc')}
     ${card('CBD Referrals', cbd, 'cbd')}
+    ${card('MSII Command Council', msii, 'msii')}
   </div>
   <div class="ch-combined">
     <strong>Combined CC + CBD:</strong>&nbsp;&nbsp;
     ${combined.n} appointments made &rarr; <strong style="color:#9EE8B5;">${combined.c} converted</strong> (${combined.rate}%)
     &nbsp;&nbsp;|&nbsp;&nbsp; Potential: RM ${combined.pot.toFixed(1)} Mn
     &nbsp;&nbsp;|&nbsp;&nbsp; Injected: RM ${combined.inj.toFixed(1)} Mn
+    &nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:var(--yellow);">| MSII CC:</strong>&nbsp;&nbsp;
+    ${msii.n} appointments &rarr; <strong style="color:#9EE8B5;">${msii.c} converted</strong> (${msii.rate}%)
+    &nbsp;&nbsp;|&nbsp;&nbsp; Potential: RM ${msii.pot.toFixed(1)} Mn
+    &nbsp;&nbsp;|&nbsp;&nbsp; Injected: RM ${msii.inj.toFixed(1)} Mn
   </div>`;
   document.getElementById('chairmanContainer').innerHTML = html;
 }
@@ -2072,10 +2252,8 @@ async function loadUpcomingMeetings() {
       .select('*').order('meeting_date', {ascending:true});
     if (error) throw error;
     upcomingMeetingsData = data || [];
-    const today = new Date(); today.setHours(0,0,0,0);
-    const futureCount = upcomingMeetingsData.filter(m => new Date(m.meeting_date + 'T00:00:00') >= today).length;
     const badge = document.getElementById('tabUpcomingCount');
-    if (badge) badge.textContent = futureCount || '0';
+    if (badge) badge.textContent = upcomingMeetingsData.length || '0';
     renderUpcomingTable();
   } catch(err) {
     showToast('Error loading upcoming meetings: ' + err.message, 'error');
@@ -2251,10 +2429,8 @@ async function deleteUpcomingMeeting(id, clientName) {
       if (error) throw error;
     }
     upcomingMeetingsData = upcomingMeetingsData.filter(m => m.id !== id);
-    const today = new Date(); today.setHours(0,0,0,0);
-    const futureCount = upcomingMeetingsData.filter(m => new Date(m.meeting_date + 'T00:00:00') >= today).length;
     const badge = document.getElementById('tabUpcomingCount');
-    if (badge) badge.textContent = futureCount || '0';
+    if (badge) badge.textContent = upcomingMeetingsData.length || '0';
     renderUpcomingTable();
     showToast(`Removed upcoming meeting for ${clientName}`, 'success');
   } catch(err) {
@@ -2269,8 +2445,6 @@ function renderUpcomingByRM() {
   const currentYear = new Date().getFullYear();
   const today = new Date(); today.setHours(0,0,0,0);
 
-  const future = upcomingMeetingsData.filter(m => new Date(m.meeting_date + 'T00:00:00') >= today);
-
   if (!upcomingMeetingsData.length) {
     container.innerHTML = '<div class="admin-note">No upcoming meetings logged yet. Use the <strong>Upcoming Meetings</strong> tab to schedule future meetings.</div>';
     return;
@@ -2278,7 +2452,7 @@ function renderUpcomingByRM() {
 
   const counts = {};
   RM_LIST.forEach(rm => counts[rm] = {total:0, months:Array(12).fill(0)});
-  future.forEach(m => {
+  upcomingMeetingsData.forEach(m => {
     const rm = m.rm_name;
     if (!counts[rm]) counts[rm] = {total:0, months:Array(12).fill(0)};
     const d = new Date(m.meeting_date + 'T00:00:00');
@@ -2287,7 +2461,7 @@ function renderUpcomingByRM() {
   });
 
   let html = `<div style="font-size:12px;color:var(--grey);background:#f8f9fa;border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:16px;">
-    <strong style="color:var(--navy);">Note:</strong> Shows future meetings logged in the <strong>Upcoming Meetings</strong> tab, counted by RM per month. Past-due meetings are excluded.
+    <strong style="color:var(--navy);">Note:</strong> Shows all scheduled meetings (including past-dated) logged in the <strong>Upcoming Meetings</strong> tab, counted by RM per month. Use this to compare scheduled vs actual meetings.
   </div>`;
   html += `<div class="admin-table-wrap"><table class="admin-table"><thead>
     <tr>
@@ -2311,12 +2485,13 @@ function renderUpcomingForDrilldown(selectedRM) {
   const container = document.getElementById('upcomingDrilldownContainer');
   if (!container) return;
   const today = new Date(); today.setHours(0,0,0,0);
-  let meetings = upcomingMeetingsData.filter(m => new Date(m.meeting_date + 'T00:00:00') >= today);
-  if (selectedRM !== 'all') meetings = meetings.filter(m => m.rm_name === selectedRM);
+  let meetings = selectedRM !== 'all'
+    ? upcomingMeetingsData.filter(m => m.rm_name === selectedRM)
+    : [...upcomingMeetingsData];
   meetings.sort((a,b) => a.meeting_date.localeCompare(b.meeting_date));
 
   if (!meetings.length) {
-    container.innerHTML = '<p style="color:var(--grey);font-size:13px;padding:4px 0;">No upcoming meetings scheduled' + (selectedRM !== 'all' ? ' for ' + selectedRM : '') + '.</p>';
+    container.innerHTML = '<p style="color:var(--grey);font-size:13px;padding:4px 0;">No meetings scheduled' + (selectedRM !== 'all' ? ' for ' + selectedRM : '') + '.</p>';
     return;
   }
   let tbody = '';
