@@ -384,6 +384,49 @@
       .upcoming-form-grid { grid-template-columns: 1fr; }
       .upcoming-form-grid .full { grid-column: 1; }
     }
+    /* ── Calendar View ─────────────────────────────────────── */
+    .cal-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+    .cal-nav-btn { padding:7px 16px; background:var(--grey-lt); border:1.5px solid var(--border); border-radius:8px; font-family:'Poppins',sans-serif; font-size:13px; cursor:pointer; transition:all 0.2s; }
+    .cal-nav-btn:hover { border-color:var(--yellow); color:var(--navy); }
+    .cal-month-label { font-size:17px; font-weight:700; color:var(--navy); }
+    .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; }
+    .cal-day-hdr { text-align:center; font-size:11px; font-weight:700; color:var(--grey); padding:6px 2px; text-transform:uppercase; }
+    .cal-cell { border:1.5px solid var(--border); border-radius:8px; padding:6px 8px; min-height:68px; cursor:pointer; transition:border-color 0.15s,background 0.15s; }
+    .cal-cell:hover { border-color:var(--yellow); background:#FFFBEE; }
+    .cal-cell.cal-today { border-color:var(--navy); background:#EEF4FF; }
+    .cal-cell.cal-active { border-color:var(--yellow); background:#FFF8E6; box-shadow:0 0 0 2px rgba(248,194,0,0.35); }
+    .cal-cell.cal-empty { background:var(--grey-lt); cursor:default; border-color:transparent; min-height:68px; }
+    .cal-date-num { font-size:13px; font-weight:600; color:var(--navy); }
+    .cal-cell.cal-empty .cal-date-num { color:var(--border); }
+    .cal-cell.cal-today .cal-date-num { background:var(--navy); color:var(--white); width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; }
+    .cal-badge { font-size:10px; font-weight:700; padding:1px 6px; border-radius:10px; display:inline-block; margin-top:4px; }
+    .cal-badge-actual { background:#CCE5FF; color:var(--navy); }
+    .cal-badge-upcoming { background:#FFF3CD; color:#856404; }
+    .cal-drawer { margin-top:14px; background:#FAFCFF; border:1.5px solid var(--border); border-radius:10px; padding:18px 20px; display:none; }
+    .cal-drawer.open { display:block; }
+    .cal-drawer-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .cal-drawer-title { font-size:14px; font-weight:700; color:var(--navy); }
+    .cal-drawer-close { cursor:pointer; color:var(--grey); font-size:16px; line-height:1; padding:2px; }
+    .cal-drawer-close:hover { color:var(--navy); }
+    .cal-meeting-item { display:flex; align-items:flex-start; gap:10px; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; background:var(--white); }
+    .cal-meeting-item:last-child { margin-bottom:0; }
+    .cal-meeting-item.item-upcoming { border-color:var(--yellow); background:#FFFBEE; }
+    .cal-meeting-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; margin-top:3px; }
+    .cal-meeting-dot-actual { background:var(--navy); }
+    .cal-meeting-dot-upcoming { background:var(--yellow-dk); }
+    .cal-meeting-info .cal-item-client { font-size:13px; font-weight:600; color:var(--navy); }
+    .cal-meeting-info .cal-item-rm { font-size:11px; color:var(--grey); margin-top:2px; }
+    .cal-item-type { font-size:10px; font-weight:600; padding:1px 7px; border-radius:20px; display:inline-block; margin-top:3px; }
+    .cal-type-actual { background:#D4EDDA; color:#1A6B3A; }
+    .cal-type-upcoming { background:#FFF3CD; color:#856404; }
+    /* ── Ownership Change ──────────────────────────────────── */
+    .btn-chg-owner { padding:4px 10px; background:transparent; color:var(--grey); border:1.5px solid var(--border); border-radius:6px; font-family:'Poppins',sans-serif; font-size:10px; cursor:pointer; transition:all 0.2s; margin-top:3px; display:inline-block; }
+    .btn-chg-owner:hover { border-color:var(--navy); color:var(--navy); }
+    .all-rms-chips { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+    .rm-chip { background:#E3F0FF; color:var(--navy); font-size:10px; font-weight:600; padding:2px 8px; border-radius:20px; }
+    .rm-chip.owner-chip { background:var(--navy); color:var(--white); }
+    .owner-modal-inner { background:var(--white); border-radius:16px; padding:32px; max-width:420px; width:90%; box-shadow:0 16px 48px rgba(0,0,0,0.25); }
+    .owner-modal-inner h2 { font-size:18px; font-weight:700; color:var(--navy); margin-bottom:6px; }
   </style>
 </head>
 <body>
@@ -758,7 +801,7 @@
         <table class="cl-table">
           <thead>
             <tr>
-              <th>#</th><th>Client</th><th class="col-msii">MSII</th><th>Last RM</th>
+              <th>#</th><th>Client</th><th class="col-msii">MSII</th><th>Owner / RMs</th>
               <th class="cl-col-product">Product</th><th class="cl-col-potential">Potential (RM Mn)</th><th>Status</th><th>Remarks</th><th>Action</th>
             </tr>
           </thead>
@@ -904,6 +947,7 @@
         <button class="admin-subtab-btn active" id="asubtab-pipeline" onclick="switchAdminSubtab('pipeline')">Pipeline Summary</button>
         <button class="admin-subtab-btn" id="asubtab-overview" onclick="switchAdminSubtab('overview')">RM Overview</button>
         <button class="admin-subtab-btn" id="asubtab-drilldown" onclick="switchAdminSubtab('drilldown')">RM Pipeline</button>
+        <button class="admin-subtab-btn" id="asubtab-calendar" onclick="switchAdminSubtab('calendar')">Calendar View</button>
       </div>
       <div class="admin-subpanel active" id="subpanel-pipeline">
         <div class="admin-sub">
@@ -949,9 +993,40 @@
           <div id="upcomingDrilldownContainer"><div class="loading-row">Loading...</div></div>
         </div>
       </div>
+      <div class="admin-subpanel" id="subpanel-calendar">
+        <div class="admin-sub">
+          <div class="admin-sub-title">Monthly Calendar &mdash; Appointments Overview</div>
+          <div id="calendarContainer"><div class="loading-row">Loading...</div></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- Change Owner Modal -->
+<div class="modal-overlay hidden" id="changeOwnerModal">
+  <div class="owner-modal-inner">
+    <h2>Change Client Owner</h2>
+    <div class="company-tag" id="ownerModalClientTag" style="display:inline-block;background:#FFF8E6;border:1px solid var(--yellow);border-radius:6px;padding:4px 12px;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:16px;"></div>
+    <div class="field" style="margin-bottom:16px;">
+      <label style="font-size:13px;font-weight:600;color:var(--navy);display:block;margin-bottom:6px;">New Owner RM</label>
+      <select id="ownerModalRM" style="width:100%;padding:11px 36px 11px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'Poppins',sans-serif;font-size:14px;color:var(--black);background:var(--white) url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E&quot;) no-repeat right 12px center;appearance:none;">
+        <option value="">&#8212; Select RM &#8212;</option>
+        <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
+        <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+      </select>
+    </div>
+    <input type="hidden" id="ownerModalClientName" />
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button onclick="confirmChangeOwner()" style="flex:1;padding:13px;background:var(--navy);color:var(--white);font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+        <span id="ownerModalBtnText">Save Owner</span>
+        <div class="spinner" id="ownerModalSpinner" style="display:none;border-top-color:var(--white);"></div>
+      </button>
+      <button onclick="closeChangeOwnerModal()" style="padding:13px 20px;background:var(--grey-lt);color:var(--grey);font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;border:none;border-radius:10px;cursor:pointer;">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ─── CONFIG & SUPABASE ───────────────────────────────────────────
 let _sb = null;
@@ -1218,11 +1293,16 @@ function switchTab(tab) {
   if (tab === 'upcoming') loadUpcomingMeetings();
   if (tab === 'admin')    checkAdminAccess();
 }
+let calCurrentYear = new Date().getFullYear();
+let calCurrentMonth = new Date().getMonth();
 function switchAdminSubtab(name) {
   document.querySelectorAll('.admin-subtab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.admin-subpanel').forEach(p => p.classList.remove('active'));
   document.getElementById('asubtab-'+name).classList.add('active');
   document.getElementById('subpanel-'+name).classList.add('active');
+  if (name === 'calendar' && (adminAllLogs.length > 0 || upcomingMeetingsData.length > 0)) {
+    renderAdminCalendar(calCurrentYear, calCurrentMonth);
+  }
 }
 
 // ─── CLIENT STATUS ───────────────────────────────────────────────
@@ -1236,6 +1316,7 @@ async function loadClientStatuses() {
       id:'demo-'+i, name:c.client_name, gb_cbd:c.gb_cbd, segment:c.segment,
       msii_command_council:c.msii_command_council||false,
       latestLog: i<20 ? {rm_name:['Azmi','Iskandar','Nasya','Lei Khim','Izzati','Filzah','Colin'][i%7], product_fund:['LMS','Private Mandate','Unit Trust','Sukuk'][i%4], potential_size_rm_mn:(Math.random()*200).toFixed(1), status:statuses[i%statuses.length], meeting_datetime:new Date(Date.now()-i*86400000*3).toISOString(), injected_amount:null, remarks:'Demo remarks for client '+i} : null,
+      allRMs: i<20 ? [['Azmi','Iskandar','Nasya','Lei Khim','Izzati','Filzah','Colin'][i%7]] : [],
     }));
     updateClientStats(); renderClientTable(); return;
   }
@@ -1245,12 +1326,19 @@ async function loadClientStatuses() {
     const {data:logs, error:lErr} = await _sb.from('meeting_logs').select('client_name_manual, rm_name, product_fund, potential_size_rm_mn, status, meeting_datetime, updated_at, injected_amount, injection_date, remarks').eq('no_meeting_today', false).order('meeting_datetime', {ascending:false});
     if (lErr) throw lErr;
     const logMap = {};
-    logs.forEach(log => { const key=(log.client_name_manual||'').toUpperCase(); if (key && !logMap[key]) logMap[key]=log; });
-    clientStatusData = clients.map(c => ({id:c.id, name:c.client_name, gb_cbd:c.gb_cbd, segment:c.segment, msii_command_council:c.msii_command_council, latestLog:logMap[c.client_name.toUpperCase()]||null}));
+    const allRMsMap = {};
+    logs.forEach(log => {
+      const key=(log.client_name_manual||'').toUpperCase();
+      if (!key) return;
+      if (!logMap[key]) logMap[key]=log;
+      if (!allRMsMap[key]) allRMsMap[key]=new Set();
+      if (log.rm_name) allRMsMap[key].add(log.rm_name);
+    });
+    clientStatusData = clients.map(c => ({id:c.id, name:c.client_name, gb_cbd:c.gb_cbd, segment:c.segment, msii_command_council:c.msii_command_council, latestLog:logMap[c.client_name.toUpperCase()]||null, allRMs:[...(allRMsMap[c.client_name.toUpperCase()]||[])]}));
     const knownNames = new Set(clients.map(c => c.client_name.toUpperCase()));
     logs.forEach(log => {
       const key=(log.client_name_manual||'').toUpperCase();
-      if (key && !knownNames.has(key)) { knownNames.add(key); clientStatusData.push({id:null, name:log.client_name_manual, gb_cbd:'', segment:'', msii_command_council:false, latestLog:log}); }
+      if (key && !knownNames.has(key)) { knownNames.add(key); clientStatusData.push({id:null, name:log.client_name_manual, gb_cbd:'', segment:'', msii_command_council:false, latestLog:log, allRMs:[...(allRMsMap[key]||[])]}); }
     });
     updateClientStats(); renderClientTable();
     document.getElementById('tabClientCount').textContent = clientStatusData.length;
@@ -1309,7 +1397,11 @@ function renderClientTable() {
         </button>
       </td>
       <td class="col-msii">${typeBadge}</td>
-      <td>${log?.rm_name||'&#8212;'}</td>
+      <td>
+        ${log?.rm_name ? `<div style="font-weight:600;color:var(--navy);font-size:12px;">${log.rm_name}</div>` : '<span style="color:var(--grey);">&#8212;</span>'}
+        ${(c.allRMs && c.allRMs.length > 1) ? `<div class="all-rms-chips">${c.allRMs.map(r => `<span class="rm-chip${r===log?.rm_name?' owner-chip':''}">${r}</span>`).join('')}</div>` : ''}
+        ${log?.rm_name ? `<button class="btn-chg-owner" onclick="openChangeOwnerModal('${escQ(c.name)}','${escQ(log?.rm_name||'')}')">Change Owner</button>` : ''}
+      </td>
       <td class="cl-col-product td-bold">${log?.product_fund||'&#8212;'}</td>
       <td class="cl-col-potential">${potential}</td>
       <td>${statusCell}</td>
@@ -1617,8 +1709,8 @@ async function loadAdminDashboard() {
 }
 
 function setAdminLoading() {
-  ['pipelineContainer','rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer','upcomingByRMContainer','upcomingDrilldownContainer'].forEach(id => {
-    document.getElementById(id).innerHTML = '<div class="loading-row">Loading...</div>';
+  ['pipelineContainer','rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer','upcomingByRMContainer','upcomingDrilldownContainer','calendarContainer'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.innerHTML = '<div class="loading-row">Loading...</div>';
   });
 }
 function renderAllAdminSections() {
@@ -1629,11 +1721,13 @@ function renderAllAdminSections() {
   renderChairmanSection();
   renderUpcomingByRM();
   renderUpcomingForDrilldown(document.getElementById('rmDrilldownSelect')?.value || 'all');
+  const _calNow = new Date();
+  renderAdminCalendar(_calNow.getFullYear(), _calNow.getMonth());
 }
 function renderAdminDemo() {
   document.getElementById('pipelineContainer').innerHTML = '<div class="admin-note">Connect to Supabase to load live dashboard data. Showing placeholder in demo mode.</div>';
-  ['rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer','upcomingByRMContainer','upcomingDrilldownContainer'].forEach(id => {
-    document.getElementById(id).innerHTML = '<div class="admin-note">Live data unavailable in demo mode.</div>';
+  ['rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer','upcomingByRMContainer','upcomingDrilldownContainer','calendarContainer'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.innerHTML = '<div class="admin-note">Live data unavailable in demo mode.</div>';
   });
 }
 
@@ -2525,6 +2619,239 @@ function renderUpcomingForDrilldown(selectedRM) {
     <table class="admin-table"><thead><tr>
       <th>Client Name</th><th>RM</th><th>Meeting Date</th><th>Time</th><th>Purpose</th><th>Status</th>
     </tr></thead><tbody>${tbody}</tbody></table></div>`;
+}
+
+// ─── ADMIN CALENDAR ────────────────────────────────────────────────
+let calActiveDay = null;
+
+function renderAdminCalendar(year, month) {
+  calCurrentYear = year;
+  calCurrentMonth = month;
+  const container = document.getElementById('calendarContainer');
+  if (!container) return;
+
+  const MONTH_NAMES_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const DAY_NAMES = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+  // Build day-indexed maps for actual meetings
+  const actualByDay = {};
+  adminAllLogs.forEach(log => {
+    if (!log.meeting_datetime) return;
+    const d = new Date(log.meeting_datetime);
+    if (d.getFullYear() !== year || d.getMonth() !== month) return;
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    if (!actualByDay[key]) actualByDay[key] = [];
+    actualByDay[key].push({client: log.client_name_manual||'Unknown', rm: log.rm_name||'—', type:'actual', time: log.meeting_datetime});
+  });
+
+  // Build day-indexed maps for upcoming meetings
+  const upcomingByDay = {};
+  upcomingMeetingsData.forEach(m => {
+    if (!m.meeting_date) return;
+    const d = new Date(m.meeting_date + 'T00:00:00');
+    if (d.getFullYear() !== year || d.getMonth() !== month) return;
+    const key = m.meeting_date.slice(0,10);
+    if (!upcomingByDay[key]) upcomingByDay[key] = [];
+    upcomingByDay[key].push({client: m.client_name||'Unknown', rm: m.rm_name||'—', type:'upcoming', purpose: m.purpose||''});
+  });
+
+  const firstDayOfMonth = new Date(year, month, 1).getDay(); // 0=Sun
+  const startOffset = (firstDayOfMonth === 0) ? 6 : firstDayOfMonth - 1;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const todayStr = new Date().toISOString().slice(0,10);
+
+  let html = `
+    <div class="cal-nav">
+      <button class="cal-nav-btn" onclick="calNavMonth(-1)">&#8592; Prev</button>
+      <span class="cal-month-label">${MONTH_NAMES_FULL[month]} ${year}</span>
+      <button class="cal-nav-btn" onclick="calNavMonth(1)">Next &#8594;</button>
+    </div>
+    <div class="cal-grid">
+      ${DAY_NAMES.map(d => `<div class="cal-day-hdr">${d}</div>`).join('')}`;
+
+  for (let i = 0; i < startOffset; i++) {
+    html += `<div class="cal-cell cal-empty"><div class="cal-date-num"></div></div>`;
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const actualItems = actualByDay[dateStr] || [];
+    const upcomingItems = upcomingByDay[dateStr] || [];
+    const isToday = dateStr === todayStr;
+    const isActive = calActiveDay === dateStr;
+    let cls = 'cal-cell';
+    if (isToday) cls += ' cal-today';
+    if (isActive) cls += ' cal-active';
+
+    let badges = '';
+    if (actualItems.length) badges += `<span class="cal-badge cal-badge-actual">${actualItems.length} met</span> `;
+    if (upcomingItems.length) badges += `<span class="cal-badge cal-badge-upcoming">${upcomingItems.length} upcoming</span>`;
+
+    const total = actualItems.length + upcomingItems.length;
+    html += `<div class="${cls}" onclick="calDayClick('${dateStr}')">
+      <div class="cal-date-num">${day}</div>
+      ${total > 0 ? `<div style="margin-top:4px;">${badges}</div>` : ''}
+    </div>`;
+  }
+
+  const totalCells = startOffset + daysInMonth;
+  const remainder = totalCells % 7;
+  if (remainder > 0) {
+    for (let i = 0; i < 7 - remainder; i++) {
+      html += `<div class="cal-cell cal-empty"><div class="cal-date-num"></div></div>`;
+    }
+  }
+
+  html += `</div>`;
+  html += `<div class="cal-drawer" id="calDrawer">
+    <div class="cal-drawer-hdr">
+      <div class="cal-drawer-title" id="calDrawerTitle">Appointments</div>
+      <span class="cal-drawer-close" onclick="closeCalDrawer()">&#x2715;</span>
+    </div>
+    <div id="calDrawerBody"></div>
+  </div>`;
+
+  html += `<div style="display:flex;gap:16px;margin-top:12px;font-size:12px;color:var(--grey);flex-wrap:wrap;">
+    <span><span class="cal-badge cal-badge-actual">n</span> Logged meetings</span>
+    <span><span class="cal-badge cal-badge-upcoming">n</span> Scheduled upcoming meetings</span>
+  </div>`;
+
+  container.innerHTML = html;
+  container._actualByDay = actualByDay;
+  container._upcomingByDay = upcomingByDay;
+
+  if (calActiveDay) {
+    const ay = parseInt(calActiveDay.slice(0,4)), am = parseInt(calActiveDay.slice(5,7))-1;
+    if (ay === year && am === month) _openCalDrawer(calActiveDay);
+  }
+}
+
+function calNavMonth(delta) {
+  calActiveDay = null;
+  let m = calCurrentMonth + delta;
+  let y = calCurrentYear;
+  if (m < 0)  { m = 11; y--; }
+  if (m > 11) { m = 0;  y++; }
+  renderAdminCalendar(y, m);
+}
+
+function calDayClick(dateStr) {
+  if (calActiveDay === dateStr) {
+    calActiveDay = null;
+    closeCalDrawer();
+    document.querySelectorAll('#calendarContainer .cal-cell.cal-active').forEach(el => el.classList.remove('cal-active'));
+    return;
+  }
+  calActiveDay = dateStr;
+  document.querySelectorAll('#calendarContainer .cal-cell.cal-active').forEach(el => el.classList.remove('cal-active'));
+  const dayNum = String(parseInt(dateStr.slice(8)));
+  document.querySelectorAll('#calendarContainer .cal-cell:not(.cal-empty)').forEach(cell => {
+    const num = cell.querySelector('.cal-date-num');
+    if (num && num.textContent.trim() === dayNum) cell.classList.add('cal-active');
+  });
+  _openCalDrawer(dateStr);
+}
+
+function _openCalDrawer(dateStr) {
+  const drawer = document.getElementById('calDrawer');
+  const titleEl = document.getElementById('calDrawerTitle');
+  const bodyEl  = document.getElementById('calDrawerBody');
+  if (!drawer) return;
+
+  const container = document.getElementById('calendarContainer');
+  const actualItems   = (container._actualByDay   || {})[dateStr] || [];
+  const upcomingItems = (container._upcomingByDay || {})[dateStr] || [];
+
+  const MONTH_NAMES_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const d = new Date(dateStr + 'T00:00:00');
+  const total = actualItems.length + upcomingItems.length;
+  titleEl.textContent = `${d.getDate()} ${MONTH_NAMES_FULL[d.getMonth()]} ${d.getFullYear()} \u2014 ${total} appointment${total!==1?'s':''}`;
+
+  let html = '';
+  if (!total) {
+    html = '<div style="color:var(--grey);font-size:13px;font-style:italic;">No appointments on this day.</div>';
+  } else {
+    // Sort actual by time
+    const sortedActual = [...actualItems].sort((a,b) => (a.time||'').localeCompare(b.time||''));
+    sortedActual.forEach(item => {
+      const timeStr = item.time ? new Date(item.time).toLocaleTimeString('en-MY',{hour:'2-digit',minute:'2-digit'}) : '';
+      html += `<div class="cal-meeting-item">
+        <div class="cal-meeting-dot cal-meeting-dot-actual"></div>
+        <div class="cal-meeting-info">
+          <div class="cal-item-client">${item.client}</div>
+          <div class="cal-item-rm">RM: <strong>${item.rm}</strong>${timeStr ? ' &bull; ' + timeStr : ''}</div>
+          <span class="cal-item-type cal-type-actual">Logged Meeting</span>
+        </div>
+      </div>`;
+    });
+    upcomingItems.forEach(item => {
+      html += `<div class="cal-meeting-item item-upcoming">
+        <div class="cal-meeting-dot cal-meeting-dot-upcoming"></div>
+        <div class="cal-meeting-info">
+          <div class="cal-item-client">${item.client}</div>
+          <div class="cal-item-rm">RM: <strong>${item.rm}</strong>${item.purpose ? ' &bull; ' + escQ(item.purpose) : ''}</div>
+          <span class="cal-item-type cal-type-upcoming">Upcoming</span>
+        </div>
+      </div>`;
+    });
+  }
+
+  bodyEl.innerHTML = html;
+  drawer.classList.add('open');
+  drawer.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function closeCalDrawer() {
+  const drawer = document.getElementById('calDrawer');
+  if (drawer) drawer.classList.remove('open');
+  calActiveDay = null;
+  document.querySelectorAll('#calendarContainer .cal-cell.cal-active').forEach(el => el.classList.remove('cal-active'));
+}
+
+// ─── CHANGE OWNER ─────────────────────────────────────────────────
+function openChangeOwnerModal(clientName, currentRM) {
+  document.getElementById('ownerModalClientTag').textContent = clientName;
+  document.getElementById('ownerModalClientName').value = clientName;
+  document.getElementById('ownerModalRM').value = currentRM;
+  document.getElementById('changeOwnerModal').classList.remove('hidden');
+}
+function closeChangeOwnerModal() {
+  document.getElementById('changeOwnerModal').classList.add('hidden');
+}
+async function confirmChangeOwner() {
+  const clientName = document.getElementById('ownerModalClientName').value;
+  const newRM = document.getElementById('ownerModalRM').value;
+  if (!newRM) { showToast('Please select a new owner RM.', 'error'); return; }
+  const btnText = document.getElementById('ownerModalBtnText');
+  const spinner = document.getElementById('ownerModalSpinner');
+  btnText.style.display = 'none'; spinner.style.display = 'block';
+  try {
+    if (!demoMode && _sb) {
+      const {data: latest, error: selErr} = await _sb.from('meeting_logs')
+        .select('id').eq('client_name_manual', clientName).eq('no_meeting_today', false)
+        .order('meeting_datetime', {ascending:false}).limit(1).maybeSingle();
+      if (selErr) throw selErr;
+      if (latest) {
+        const {error: updErr} = await _sb.from('meeting_logs')
+          .update({rm_name: newRM, updated_at: new Date().toISOString()}).eq('id', latest.id);
+        if (updErr) throw updErr;
+      }
+    }
+    const ci = clientStatusData.find(c => c.name === clientName);
+    if (ci) {
+      if (!ci.latestLog) ci.latestLog = {};
+      ci.latestLog.rm_name = newRM;
+      if (!ci.allRMs) ci.allRMs = [];
+      if (!ci.allRMs.includes(newRM)) ci.allRMs.push(newRM);
+    }
+    closeChangeOwnerModal();
+    renderClientTable();
+    showToast(`Owner of ${clientName} changed to ${newRM}`, 'success');
+  } catch(err) {
+    showToast('Error changing owner: ' + err.message, 'error');
+  } finally {
+    btnText.style.display = 'inline'; spinner.style.display = 'none';
+  }
 }
 
 // ─── PDF EXPORT ───────────────────────────────────────────────────
