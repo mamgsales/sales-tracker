@@ -240,6 +240,57 @@
     .p-client-list { list-style: decimal; padding: 0 0 0 18px; margin: 0; display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow-y: auto; }
     .p-client-list li { font-size: 12px; color: var(--navy); font-weight: 500; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 2px 0; }
     .p-client-pot { font-size: 11px; color: var(--grey); font-weight: 400; flex-shrink: 0; }
+    /* Injection run rate card */
+    .irr-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-bottom: 10px; }
+    .irr-card { border-radius: 10px; padding: 14px 10px; text-align: center; border: 1.5px solid var(--border); cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+    .irr-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+    .irr-card.irr-active { outline: 2.5px solid var(--navy); outline-offset: 2px; }
+    .irr-card.irr-new    { background: #E8F5E9; border-color: #A3D9B5; }
+    .irr-card.irr-exist  { background: #E3F0FF; border-color: #99CBFF; }
+    .irr-card.irr-curr   { background: #FFFBE0; border-color: #FFE08A; }
+    .irr-card.irr-next   { background: #FEF0E0; border-color: #F8C89A; }
+    .irr-card.irr-rem    { background: #EAECEF; border-color: #CED4DA; }
+    .irr-num  { font-size: clamp(13px, 1.5vw, 22px); font-weight: 700; color: var(--navy); line-height: 1.2; margin-bottom: 4px; white-space: nowrap; }
+    .irr-num.irr-new-col  { color: #1A6B3A; }
+    .irr-num.irr-exist-col{ color: #1A4B8C; }
+    .irr-lbl  { font-size: 10px; font-weight: 600; color: var(--grey); text-transform: uppercase; letter-spacing: 0.3px; line-height: 1.4; }
+    .irr-sub  { font-size: 11px; color: var(--grey); margin-top: 5px; font-weight: 500; }
+    .irr-drawer { display: none; background: #FAFCFF; border: 1.5px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-top: 10px; }
+    .irr-drawer.open { display: block; }
+    .irr-drawer-title { font-size: 11px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+    .irr-client-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .irr-client-table th { background: var(--navy); color: #fff; padding: 7px 12px; text-align: left; font-size: 11px; font-weight: 600; }
+    .irr-client-table th:last-child { text-align: right; }
+    .irr-client-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .irr-client-table td:last-child { text-align: right; font-weight: 600; color: var(--navy); }
+    .irr-client-table tr:last-child td { border-bottom: none; }
+    /* Injection Progress bars */
+    .inj-prog-overall { background:#F8F9FA; border:1.5px solid var(--border); border-radius:10px; padding:16px 18px; margin-bottom:16px; }
+    .inj-prog-overall-label { font-size:12px; font-weight:700; color:var(--navy); margin-bottom:10px; }
+    .inj-prog-bar-outer { width:100%; height:22px; background:#E9ECEF; border-radius:11px; overflow:hidden; display:flex; }
+    .inj-prog-bar-success { height:100%; background:#2ECC71; transition:width 0.4s ease; }
+    .inj-prog-bar-pending  { height:100%; background:#FFF0A0; transition:width 0.4s ease; }
+    .inj-prog-legend { display:flex; gap:18px; font-size:11px; margin-top:6px; flex-wrap:wrap; }
+    .inj-prog-legend span { display:flex; align-items:center; gap:5px; }
+    .inj-prog-dot { width:10px; height:10px; border-radius:50%; display:inline-block; flex-shrink:0; }
+    .inj-prog-rm-grid { display:grid; gap:10px; }
+    .inj-prog-rm-row { display:grid; grid-template-columns:90px 1fr; align-items:center; gap:10px; }
+    .inj-prog-rm-label { font-size:12px; font-weight:600; color:var(--navy); text-align:right; }
+    .inj-prog-rm-right { }
+    .inj-prog-rm-amounts { display:flex; gap:12px; font-size:11px; margin-top:3px; flex-wrap:wrap; }
+    .inj-prog-list { margin-top:8px; border:1.5px solid var(--border); border-radius:8px; overflow:hidden; background:var(--white); }
+    /* Clickable admin table cells */
+    .td-click { cursor: pointer; color: var(--navy); font-weight: 600; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; }
+    .td-click:hover { color: var(--yellow-dk); }
+    /* Inline pop-list drawer for overview/activity/upcoming tables */
+    .row-poplist { background: #FAFCFF; border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 14px; }
+    .row-poplist table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .row-poplist table th { font-size: 11px; font-weight: 700; color: var(--navy); padding: 4px 8px; border-bottom: 1px solid var(--border); text-align: left; }
+    .row-poplist table th:last-child { text-align: right; }
+    .row-poplist table td { padding: 5px 8px; color: var(--grey); font-size: 12px; border-bottom: 1px solid #f0f0f0; }
+    .row-poplist table td:first-child { color: var(--navy); font-weight: 500; }
+    .row-poplist table td:last-child { text-align: right; font-weight: 600; color: var(--navy); }
+    .row-poplist table tr:last-child td { border-bottom: none; }
     .hos-hdr { background: var(--navy); color: var(--white); }
     .chairman-hdr { background: #5C2E00; color: var(--white); }
     .admin-sub { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 24px; margin-bottom: 14px; }
@@ -507,7 +558,7 @@
         <label>RM</label>
         <select id="editLogRM">
           <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-          <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+          <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option><option>Others</option>
         </select>
       </div>
       <div class="field" style="flex:1;">
@@ -534,6 +585,34 @@
       <div class="field" style="flex:1;">
         <label>Potential Size (RM Mn)</label>
         <input type="number" id="editLogPotential" placeholder="e.g. 50" min="0" step="0.1" />
+      </div>
+    </div>
+    <div class="inj-modal-row">
+      <div class="field" style="flex:1;">
+        <label>Client Type</label>
+        <select id="editLogClientType">
+          <option value="">— Select —</option>
+          <option value="New">New</option>
+          <option value="Existing">Existing</option>
+        </select>
+      </div>
+      <div class="field" style="flex:1;">
+        <label>Potential Injection Month</label>
+        <select id="editLogInjMonth">
+          <option value="">— Select —</option>
+          <option value="January">January</option>
+          <option value="February">February</option>
+          <option value="March">March</option>
+          <option value="April">April</option>
+          <option value="May">May</option>
+          <option value="June">June</option>
+          <option value="July">July</option>
+          <option value="August">August</option>
+          <option value="September">September</option>
+          <option value="October">October</option>
+          <option value="November">November</option>
+          <option value="December">December</option>
+        </select>
       </div>
     </div>
     <div class="field">
@@ -616,7 +695,7 @@
             <select id="rmName" onchange="clearError('rm')">
               <option value="">&#8212; Select your name &#8212;</option>
               <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-              <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+              <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
             </select>
             <span class="err-msg">Please select your name.</span>
           </div>
@@ -656,6 +735,15 @@
                 <div class="field"><label>Email</label><input type="text" id="contactEmail" placeholder="e.g. ahmad@company.com" inputmode="email" /></div>
               </div>
             </div>
+          </div>
+          <div class="field" id="fld-client-type">
+            <label>Client Type <span class="req">*</span></label>
+            <select id="clientTypeSelect" onchange="clearError('clientType')">
+              <option value="">&#8212; Select type &#8212;</option>
+              <option value="New">New</option>
+              <option value="Existing">Existing</option>
+            </select>
+            <span class="err-msg">Please select client type.</span>
           </div>
           <div class="field" id="fld-segment">
             <label>Segment <span class="req">*</span></label>
@@ -743,6 +831,25 @@
             <input type="number" id="potentialSize" placeholder="e.g. 50" min="0" step="0.1" onchange="clearError('size')" />
             <span class="err-msg">Please enter a potential size (use 0 if unknown).</span>
           </div>
+          <div class="field" id="fld-inj-month">
+            <label>Potential Injection Month <span class="req">*</span></label>
+            <select id="injMonthSelect" onchange="clearError('injMonth')">
+              <option value="">&#8212; Select month &#8212;</option>
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </select>
+            <span class="err-msg">Please select the expected injection month.</span>
+          </div>
           <div class="field full" id="fld-remarks">
             <label>Remarks <span class="req">*</span></label>
             <textarea id="remarks" placeholder="Key discussion points, client concerns, next steps&#8230;" onchange="clearError('remarks')"></textarea>
@@ -787,7 +894,7 @@
       <select class="cl-filter" id="clFilterRM" onchange="renderClientTable()">
         <option value="">All RMs</option>
         <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-        <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+        <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
       </select>
       <select class="cl-filter" id="clFilterMSII" onchange="renderClientTable()">
         <option value="">All Clients</option>
@@ -824,7 +931,7 @@
           <select id="upcomingRM">
             <option value="">&#8212; Select RM &#8212;</option>
             <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-            <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+            <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
           </select>
         </div>
         <div class="field" id="ufld-client">
@@ -905,7 +1012,7 @@
           <select class="cl-filter" id="upcomingFilterRM" onchange="renderUpcomingTable()">
             <option value="">All RMs</option>
             <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-            <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+            <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
           </select>
           <select class="cl-filter" id="upcomingFilterMonth" onchange="renderUpcomingTable()">
             <option value="">All Months</option>
@@ -951,6 +1058,46 @@
       </div>
       <div class="admin-subpanel active" id="subpanel-pipeline">
         <div class="admin-sub">
+          <div class="admin-sub-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <span>Injection Run Rate &mdash; by Month Bucket</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <label style="font-size:12px;font-weight:600;color:var(--navy);">RM:</label>
+              <select id="injRunRateRMFilter" onchange="renderInjectionRunRate()" style="padding:6px 28px 6px 10px;border:1.5px solid var(--border);border-radius:7px;font-family:'Poppins',sans-serif;font-size:13px;background:var(--white) url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2214%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B6B6B%22 stroke-width=%222.5%22%3E%3Cpolyline points=%226 9 12 15 18 9%22%3E%3C/polyline%3E%3C/svg%3E') no-repeat right 8px center;appearance:none;cursor:pointer;min-height:36px;">
+                <option value="all">All RMs</option>
+                <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
+                <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
+              </select>
+            </div>
+          </div>
+          <div id="injRunRateContainer"><div class="loading-row">Loading...</div></div>
+        </div>
+        <div class="admin-sub">
+          <div class="admin-sub-title" style="display:flex;justify-content:space-between;align-items:center;">
+            <span>Injection Progress &mdash; Successful vs Pipeline</span>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <label style="font-size:12px;font-weight:600;color:var(--navy);">Month:</label>
+                <select id="injProgressMonthFilter" onchange="renderInjectionProgress()" style="padding:6px 28px 6px 10px;border:1.5px solid var(--border);border-radius:7px;font-family:'Poppins',sans-serif;font-size:13px;background:var(--white) url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2214%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B6B6B%22 stroke-width=%222.5%22%3E%3Cpolyline points=%226 9 12 15 18 9%22%3E%3C/polyline%3E%3C/svg%3E') no-repeat right 8px center;appearance:none;cursor:pointer;min-height:36px;">
+                  <option value="overall">Overall</option>
+                  <option>January</option><option>February</option><option>March</option>
+                  <option>April</option><option>May</option><option>June</option>
+                  <option>July</option><option>August</option><option>September</option>
+                  <option>October</option><option>November</option><option>December</option>
+                </select>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <label style="font-size:12px;font-weight:600;color:var(--navy);">RM:</label>
+                <select id="injProgressRMFilter" onchange="renderInjectionProgress()" style="padding:6px 28px 6px 10px;border:1.5px solid var(--border);border-radius:7px;font-family:'Poppins',sans-serif;font-size:13px;background:var(--white) url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2214%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B6B6B%22 stroke-width=%222.5%22%3E%3Cpolyline points=%226 9 12 15 18 9%22%3E%3C/polyline%3E%3C/svg%3E') no-repeat right 8px center;appearance:none;cursor:pointer;min-height:36px;">
+                  <option value="all">All RMs</option>
+                  <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
+                  <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div id="injProgressContainer"><div class="loading-row">Loading...</div></div>
+        </div>
+        <div class="admin-sub">
           <div class="admin-sub-title">Pipeline Summary &mdash; Clients by Stage</div>
           <div id="pipelineContainer"><div class="loading-row">Loading...</div></div>
         </div>
@@ -983,7 +1130,7 @@
             <select id="rmDrilldownSelect" onchange="renderRMDrilldown(this.value)">
               <option value="all">All RMs</option>
               <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-              <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+              <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
             </select>
           </div>
           <div id="rmDrilldownContainer"><div class="loading-row">Loading...</div></div>
@@ -1013,7 +1160,7 @@
       <select id="ownerModalRM" style="width:100%;padding:11px 36px 11px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'Poppins',sans-serif;font-size:14px;color:var(--black);background:var(--white) url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E&quot;) no-repeat right 12px center;appearance:none;">
         <option value="">&#8212; Select RM &#8212;</option>
         <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-        <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option>
+        <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
       </select>
     </div>
     <input type="hidden" id="ownerModalClientName" />
@@ -1161,9 +1308,11 @@ function validateForm() {
   let valid = true;
   const checks = [
     {id:'rmName', fld:'fld-rm'}, {id:'meetingDatetime', fld:'fld-datetime'},
+    {id:'clientTypeSelect', fld:'fld-client-type'},
     {id:'segmentSelect', fld:'fld-segment'}, {id:'referralSelect', fld:'fld-referral'},
     {id:'productSelect', fld:'fld-product'}, {id:'statusSelect', fld:'fld-status'},
     {id:'meetingTypeSelect', fld:'fld-meetingType'}, {id:'interestSelect', fld:'fld-interest'},
+    {id:'injMonthSelect', fld:'fld-inj-month'},
   ];
   checks.forEach(c => {
     const el = document.getElementById(c.id);
@@ -1180,11 +1329,13 @@ function validateForm() {
 function clearError(key) {
   const map = {
     rm:['fld-rm','rmName'], datetime:['fld-datetime','meetingDatetime'],
+    clientType:['fld-client-type','clientTypeSelect'],
     segment:['fld-segment','segmentSelect'], referral:['fld-referral','referralSelect'],
     product:['fld-product','productSelect'], status:['fld-status','statusSelect'],
     meetingType:['fld-meetingType','meetingTypeSelect'],
     interest:['fld-interest','interestSelect'],
     size:['fld-size','potentialSize'], remarks:['fld-remarks','remarks'],
+    injMonth:['fld-inj-month','injMonthSelect'],
   };
   if (map[key]) { document.getElementById(map[key][0])?.classList.remove('has-error'); document.getElementById(map[key][1])?.classList.remove('error'); }
 }
@@ -1214,6 +1365,8 @@ async function submitForm() {
     meeting_datetime: document.getElementById('meetingDatetime').value,
     remarks: document.getElementById('remarks').value.trim(),
     no_meeting_today: false,
+    client_type:               document.getElementById('clientTypeSelect').value  || null,
+    potential_injection_month: document.getElementById('injMonthSelect').value    || null,
     contact_name:     document.getElementById('contactName').value.trim()     || null,
     contact_position: document.getElementById('contactPosition').value.trim() || null,
     contact_phone:    document.getElementById('contactPhone').value.trim()     || null,
@@ -1240,7 +1393,7 @@ function setLoading(s) {
   document.getElementById('submitSpinner').style.display = s ? 'block' : 'none';
 }
 function resetForm() {
-  ['rmName','meetingDatetime','segmentSelect','referralSelect','productSelect','statusSelect','meetingTypeSelect','interestSelect','potentialSize','remarks'].forEach(id => {
+  ['rmName','meetingDatetime','clientTypeSelect','segmentSelect','referralSelect','productSelect','statusSelect','meetingTypeSelect','interestSelect','potentialSize','injMonthSelect','remarks'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
   document.getElementById('companySearch').value = '';
@@ -1323,7 +1476,7 @@ async function loadClientStatuses() {
   try {
     const {data:clients, error:cErr} = await _sb.from('potential_clients').select('id, client_name, gb_cbd, segment, msii_command_council').order('client_name');
     if (cErr) throw cErr;
-    const {data:logs, error:lErr} = await _sb.from('meeting_logs').select('client_name_manual, rm_name, product_fund, potential_size_rm_mn, status, meeting_datetime, updated_at, injected_amount, injection_date, remarks').eq('no_meeting_today', false).order('meeting_datetime', {ascending:false});
+    const {data:logs, error:lErr} = await _sb.from('meeting_logs').select('id, client_name_manual, rm_name, meeting_type, product_fund, potential_size_rm_mn, client_type, potential_injection_month, status, meeting_datetime, updated_at, injected_amount, injection_date, injection_remarks, remarks').not('no_meeting_today', 'is', true).order('meeting_datetime', {ascending:false});
     if (lErr) throw lErr;
     const logMap = {};
     const allRMsMap = {};
@@ -1507,6 +1660,8 @@ function openEditModal(clientId, clientName) {
   document.getElementById('editLogMeetingType').value = log?.meeting_type || 'Follow Up';
   document.getElementById('editLogProduct').value = log?.product_fund || '';
   document.getElementById('editLogPotential').value = log?.potential_size_rm_mn != null ? log.potential_size_rm_mn : '';
+  document.getElementById('editLogClientType').value = log?.client_type || '';
+  document.getElementById('editLogInjMonth').value = log?.potential_injection_month || '';
   document.getElementById('editLogStatus').value = log?.status || 'Not Met';
   document.getElementById('editLogInjAmount').value = log?.injected_amount != null ? log.injected_amount : '';
   document.getElementById('editLogInjDate').value = log?.injection_date || '';
@@ -1517,49 +1672,70 @@ function openEditModal(clientId, clientName) {
 }
 function closeEditModal() { document.getElementById('editLogModal').classList.add('hidden'); }
 async function confirmEditLog() {
-  const clientName = document.getElementById('editLogClientName').value;
-  const rm = document.getElementById('editLogRM').value;
+  const clientName  = document.getElementById('editLogClientName').value;
+  const rm          = document.getElementById('editLogRM').value;
   const meetingType = document.getElementById('editLogMeetingType').value;
-  const product = document.getElementById('editLogProduct').value;
-  const potential = document.getElementById('editLogPotential').value;
-  const status = document.getElementById('editLogStatus').value;
-  const injAmount = document.getElementById('editLogInjAmount').value;
-  const injDate = document.getElementById('editLogInjDate').value;
-  const injRemarks = document.getElementById('editLogInjRemarks').value.trim();
-  const remarks = document.getElementById('editLogRemarks').value.trim();
+  const product     = document.getElementById('editLogProduct').value;
+  const potential   = document.getElementById('editLogPotential').value;
+  const clientType  = document.getElementById('editLogClientType').value;
+  const injMonth    = document.getElementById('editLogInjMonth').value;
+  const status      = document.getElementById('editLogStatus').value;
+  const injAmount   = document.getElementById('editLogInjAmount').value;
+  const injDate     = document.getElementById('editLogInjDate').value;
+  const injRemarks  = document.getElementById('editLogInjRemarks').value.trim();
+  const remarks     = document.getElementById('editLogRemarks').value.trim();
   const btn = document.getElementById('editLogConfirmBtn');
   document.getElementById('editLogBtnText').style.display = 'none';
   document.getElementById('editLogSpinner').style.display = 'block';
   btn.disabled = true;
   try {
     if (!demoMode && _sb) {
-      const {data: latest, error: selErr} = await _sb.from('meeting_logs')
-        .select('id').eq('client_name_manual', clientName).eq('no_meeting_today', false)
-        .order('meeting_datetime', {ascending: false}).limit(1).maybeSingle();
-      if (selErr) throw selErr;
-      if (latest) {
+      // Use the id already loaded in clientStatusData; fall back to re-query if missing
+      const ci0 = clientStatusData.find(c => c.name === clientName);
+      let logId = ci0?.latestLog?.id || null;
+      if (!logId) {
+        const {data: latest, error: selErr} = await _sb.from('meeting_logs')
+          .select('id').eq('client_name_manual', clientName).not('no_meeting_today', 'is', true)
+          .order('meeting_datetime', {ascending: false}).limit(1).maybeSingle();
+        if (selErr) throw selErr;
+        logId = latest?.id || null;
+      }
+      if (logId) {
         const upd = {rm_name: rm, meeting_type: meetingType, product_fund: product || null,
           potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status,
+          client_type: clientType || null,
+          potential_injection_month: injMonth || null,
           remarks: remarks || null,
           updated_at: new Date().toISOString(),
           injected_amount: status === 'Successful' && injAmount !== '' ? parseFloat(injAmount) : null,
           injection_date: status === 'Successful' && injDate ? injDate : null,
           injection_remarks: status === 'Successful' ? injRemarks || null : null};
-        const {error: updErr} = await _sb.from('meeting_logs').update(upd).eq('id', latest.id);
+        const {error: updErr} = await _sb.from('meeting_logs').update(upd).eq('id', logId);
         if (updErr) throw updErr;
       }
     }
+    const updFields = {rm_name: rm, meeting_type: meetingType, product_fund: product || null,
+      potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status,
+      client_type: clientType || null,
+      potential_injection_month: injMonth || null,
+      remarks: remarks || null,
+      injected_amount: status === 'Successful' && injAmount !== '' ? parseFloat(injAmount) : null,
+      injection_date: status === 'Successful' && injDate ? injDate : null,
+      injection_remarks: status === 'Successful' ? injRemarks || null : null};
     const ci = clientStatusData.find(c => c.name === clientName);
     if (ci) {
       if (!ci.latestLog) ci.latestLog = {};
-      Object.assign(ci.latestLog, {rm_name: rm, meeting_type: meetingType, product_fund: product || null,
-        potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status,
-        remarks: remarks || null,
-        injected_amount: status === 'Successful' && injAmount !== '' ? parseFloat(injAmount) : null,
-        injection_date: status === 'Successful' && injDate ? injDate : null,
-        injection_remarks: status === 'Successful' ? injRemarks || null : null});
+      Object.assign(ci.latestLog, updFields);
     }
+    // Keep adminLatestPerClient in sync — upsert so edits are captured even if admin hasn't loaded yet
+    const adminKey = clientName.toUpperCase().trim();
+    if (!adminLatestPerClient[adminKey]) {
+      adminLatestPerClient[adminKey] = {client_name_manual: clientName};
+    }
+    Object.assign(adminLatestPerClient[adminKey], updFields);
     closeEditModal(); updateClientStats(); renderClientTable();
+    // Re-render admin sections only if admin data has already been loaded
+    if (adminAllLogs.length > 0) renderAllAdminSections();
     showToast(`Log updated for ${clientName}`, 'success');
   } catch(err) { showToast('Error updating log: ' + err.message, 'error'); }
   finally {
@@ -1678,8 +1854,8 @@ async function loadAdminDashboard() {
   try {
     const [{data:logs, error}, {data:upcoming, error:upErr}] = await Promise.all([
       _sb.from('meeting_logs')
-        .select('id, rm_name, client_name_manual, msii_command_council, segment, referral, product_fund, status, potential_size_rm_mn, meeting_datetime, injected_amount, injection_date, meeting_type, no_meeting_today, updated_at')
-        .eq('no_meeting_today', false)
+        .select('id, rm_name, client_name_manual, msii_command_council, segment, referral, product_fund, status, potential_size_rm_mn, meeting_datetime, injected_amount, injection_date, meeting_type, no_meeting_today, updated_at, client_type, potential_injection_month')
+        .not('no_meeting_today', 'is', true)
         .order('meeting_datetime', {ascending:false}),
       _sb.from('upcoming_meetings')
         .select('*')
@@ -1714,6 +1890,8 @@ function setAdminLoading() {
   });
 }
 function renderAllAdminSections() {
+  renderInjectionRunRate();
+  renderInjectionProgress();
   renderPipelineCards();
   renderRMOverviewTable();
   renderRMDrilldown(document.getElementById('rmDrilldownSelect')?.value || 'all');
@@ -1745,6 +1923,368 @@ function isStaleClient(log) {
 }
 
 // ─── PIPELINE CARDS + WATERFALL ───────────────────────────────────
+// ─── INJECTION RUN RATE ──────────────────────────────────────────────────────
+function fmtMn(val) {
+  if (val >= 1000) return 'RM ' + (val / 1000).toFixed(2) + ' Bn';
+  return 'RM ' + val.toFixed(1) + ' Mn';
+}
+
+function renderInjectionRunRate() {
+  const container = document.getElementById('injRunRateContainer');
+  if (!container) return;
+  const selectedRM = document.getElementById('injRunRateRMFilter')?.value || 'all';
+
+  const FULL_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const now = new Date();
+  const currMonthName = FULL_MONTHS[now.getMonth()];
+  const nextMonthName = FULL_MONTHS[(now.getMonth() + 1) % 12];
+
+  // Use latest log per client from adminLatestPerClient
+  let clients = Object.values(adminLatestPerClient);
+  if (selectedRM !== 'all') clients = clients.filter(l => l.rm_name === selectedRM);
+
+  // Only include active pending statuses — excludes Successful, Rejected, and Stale
+  const IRR_ACTIVE = ['Pending Decision','Pending Board Approval','Pending Onboarding','Pending Injection'];
+  const pipeline = clients.filter(l => IRR_ACTIVE.includes(l.status) && !isStaleClient(l));
+
+  // Split by client type
+  const newClients      = pipeline.filter(l => l.client_type === 'New');
+  const existingClients = pipeline.filter(l => l.client_type === 'Existing');
+
+  // Bucket by potential_injection_month
+  const currMonthClients = pipeline.filter(l => l.potential_injection_month === currMonthName);
+  const nextMonthClients = pipeline.filter(l => l.potential_injection_month === nextMonthName);
+  const remainClients    = pipeline.filter(l => l.potential_injection_month && l.potential_injection_month !== currMonthName && l.potential_injection_month !== nextMonthName);
+  // No month assigned — also bucket into remaining for total reconciliation
+  const noMonthClients   = pipeline.filter(l => !l.potential_injection_month);
+  const allRemainClients = [...remainClients, ...noMonthClients];
+
+  const sumPot = arr => arr.reduce((s, l) => s + (parseFloat(l.potential_size_rm_mn) || 0), 0);
+
+  const totPot       = sumPot(pipeline);
+  const currPot      = sumPot(currMonthClients);
+  const nextPot      = sumPot(nextMonthClients);
+  const remainPot    = sumPot(allRemainClients);
+
+  // Active drawer state stored on container
+  let activeDrawer = container._irrActiveDrawer || null;
+
+  function buildClientRows(arr, key) {
+    if (!arr.length) return '<tr><td colspan="4" style="text-align:center;color:var(--grey);padding:12px;">No clients in this bucket.</td></tr>';
+    return arr.sort((a,b) => (a.client_name_manual||'').localeCompare(b.client_name_manual||'')).map(l => {
+      const typeBadge = l.client_type
+        ? `<span class="${l.client_type==='New'?'type-new':'type-existing'}">${l.client_type}</span>`
+        : '<span style="color:var(--grey);font-size:11px;">—</span>';
+      const pot = parseFloat(l.potential_size_rm_mn)||0;
+      return `<tr data-rm="${l.rm_name||''}" data-pot="${pot}">
+        <td style="text-align:left;font-weight:600;color:var(--navy);">${l.client_name_manual||'—'}</td>
+        <td style="text-align:left;">${l.rm_name||'—'}</td>
+        <td>${typeBadge}</td>
+        <td style="text-align:right;">${fmtMn(pot)}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  function buildRMBreakdown(arr, key) {
+    const rmTotals = {};
+    arr.forEach(l => {
+      const rm = l.rm_name || '—';
+      rmTotals[rm] = (rmTotals[rm] || 0) + (parseFloat(l.potential_size_rm_mn) || 0);
+    });
+    const rows = Object.entries(rmTotals).sort((a,b) => b[1]-a[1]).map(([rm, tot]) =>
+      `<tr data-rm-row="${rm}"><td style="font-weight:600;color:var(--navy);">${rm}</td><td style="text-align:right;">${fmtMn(tot)}</td></tr>`
+    ).join('');
+    return rows || '<tr><td colspan="2" style="color:var(--grey);font-size:12px;padding:6px 12px;">—</td></tr>';
+  }
+
+  function drawerHTML(key, title, arr) {
+    const rms = [...new Set(arr.map(l => l.rm_name).filter(Boolean))].sort();
+    const rmOptions = rms.map(r => `<option value="${r}">${r}</option>`).join('');
+    return `<div class="irr-drawer" id="irr-drawer-${key}">
+      <div class="irr-drawer-title">
+        <span>${title} — <span id="irr-count-${key}">${arr.length}</span> client${arr.length!==1?'s':''} · <span id="irr-grandtotal-${key}">${fmtMn(sumPot(arr))}</span> total</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <select id="irr-rmf-${key}" onchange="filterIRRDrawer('${key}')" style="font-size:12px;padding:4px 8px;border:1.5px solid var(--border);border-radius:6px;font-family:'Poppins',sans-serif;color:var(--navy);background:var(--white);">
+            <option value="all">All RMs</option>${rmOptions}
+          </select>
+          <span style="cursor:pointer;color:var(--grey);font-size:14px;" onclick="closeIRRDrawer()">&#x2715;</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;overflow-x:auto;">
+        <table class="irr-client-table">
+          <thead><tr><th>Client</th><th>RM</th><th>Type</th><th style="text-align:right;">Potential</th></tr></thead>
+          <tbody id="irr-tbody-${key}">${buildClientRows(arr, key)}</tbody>
+          <tfoot><tr style="background:#FFF8E6;"><td colspan="3" style="font-weight:700;color:var(--navy);padding:7px 12px;">Total</td><td id="irr-tfoot-${key}" style="text-align:right;font-weight:700;color:var(--navy);padding:7px 12px;">${fmtMn(sumPot(arr))}</td></tr></tfoot>
+        </table>
+        <table class="irr-client-table" style="min-width:180px;">
+          <thead><tr><th>RM</th><th style="text-align:right;">Total</th></tr></thead>
+          <tbody id="irr-rm-breakdown-${key}">${buildRMBreakdown(arr, key)}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }
+
+  let html = `<div class="irr-grid">
+    <div class="irr-card irr-new" onclick="toggleIRRDrawer('new')">
+      <div class="irr-num irr-new-col">${fmtMn(sumPot(newClients))}</div>
+      <div class="irr-lbl">New Clients</div>
+      <div class="irr-sub">${newClients.length} client${newClients.length!==1?'s':''}</div>
+    </div>
+    <div class="irr-card irr-exist" onclick="toggleIRRDrawer('existing')">
+      <div class="irr-num irr-exist-col">${fmtMn(sumPot(existingClients))}</div>
+      <div class="irr-lbl">Existing Clients</div>
+      <div class="irr-sub">${existingClients.length} client${existingClients.length!==1?'s':''}</div>
+    </div>
+    <div class="irr-card irr-curr" onclick="toggleIRRDrawer('curr')">
+      <div class="irr-num">${fmtMn(currPot)}</div>
+      <div class="irr-lbl">${currMonthName}</div>
+      <div class="irr-sub">${currMonthClients.length} client${currMonthClients.length!==1?'s':''}</div>
+    </div>
+    <div class="irr-card irr-next" onclick="toggleIRRDrawer('next')">
+      <div class="irr-num">${fmtMn(nextPot)}</div>
+      <div class="irr-lbl">${nextMonthName}</div>
+      <div class="irr-sub">${nextMonthClients.length} client${nextMonthClients.length!==1?'s':''}</div>
+    </div>
+    <div class="irr-card irr-rem" onclick="toggleIRRDrawer('remain')">
+      <div class="irr-num">${fmtMn(remainPot)}</div>
+      <div class="irr-lbl">Remaining Months</div>
+      <div class="irr-sub">${allRemainClients.length} client${allRemainClients.length!==1?'s':''}</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--grey);margin-bottom:10px;">
+    Total pipeline: <strong style="color:var(--navy);">${pipeline.length} clients · ${fmtMn(totPot)}</strong>
+    &nbsp;·&nbsp; Clients with no injection month assigned are counted in <em>Remaining Months</em>
+    &nbsp;·&nbsp; Excludes Successful, Rejected &amp; Stale
+  </div>
+  ${drawerHTML('new',      'New Clients',        newClients)}
+  ${drawerHTML('existing', 'Existing Clients',   existingClients)}
+  ${drawerHTML('curr',     currMonthName + ' (Current Month)', currMonthClients)}
+  ${drawerHTML('next',     nextMonthName + ' (Following Month)', nextMonthClients)}
+  ${drawerHTML('remain',   'Remaining Months',   allRemainClients)}`;
+
+  container.innerHTML = html;
+  container._irrActiveDrawer = null;
+}
+
+function toggleIRRDrawer(key) {
+  const container = document.getElementById('injRunRateContainer');
+  if (!container) return;
+  const prev = container._irrActiveDrawer;
+  // Close all first
+  container.querySelectorAll('.irr-drawer').forEach(d => d.classList.remove('open'));
+  container.querySelectorAll('.irr-card').forEach(c => c.classList.remove('irr-active'));
+  if (prev === key) { container._irrActiveDrawer = null; return; }
+  const drawer = document.getElementById('irr-drawer-' + key);
+  const cards  = container.querySelectorAll('.irr-card');
+  const keyMap = ['new','existing','curr','next','remain'];
+  if (drawer) drawer.classList.add('open');
+  if (cards[keyMap.indexOf(key)]) cards[keyMap.indexOf(key)].classList.add('irr-active');
+  container._irrActiveDrawer = key;
+  drawer?.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function closeIRRDrawer() {
+  const container = document.getElementById('injRunRateContainer');
+  if (!container) return;
+  container.querySelectorAll('.irr-drawer').forEach(d => d.classList.remove('open'));
+  container.querySelectorAll('.irr-card').forEach(c => c.classList.remove('irr-active'));
+  container._irrActiveDrawer = null;
+}
+
+function filterIRRDrawer(key) {
+  const sel = document.getElementById('irr-rmf-' + key);
+  if (!sel) return;
+  const rm = sel.value;
+  // Filter client rows
+  const tbody = document.getElementById('irr-tbody-' + key);
+  if (tbody) {
+    let visTotal = 0, visCount = 0;
+    tbody.querySelectorAll('tr[data-rm]').forEach(tr => {
+      const match = rm === 'all' || tr.dataset.rm === rm;
+      tr.style.display = match ? '' : 'none';
+      if (match) { visTotal += parseFloat(tr.dataset.pot) || 0; visCount++; }
+    });
+    const tfootCell = document.getElementById('irr-tfoot-' + key);
+    if (tfootCell) tfootCell.textContent = fmtMn(visTotal);
+    const grandTotal = document.getElementById('irr-grandtotal-' + key);
+    if (grandTotal) grandTotal.textContent = fmtMn(visTotal);
+    const countEl = document.getElementById('irr-count-' + key);
+    if (countEl) countEl.textContent = visCount;
+  }
+  // Filter RM breakdown rows
+  const rmBreakdown = document.getElementById('irr-rm-breakdown-' + key);
+  if (rmBreakdown) {
+    rmBreakdown.querySelectorAll('tr[data-rm-row]').forEach(tr => {
+      tr.style.display = rm === 'all' || tr.dataset.rmRow === rm ? '' : 'none';
+    });
+  }
+}
+
+function renderInjectionProgress() {
+  const container = document.getElementById('injProgressContainer');
+  if (!container) return;
+  const selectedRM    = document.getElementById('injProgressRMFilter')?.value || 'all';
+  const selectedMonth = document.getElementById('injProgressMonthFilter')?.value || 'overall';
+  const ACTIVE_STATUSES = ['Pending Decision','Pending Board Approval','Pending Onboarding','Pending Injection'];
+  const FULL_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  // Use ALL logs for successful so top-ups are included, not just latest-per-client
+  let successLogs = adminAllLogs.filter(l => l.status === 'Successful');
+  // Active pipeline: latest-per-client is correct (one active entry per client)
+  let activeAll = Object.values(adminLatestPerClient).filter(l => ACTIVE_STATUSES.includes(l.status) && !isStaleClient(l));
+
+  // Apply month filter
+  if (selectedMonth !== 'overall') {
+    const mIdx = FULL_MONTHS.indexOf(selectedMonth);
+    successLogs = successLogs.filter(l => l.injection_date && new Date(l.injection_date).getMonth() === mIdx);
+    activeAll   = activeAll.filter(l => l.potential_injection_month === selectedMonth);
+  }
+
+  // Aggregate success logs per client — sum all injected_amount entries so top-ups are included
+  function aggregateByClient(logs) {
+    const map = {};
+    logs.forEach(l => {
+      const key = (l.client_name_manual || '').toUpperCase();
+      if (!key) return;
+      if (!map[key]) map[key] = {
+        client_name_manual: l.client_name_manual,
+        rm_name: l.rm_name,
+        injected_amount: 0,
+        injection_date: l.injection_date || '',
+        topups: 0
+      };
+      map[key].injected_amount += parseFloat(l.injected_amount) || 0;
+      map[key].topups++;
+      // Track most recent injection date and RM
+      if ((l.injection_date || '') > map[key].injection_date) {
+        map[key].injection_date = l.injection_date;
+        map[key].rm_name = l.rm_name;
+      }
+    });
+    return Object.values(map);
+  }
+
+  const sumInj  = arr => arr.reduce((s,l) => s + (parseFloat(l.injected_amount)||0), 0);
+  const sumPend = arr => arr.reduce((s,l) => s + (parseFloat(l.potential_size_rm_mn)||0), 0);
+
+  const _data = {};
+
+  function barBlock(bid, injClients, pendClients) {
+    const injected = sumInj(injClients);
+    const pending  = sumPend(pendClients);
+    const total    = injected + pending;
+    _data[bid]     = { injected: injClients, pending: pendClients };
+    if (total === 0) return `<div style="color:var(--grey);font-size:12px;padding:6px 0;">No data</div>`;
+    const injPct  = injected > 0 ? (injected / total * 100).toFixed(1) : 0;
+    const pendPct = pending  > 0 ? (pending  / total * 100).toFixed(1) : 0;
+    return `
+      <div class="inj-prog-bar-outer">
+        ${injected > 0 ? `<div class="inj-prog-bar-success" style="width:${injPct}%;cursor:pointer;" onclick="toggleInjProgList('${bid}','injected')" title="Click to see injected clients"></div>` : ''}
+        ${pending  > 0 ? `<div class="inj-prog-bar-pending"  style="width:${pendPct}%;cursor:pointer;" onclick="toggleInjProgList('${bid}','pending')"  title="Click to see pipeline clients"></div>` : ''}
+      </div>
+      <div class="inj-prog-legend">
+        <span style="cursor:pointer;" onclick="toggleInjProgList('${bid}','injected')"><span class="inj-prog-dot" style="background:#2ECC71;"></span><strong style="color:#1A6B3A;">${fmtMn(injected)}</strong>&nbsp;injected&nbsp;(${injPct}%)</span>
+        <span style="cursor:pointer;" onclick="toggleInjProgList('${bid}','pending')"><span class="inj-prog-dot" style="background:#FFF0A0;border:1px solid #E6C94A;"></span><strong style="color:#8A7000;">${fmtMn(pending)}</strong>&nbsp;pipeline&nbsp;(${pendPct}%)</span>
+        <span style="color:var(--navy);font-weight:700;">Total expected: ${fmtMn(total)}</span>
+      </div>
+      <div id="injprog-list-${bid}" class="inj-prog-list" style="display:none;"></div>`;
+  }
+
+  // Overall bar — aggregate success logs filtered by RM
+  const ovSuccessLogs  = selectedRM === 'all' ? successLogs : successLogs.filter(l => l.rm_name === selectedRM);
+  const ovInjClients   = aggregateByClient(ovSuccessLogs);
+  const ovPendClients  = selectedRM === 'all' ? activeAll : activeAll.filter(l => l.rm_name === selectedRM);
+  const monthLabel = selectedMonth === 'overall' ? 'All Months' : selectedMonth;
+  const rmLabel    = selectedRM === 'all' ? 'All RMs' : selectedRM;
+
+  let html = `<div class="inj-prog-overall">
+    <div class="inj-prog-overall-label">${monthLabel} &mdash; ${rmLabel}</div>
+    ${barBlock('overall', ovInjClients, ovPendClients)}
+  </div>`;
+
+  // Per-RM breakdown (only when All RMs selected)
+  if (selectedRM === 'all') {
+    const rms = [...new Set([...successLogs, ...activeAll].map(l => l.rm_name).filter(Boolean))].sort();
+    html += `<div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:10px;">Breakdown by RM</div>
+    <div class="inj-prog-rm-grid">`;
+    rms.forEach(rm => {
+      // Each RM's injected = all successful logs where that RM is credited, aggregated per client
+      const rmInjClients  = aggregateByClient(successLogs.filter(l => l.rm_name === rm));
+      const rmPendClients = activeAll.filter(l => l.rm_name === rm);
+      if (sumInj(rmInjClients) + sumPend(rmPendClients) === 0) return;
+      const bid = rm.replace(/\s+/g,'_');
+      html += `<div class="inj-prog-rm-row">
+        <div class="inj-prog-rm-label">${rm}</div>
+        <div class="inj-prog-rm-right">${barBlock(bid, rmInjClients, rmPendClients)}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  container.innerHTML = html;
+  container._injProgData = _data;
+}
+
+function toggleInjProgList(bid, type) {
+  const container = document.getElementById('injProgressContainer');
+  if (!container) return;
+  const listEl = document.getElementById('injprog-list-' + bid);
+  if (!listEl) return;
+
+  // Toggle off if already showing same type
+  if (listEl.style.display !== 'none' && listEl.dataset.type === type) {
+    listEl.style.display = 'none';
+    listEl.dataset.type = '';
+    return;
+  }
+
+  const data = (container._injProgData || {})[bid];
+  if (!data) return;
+  const clients = type === 'injected' ? data.injected : data.pending;
+  const isInj   = type === 'injected';
+  const color   = isInj ? '#1A6B3A' : '#8A7000';
+  const label   = isInj ? 'Injected' : 'Potential';
+
+  if (!clients || !clients.length) {
+    listEl.innerHTML = `<div style="color:var(--grey);font-size:12px;padding:8px 0;">No clients.</div>`;
+    listEl.style.display = 'block';
+    listEl.dataset.type = type;
+    return;
+  }
+
+  const sorted = [...clients].sort((a,b) => (a.client_name_manual||'').localeCompare(b.client_name_manual||''));
+  const total  = isInj
+    ? sorted.reduce((s,l) => s + (parseFloat(l.injected_amount)||0), 0)
+    : sorted.reduce((s,l) => s + (parseFloat(l.potential_size_rm_mn)||0), 0);
+
+  const rows = sorted.map(l => {
+    const amt = isInj ? (parseFloat(l.injected_amount)||0) : (parseFloat(l.potential_size_rm_mn)||0);
+    const dateLbl = isInj && l.injection_date ? `<span style="color:var(--grey);font-size:11px;margin-left:6px;">${l.injection_date}</span>` : '';
+    const topupBadge = isInj && l.topups > 1 ? `<span style="background:#E8F5E9;color:#1A6B3A;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:5px;">${l.topups}x</span>` : '';
+    return `<tr>
+      <td style="font-weight:600;color:var(--navy);text-align:left;">${l.client_name_manual||'—'}${topupBadge}${dateLbl}</td>
+      <td style="text-align:left;color:var(--grey);font-size:12px;">${l.rm_name||'—'}</td>
+      <td style="text-align:right;font-weight:600;color:${color};">${fmtMn(amt)}</td>
+    </tr>`;
+  }).join('');
+
+  listEl.innerHTML = `
+    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:6px;">
+      <thead><tr>
+        <th style="text-align:left;padding:6px 10px;background:#F8F9FA;border-bottom:2px solid var(--border);color:var(--navy);">Client</th>
+        <th style="text-align:left;padding:6px 10px;background:#F8F9FA;border-bottom:2px solid var(--border);color:var(--navy);">RM</th>
+        <th style="text-align:right;padding:6px 10px;background:#F8F9FA;border-bottom:2px solid var(--border);color:var(--navy);">${label}</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot><tr style="background:#FFF8E6;">
+        <td colspan="2" style="font-weight:700;color:var(--navy);padding:6px 10px;">Total</td>
+        <td style="text-align:right;font-weight:700;color:${color};padding:6px 10px;">${fmtMn(total)}</td>
+      </tr></tfoot>
+    </table>`;
+  listEl.style.display = 'block';
+  listEl.dataset.type = type;
+}
+
 function renderPipelineCards() {
   const clients = Object.values(adminLatestPerClient);
 
@@ -1791,11 +2331,12 @@ function renderPipelineCards() {
   })).sort((a,b) => a.name.localeCompare(b.name));
 
   // Active pipeline = non-stale, excluding Successful and Rejected
-  const activePipelineCount = nonStaleClients.filter(l =>
-    l.status !== 'Successful' && l.status !== 'Rejected'
-  ).length;
+  const ACTIVE_STATUSES = ['Pending Decision','Pending Board Approval','Pending Onboarding','Pending Injection'];
+  const activePipelineClients = nonStaleClients.filter(l => ACTIVE_STATUSES.includes(l.status));
+  const activePipelineCount = activePipelineClients.length;
+  const activePipelinePot = activePipelineClients.reduce((s, l) => s + (parseFloat(l.potential_size_rm_mn) || 0), 0);
 
-  let html = `<div class="admin-headline"><strong>${activePipelineCount}</strong> clients in active pipeline</div>
+  let html = `<div class="admin-headline"><strong>${activePipelineCount}</strong> clients in active pipeline &nbsp;&middot;&nbsp; <strong>${fmtMn(activePipelinePot)}</strong> total potential injection</div>
   <div class="pipeline-grid">`;
   stages.forEach(s => {
     const sk = s.key.replace(/\s+/g, '_');
@@ -1804,12 +2345,12 @@ function renderPipelineCards() {
       ? clientsByStatus[s.key].reduce((sum, c) => sum + c.injected, 0)
       : clientsByStatus[s.key].reduce((sum, c) => sum + c.potential, 0);
     const amtLabel = isSuccessfulStage ? 'injected' : 'potential injection';
-    const potSub = totalAmt > 0 ? `<div class="p-inj">RM ${totalAmt.toFixed(1)} Mn ${amtLabel}</div>` : '';
+    const potSub = totalAmt > 0 ? `<div class="p-inj">${fmtMn(totalAmt)} ${amtLabel}</div>` : '';
     html += `<div class="p-card ${s.cls} p-card-clickable" id="pcard-${sk}" onclick="togglePipelineCardDrawer('${sk}')"><div class="p-num">${counts[s.key]}</div><div class="p-lbl">${s.lbl}</div>${potSub}</div>`;
   });
   // Stale card
   const stalePot = staleClientData.reduce((sum, c) => sum + c.potential, 0);
-  const stalePotSub = stalePot > 0 ? `<div class="p-inj">RM ${stalePot.toFixed(1)} Mn potential injection</div>` : '';
+  const stalePotSub = stalePot > 0 ? `<div class="p-inj">${fmtMn(stalePot)} potential injection</div>` : '';
   html += `<div class="p-card pc-stale p-card-clickable" id="pcard-__stale__" onclick="togglePipelineCardDrawer('__stale__')"><div class="p-num">${staleClients.length}</div><div class="p-lbl">Stale</div><div class="p-sub">&gt;60 / 90d threshold</div>${stalePotSub}</div>`;
   html += '</div>';
   html += `<div class="p-drawer" id="pipelineCardDrawer"><div class="p-drawer-title"><span id="pipelineDrawerTitle"></span><span class="p-drawer-close" onclick="closePipelineCardDrawer()">&#x2715;</span></div><ol class="p-client-list" id="pipelineClientList"></ol></div>`;
@@ -1961,35 +2502,49 @@ function closePipelineCardDrawer() {
 }
 
 // ─── ALL RMs OVERVIEW TABLE ───────────────────────────────────────
-const RM_LIST = ['Azmi','Iskandar','Nasya','Lei Khim','Izzati','Filzah','Colin'];
+const RM_LIST = ['Azmi','Iskandar','Nasya','Lei Khim','Izzati','Filzah','Colin','Others'];
 function renderRMOverviewTable() {
   const currentYear = new Date().getFullYear();
   const clients = Object.values(adminLatestPerClient);
   const stats = {};
-  RM_LIST.forEach(rm => stats[rm] = {active:0, successful:0, rejected:0, potential:0});
+  const clientsByRM = {};  // { rm: { active:[], successful:[], rejected:[] } }
+  RM_LIST.forEach(rm => {
+    stats[rm] = {active:0, successful:0, rejected:0, potential:0};
+    clientsByRM[rm] = {active:[], successful:[], rejected:[]};
+  });
   clients.forEach(log => {
     const rm = log.rm_name;
-    if (!stats[rm]) stats[rm] = {active:0, successful:0, rejected:0, potential:0};
+    if (!stats[rm]) { stats[rm] = {active:0, successful:0, rejected:0, potential:0}; clientsByRM[rm] = {active:[], successful:[], rejected:[]}; }
     const key = (log.client_name_manual||'').toUpperCase().trim();
     const firstDate = adminFirstDatePerClient[key];
     if (!firstDate || new Date(firstDate).getFullYear() !== currentYear) return;
-    if (log.status==='Successful')    stats[rm].successful++;
-    else if (log.status==='Rejected') stats[rm].rejected++;
-    else                              stats[rm].active++;
+    const cl = {name: log.client_name_manual||'—', potential: parseFloat(log.potential_size_rm_mn)||0, injected: parseFloat(log.injected_amount)||0};
+    if (log.status==='Successful') { stats[rm].successful++; clientsByRM[rm].successful.push(cl); }
+    else if (log.status==='Rejected') { stats[rm].rejected++; clientsByRM[rm].rejected.push(cl); }
+    else { stats[rm].active++; clientsByRM[rm].active.push(cl); }
     stats[rm].potential += parseFloat(log.potential_size_rm_mn)||0;
   });
+
+  // Store for use in pop-list
+  const ovContainer = document.getElementById('rmOverviewContainer');
+  ovContainer._clientsByRM = clientsByRM;
+
+  function popListId(rm, type) { return 'ovpop-' + rm.replace(/\s+/g,'_') + '-' + type; }
+
   let html = `<div class="admin-table-wrap"><table class="admin-table"><thead>
     <tr><th>RM</th><th>Active</th><th>Successful</th><th>Rejected</th><th>Total Potential (RM Mn)</th></tr>
     </thead><tbody>`;
   RM_LIST.forEach(rm => {
     const s = stats[rm];
+    const rmId = rm.replace(/\s+/g,'_');
     html += `<tr>
       <td class="td-rm">${rm}</td>
-      <td>${s.active}</td>
-      <td class="${s.successful>0?'td-success':''}">${s.successful}</td>
-      <td class="${s.rejected>0?'td-reject':''}">${s.rejected}</td>
+      <td class="td-click" onclick="toggleOVPopList('${rmId}','active','${rm}')">${s.active}</td>
+      <td class="td-click ${s.successful>0?'td-success':''}" onclick="toggleOVPopList('${rmId}','successful','${rm}')">${s.successful}</td>
+      <td class="td-click ${s.rejected>0?'td-reject':''}" onclick="toggleOVPopList('${rmId}','rejected','${rm}')">${s.rejected}</td>
       <td class="td-grey">RM ${s.potential.toFixed(1)} Mn</td>
-    </tr>`;
+    </tr>
+    <tr id="ovpop-${rmId}-row" style="display:none;"><td colspan="5" style="padding:0 8px 10px;"><div class="row-poplist" id="ovpop-${rmId}-box"></div></td></tr>`;
   });
   html += '</tbody></table></div>';
 
@@ -2033,6 +2588,30 @@ function renderRMOverviewTable() {
     html += `<div style="margin-top:14px;font-size:12px;color:#4caf50;">No clients with multi-RM log history detected.</div>`;
   }
   document.getElementById('rmOverviewContainer').innerHTML = html;
+  ovContainer._clientsByRM = clientsByRM; // re-attach after innerHTML reset
+}
+
+function toggleOVPopList(rmId, type, rmName) {
+  const row = document.getElementById('ovpop-' + rmId + '-row');
+  const box = document.getElementById('ovpop-' + rmId + '-box');
+  if (!row || !box) return;
+  const container = document.getElementById('rmOverviewContainer');
+  const data = container?._clientsByRM || {};
+  // Close all other pop rows
+  container.querySelectorAll('[id^="ovpop-"][id$="-row"]').forEach(r => { if (r !== row) r.style.display = 'none'; });
+  if (row.style.display !== 'none' && row.dataset.activeType === type) { row.style.display = 'none'; return; }
+  const clients = (data[rmName] || {})[type] || [];
+  const typeLabel = {active:'Active Pipeline', successful:'Successful', rejected:'Rejected'}[type] || type;
+  const isSucc = type === 'successful';
+  let rows = clients.length
+    ? clients.sort((a,b) => a.name.localeCompare(b.name)).map(c =>
+        `<tr><td>${c.name}</td><td style="text-align:right;">${isSucc ? 'Injected: RM ' + c.injected.toFixed(1) + ' Mn' : 'Potential: RM ' + c.potential.toFixed(1) + ' Mn'}</td></tr>`
+      ).join('')
+    : '<tr><td colspan="2" style="text-align:center;color:var(--grey);">No clients.</td></tr>';
+  box.innerHTML = `<table><thead><tr><th>${rmName} — ${typeLabel} (${clients.length})</th><th style="text-align:right;">${isSucc?'Injected':'Potential'}</th></tr></thead><tbody>${rows}</tbody></table>`;
+  row.dataset.activeType = type;
+  row.style.display = '';
+  row.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 // ─── RM DRILLDOWN (with stale section) ───────────────────────────
@@ -2204,9 +2783,23 @@ function renderActivityTracker() {
     firstMeetingRMsByClient[key].rms.add(l.rm_name);
   });
   const sharedFirstMeetings = Object.values(firstMeetingRMsByClient).filter(c => c.rms.size > 1).sort((a,b) => a.displayName.localeCompare(b.displayName));
+
+  // Build per-RM per-month client lists for clickable cells
+  const clientsByRMMonth = {}; // { rm: { ytd: [], 0: [], 1: [], ... } }
+  RM_LIST.forEach(rm => { clientsByRMMonth[rm] = {ytd:[]}; for(let i=0;i<12;i++) clientsByRMMonth[rm][i]=[]; });
+  firstMeetings.forEach(l => {
+    const rm = l.rm_name; if (!clientsByRMMonth[rm]) return;
+    const dt = new Date(l.meeting_datetime);
+    if (inRange(l.meeting_datetime, ytd)) clientsByRMMonth[rm].ytd.push(l.client_name_manual||'—');
+    if (dt.getFullYear() === currentYear) clientsByRMMonth[rm][dt.getMonth()].push(l.client_name_manual||'—');
+  });
+
+  const actContainer = document.getElementById('activityContainer');
+  actContainer._fmClientsByRMMonth = clientsByRMMonth;
+
   let html = '';
   html += `<div style="font-size:12px;color:var(--grey);background:#f8f9fa;border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:16px;">
-    <strong style="color:var(--navy);">Note:</strong> Counts below reflect only logs tagged as <strong>First Meeting</strong>. Each client is counted once per RM at their earliest first-meeting date.
+    <strong style="color:var(--navy);">Note:</strong> Counts below reflect only logs tagged as <strong>First Meeting</strong>. Each client is counted once per RM at their earliest first-meeting date. <em>Click any number to see the client list.</em>
   </div>`;
   if (!hasData) html += '<div class="admin-note">First meeting counts will appear once RMs select "First Meeting" as the Meeting Type when logging new entries.</div>';
   html += `<div class="admin-table-wrap"><table class="admin-table"><thead>
@@ -2219,8 +2812,19 @@ function renderActivityTracker() {
   </thead><tbody>`;
   RM_LIST.forEach(rm => {
     const c = counts[rm];
-    const montCells = MONTH_NAMES.map((_,i) => `<td class="${c.months[i]>0?'td-hl':''}">${c.months[i]}</td>`).join('');
-    html += `<tr><td class="td-rm">${rm}</td><td class="${c.ytd>0?'td-hl':''}">${c.ytd}</td>${montCells}</tr>`;
+    const rmId = rm.replace(/\s+/g,'_');
+    const montCells = MONTH_NAMES.map((_,i) => {
+      const n = c.months[i];
+      return n > 0
+        ? `<td class="td-hl td-click" onclick="toggleFMPopList('${rmId}','m${i}','${rm}',${i})">${n}</td>`
+        : `<td>${n}</td>`;
+    }).join('');
+    const ytdN = c.ytd;
+    const ytdCell = ytdN > 0
+      ? `<td class="td-hl td-click" onclick="toggleFMPopList('${rmId}','ytd','${rm}',-1)">${ytdN}</td>`
+      : `<td>${ytdN}</td>`;
+    html += `<tr><td class="td-rm">${rm}</td>${ytdCell}${montCells}</tr>
+    <tr id="fmpop-${rmId}-row" style="display:none;"><td colspan="14" style="padding:0 8px 10px;"><div class="row-poplist" id="fmpop-${rmId}-box"></div></td></tr>`;
   });
   html += '</tbody></table></div>';
   if (sharedFirstMeetings.length) {
@@ -2247,6 +2851,27 @@ function renderActivityTracker() {
     html += `<div style="margin-top:14px;font-size:12px;color:#4caf50;">No clients with duplicate First Meeting tags detected.</div>`;
   }
   document.getElementById('activityContainer').innerHTML = html;
+  actContainer._fmClientsByRMMonth = clientsByRMMonth; // re-attach after innerHTML reset
+}
+
+function toggleFMPopList(rmId, slotKey, rmName, monthIdx) {
+  const row = document.getElementById('fmpop-' + rmId + '-row');
+  const box = document.getElementById('fmpop-' + rmId + '-box');
+  if (!row || !box) return;
+  const container = document.getElementById('activityContainer');
+  const data = container?._fmClientsByRMMonth || {};
+  container.querySelectorAll('[id^="fmpop-"][id$="-row"]').forEach(r => { if (r !== row) r.style.display = 'none'; });
+  if (row.style.display !== 'none' && row.dataset.slot === slotKey) { row.style.display = 'none'; return; }
+  const clients = monthIdx === -1 ? (data[rmName]?.ytd || []) : (data[rmName]?.[monthIdx] || []);
+  const MONTH_NAMES_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const label = monthIdx === -1 ? 'YTD' : MONTH_NAMES_FULL[monthIdx];
+  const rows = clients.length
+    ? [...new Set(clients)].sort().map(n => `<tr><td>${n}</td><td style="text-align:right;">First Meeting</td></tr>`).join('')
+    : '<tr><td colspan="2" style="text-align:center;color:var(--grey);">No first meetings.</td></tr>';
+  box.innerHTML = `<table><thead><tr><th>${rmName} — First Meetings · ${label} (${clients.length})</th><th style="text-align:right;">Type</th></tr></thead><tbody>${rows}</tbody></table>`;
+  row.dataset.slot = slotKey;
+  row.style.display = '';
+  row.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 // ─── CHAIRMAN SECTION ─────────────────────────────────────────────
@@ -2537,7 +3162,6 @@ function renderUpcomingByRM() {
   const container = document.getElementById('upcomingByRMContainer');
   if (!container) return;
   const currentYear = new Date().getFullYear();
-  const today = new Date(); today.setHours(0,0,0,0);
 
   if (!upcomingMeetingsData.length) {
     container.innerHTML = '<div class="admin-note">No upcoming meetings logged yet. Use the <strong>Upcoming Meetings</strong> tab to schedule future meetings.</div>';
@@ -2545,17 +3169,26 @@ function renderUpcomingByRM() {
   }
 
   const counts = {};
-  RM_LIST.forEach(rm => counts[rm] = {total:0, months:Array(12).fill(0)});
+  const clientsByRMMonth = {}; // { rm: { total:[], 0:[], 1:[], ... } }
+  RM_LIST.forEach(rm => {
+    counts[rm] = {total:0, months:Array(12).fill(0)};
+    clientsByRMMonth[rm] = {total:[]};
+    for(let i=0;i<12;i++) clientsByRMMonth[rm][i]=[];
+  });
   upcomingMeetingsData.forEach(m => {
     const rm = m.rm_name;
-    if (!counts[rm]) counts[rm] = {total:0, months:Array(12).fill(0)};
+    if (!counts[rm]) { counts[rm]={total:0,months:Array(12).fill(0)}; clientsByRMMonth[rm]={total:[]}; for(let i=0;i<12;i++) clientsByRMMonth[rm][i]=[]; }
     const d = new Date(m.meeting_date + 'T00:00:00');
-    if (d.getFullYear() === currentYear) counts[rm].months[d.getMonth()]++;
+    const cl = {name: m.client_name||'—', date: m.meeting_date, purpose: m.purpose||''};
+    if (d.getFullYear() === currentYear) { counts[rm].months[d.getMonth()]++; clientsByRMMonth[rm][d.getMonth()].push(cl); }
     counts[rm].total++;
+    clientsByRMMonth[rm].total.push(cl);
   });
 
+  container._upClientsByRMMonth = clientsByRMMonth;
+
   let html = `<div style="font-size:12px;color:var(--grey);background:#f8f9fa;border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:16px;">
-    <strong style="color:var(--navy);">Note:</strong> Shows all scheduled meetings (including past-dated) logged in the <strong>Upcoming Meetings</strong> tab, counted by RM per month. Use this to compare scheduled vs actual meetings.
+    <strong style="color:var(--navy);">Note:</strong> Shows all scheduled meetings logged in the <strong>Upcoming Meetings</strong> tab, counted by RM per month. <em>Click any number to see the client list.</em>
   </div>`;
   html += `<div class="admin-table-wrap"><table class="admin-table"><thead>
     <tr>
@@ -2567,11 +3200,45 @@ function renderUpcomingByRM() {
   </thead><tbody>`;
   RM_LIST.forEach(rm => {
     const c = counts[rm];
-    const monthCells = MONTH_LABELS.map((_,i) => `<td class="${c.months[i]>0?'td-hl':''}">${c.months[i]||0}</td>`).join('');
-    html += `<tr><td class="td-rm">${rm}</td><td class="${c.total>0?'td-hl':''}">${c.total}</td>${monthCells}</tr>`;
+    const rmId = rm.replace(/\s+/g,'_');
+    const monthCells = MONTH_LABELS.map((_,i) => {
+      const n = c.months[i]||0;
+      return n > 0
+        ? `<td class="td-hl td-click" onclick="toggleUPPopList('${rmId}','m${i}','${rm}',${i})">${n}</td>`
+        : `<td>${n}</td>`;
+    }).join('');
+    const tot = c.total;
+    const totCell = tot > 0
+      ? `<td class="td-hl td-click" onclick="toggleUPPopList('${rmId}','total','${rm}',-1)">${tot}</td>`
+      : `<td>${tot}</td>`;
+    html += `<tr><td class="td-rm">${rm}</td>${totCell}${monthCells}</tr>
+    <tr id="uppop-${rmId}-row" style="display:none;"><td colspan="14" style="padding:0 8px 10px;"><div class="row-poplist" id="uppop-${rmId}-box"></div></td></tr>`;
   });
   html += '</tbody></table></div>';
   container.innerHTML = html;
+  container._upClientsByRMMonth = clientsByRMMonth; // re-attach after innerHTML reset
+}
+
+function toggleUPPopList(rmId, slotKey, rmName, monthIdx) {
+  const container = document.getElementById('upcomingByRMContainer');
+  const row = document.getElementById('uppop-' + rmId + '-row');
+  const box = document.getElementById('uppop-' + rmId + '-box');
+  if (!row || !box) return;
+  const data = container?._upClientsByRMMonth || {};
+  container.querySelectorAll('[id^="uppop-"][id$="-row"]').forEach(r => { if (r !== row) r.style.display = 'none'; });
+  if (row.style.display !== 'none' && row.dataset.slot === slotKey) { row.style.display = 'none'; return; }
+  const clients = monthIdx === -1 ? (data[rmName]?.total || []) : (data[rmName]?.[monthIdx] || []);
+  const MONTH_NAMES_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const label = monthIdx === -1 ? 'All' : MONTH_NAMES_FULL[monthIdx];
+  const rows = clients.length
+    ? clients.sort((a,b) => a.name.localeCompare(b.name)).map(c =>
+        `<tr><td>${c.name}</td><td style="text-align:right;color:var(--grey);font-size:11px;">${c.date}${c.purpose ? ' · ' + c.purpose : ''}</td></tr>`
+      ).join('')
+    : '<tr><td colspan="2" style="text-align:center;color:var(--grey);">No meetings.</td></tr>';
+  box.innerHTML = `<table><thead><tr><th>${rmName} — Upcoming Meetings · ${label} (${clients.length})</th><th style="text-align:right;">Date / Purpose</th></tr></thead><tbody>${rows}</tbody></table>`;
+  row.dataset.slot = slotKey;
+  row.style.display = '';
+  row.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 // Upcoming meetings for RM Drilldown panel
