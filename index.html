@@ -264,6 +264,8 @@
     .irr-client-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
     .irr-client-table td:last-child { text-align: right; font-weight: 600; color: var(--navy); }
     .irr-client-table tr:last-child td { border-bottom: none; }
+    .irr-month-row:hover { background: #FFF8E6 !important; }
+    .irr-month-row.irr-active td { background: #FFF3CD; font-weight: 700; }
     /* Injection Progress bars */
     .inj-prog-overall { background:#F8F9FA; border:1.5px solid var(--border); border-radius:10px; padding:16px 18px; margin-bottom:16px; }
     .inj-prog-overall-label { font-size:12px; font-weight:700; color:var(--navy); margin-bottom:10px; }
@@ -478,6 +480,100 @@
     .rm-chip.owner-chip { background:var(--navy); color:var(--white); }
     .owner-modal-inner { background:var(--white); border-radius:16px; padding:32px; max-width:420px; width:90%; box-shadow:0 16px 48px rgba(0,0,0,0.25); }
     .owner-modal-inner h2 { font-size:18px; font-weight:700; color:var(--navy); margin-bottom:6px; }
+
+    /* ─── CC TRACKER TAB ──────────────────────────────────────── */
+    .cc-tracker-panel { background: #F4F6FA; padding: 0; border-radius: var(--radius); min-height: 400px; }
+    .cc-sub-tabs { background: #fff; border-bottom: 2px solid #e2e8f0; padding: 0 20px; display: flex; gap: 0; }
+    .cc-tab-btn { padding: 12px 24px; border: none; background: none; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all .2s; }
+    .cc-tab-btn.active { color: #1A2B5F; border-bottom-color: #FFBF00; }
+    .cc-tab-btn:hover { color: #1A2B5F; }
+    .cc-tab-content { display: none; padding: 20px; }
+    .cc-tab-content.active { display: block; }
+    .cc-ov-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
+    .cc-ov-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 6px rgba(0,0,0,.07); border-top: 4px solid #1A2B5F; cursor: pointer; transition: all .2s; }
+    .cc-ov-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.12); }
+    .cc-ov-card.gold { border-top-color: #FFBF00; } .cc-ov-card.green { border-top-color: #27AE60; } .cc-ov-card.blue { border-top-color: #1565C0; } .cc-ov-card.red { border-top-color: #C0392B; }
+    .cc-ov-card-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: #64748b; margin-bottom: 6px; }
+    .cc-ov-card-value { font-size: 22px; font-weight: 800; color: #1A2B5F; line-height: 1.1; margin-bottom: 8px; }
+    .cc-ov-pct-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 10px; }
+    .cc-pct-green { background: #dcfce7; color: #15803d; } .cc-pct-amber { background: #fef3c7; color: #92400e; } .cc-pct-red { background: #fee2e2; color: #991b1b; } .cc-pct-blue { background: #dbeafe; color: #1e40af; }
+    .cc-ov-breakdown { margin-top: 6px; }
+    .cc-ov-breakdown-row { display: flex; justify-content: space-between; font-size: 11px; color: #64748b; padding: 2px 0; border-bottom: 1px solid #f1f5f9; }
+    .cc-ov-breakdown-row:last-child { border-bottom: none; }
+    .cc-ov-breakdown-name { font-weight: 600; color: #1A2B5F; }
+    .cc-ov-batch-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .cc-ov-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; cursor: pointer; transition: opacity .2s; }
+    .cc-ov-chip:hover { opacity: .8; } .cc-ov-chip.b1 { background: #FFBF00; color: #1A2B5F; } .cc-ov-chip.b2 { background: #1A2B5F; color: #fff; }
+    .cc-ov-sub { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .cc-tl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .cc-tl-card { background: #1A2B5F; border-radius: 12px; padding: 20px 24px; color: #fff; display: flex; gap: 20px; align-items: flex-start; }
+    .cc-tl-days-num { font-size: 52px; font-weight: 800; color: #FFBF00; line-height: 1; min-width: 70px; flex-shrink: 0; }
+    .cc-tl-days-lbl { font-size: 11px; color: #a0aec0; margin-top: 4px; }
+    .cc-tl-right { flex: 1; } .cc-tl-batch-name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 2px; } .cc-tl-deploy-date { font-size: 11px; color: #a0aec0; margin-bottom: 12px; }
+    .cc-tl-mini-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .cc-tl-mini-stat { background: rgba(255,255,255,.08); border-radius: 8px; padding: 8px 10px; }
+    .cc-tl-mini-stat-val { font-size: 18px; font-weight: 700; color: #FFBF00; } .cc-tl-mini-stat-lbl { font-size: 10px; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; }
+    .cc-tl-progress-wrap { position: relative; background: rgba(255,255,255,.15); height: 12px; border-radius: 10px; overflow: visible; margin-top: 8px; }
+    .cc-tl-progress-fill { height: 100%; border-radius: 10px; background: #FFBF00; transition: width .6s ease; }
+    .cc-tl-progress-marker { position: absolute; top: -16px; width: 2px; background: #fff; height: 28px; border-radius: 1px; }
+    .cc-tl-progress-marker-lbl { position: absolute; top: -28px; transform: translateX(-50%); font-size: 9px; color: #fff; white-space: nowrap; background: rgba(0,0,0,.4); padding: 1px 4px; border-radius: 3px; }
+    .cc-kpi-gauges { display: flex; gap: 16px; margin-bottom: 24px; }
+    .cc-kpi-gauge-card { background: #fff; border-radius: 12px; padding: 24px; flex: 1; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
+    .cc-kpi-gauge-num { font-size: 42px; font-weight: 800; color: #1A2B5F; line-height: 1; }
+    .cc-kpi-gauge-sub { font-size: 11px; color: #94a3b8; margin-top: 4px; margin-bottom: 14px; }
+    .cc-kpi-gauge-track { background: #e2e8f0; height: 12px; border-radius: 10px; position: relative; overflow: visible; margin-bottom: 6px; }
+    .cc-kpi-gauge-fill { height: 100%; border-radius: 10px; transition: width .6s ease; }
+    .cc-kpi-gauge-marker { position: absolute; top: -14px; width: 2px; background: #1A2B5F; height: 26px; border-radius: 1px; }
+    .cc-kpi-gauge-marker-lbl { position: absolute; top: -26px; transform: translateX(-50%); font-size: 9px; color: #1A2B5F; white-space: nowrap; background: #e2e8f0; padding: 1px 4px; border-radius: 3px; font-weight: 700; }
+    .cc-kpi-gauge-label { font-size: 13px; font-weight: 700; color: #1A2B5F; margin-bottom: 8px; }
+    .cc-gauge-fill-green { background: #27AE60; } .cc-gauge-fill-amber { background: #F39C12; } .cc-gauge-fill-red { background: #C0392B; }
+    .cc-filter-bar { background: #fff; border-radius: 12px; padding: 14px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+    .cc-filter-label { font-size: 12px; font-weight: 600; color: #64748b; }
+    .cc-batch-toggle { display: flex; gap: 4px; }
+    .cc-batch-btn { padding: 6px 16px; border-radius: 20px; border: 2px solid #e2e8f0; background: #fff; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s; color: #64748b; }
+    .cc-batch-btn.active { background: #1A2B5F; border-color: #1A2B5F; color: #fff; }
+    .cc-batch-btn:hover:not(.active) { border-color: #1A2B5F; color: #1A2B5F; }
+    .cc-table-wrap { background: #fff; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,.07); overflow: hidden; margin-bottom: 28px; }
+    .cc-table-scroll { overflow-x: auto; }
+    .cc-table { width: 100%; border-collapse: collapse; }
+    .cc-table thead th { background: #F4F6FA; padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: #64748b; white-space: nowrap; border-bottom: 2px solid #e2e8f0; }
+    .cc-table tbody tr { border-bottom: 1px solid #f1f5f9; transition: background .15s; }
+    .cc-table tbody tr:hover { background: #f8fafc; } .cc-table tbody tr:last-child { border-bottom: none; }
+    .cc-table tbody td { padding: 10px 14px; font-size: 13px; color: #1A2B5F; vertical-align: middle; }
+    .cc-table tfoot td { padding: 10px 14px; font-size: 13px; font-weight: 700; background: #F4F6FA; }
+    .cc-table .clickable-cell { cursor: pointer; text-decoration: underline; text-decoration-style: dotted; transition: background .15s; border-radius: 4px; }
+    .cc-table .clickable-cell:hover { background: #dbeafe; }
+    .cc-table-note { font-size: 11px; color: #94a3b8; padding: 10px 20px; background: #fff; border-top: 1px solid #f1f5f9; font-style: italic; }
+    .cc-status-pill { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
+    .cc-pill-green { background: #dcfce7; color: #15803d; } .cc-pill-amber { background: #fef3c7; color: #92400e; } .cc-pill-red { background: #fee2e2; color: #991b1b; }
+    .cc-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; white-space: nowrap; }
+    .cc-badge-met { background: #dcfce7; color: #15803d; } .cc-badge-met-sub { background: #bbf7d0; color: #166534; }
+    .cc-badge-existing { background: #dbeafe; color: #1e40af; } .cc-badge-top-up { background: #e0e7ff; color: #3730a3; }
+    .cc-badge-injected { background: #fef3c7; color: #92400e; } .cc-badge-accepted { background: #fef9c3; color: #854d0e; }
+    .cc-badge-pending { background: #f3e8ff; color: #6b21a8; } .cc-badge-rejected { background: #fee2e2; color: #991b1b; }
+    .cc-badge-b1 { background: #FFBF00; color: #1A2B5F; font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 700; }
+    .cc-badge-b2 { background: #1A2B5F; color: #fff; font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 700; }
+    .cc-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .cc-drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .cc-drawer-panel { position: fixed; top: 0; right: 0; width: 520px; max-width: 95vw; height: 100vh; background: #fff; z-index: 1001; transform: translateX(100%); transition: transform .3s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; box-shadow: -8px 0 30px rgba(0,0,0,.15); }
+    .cc-drawer-panel.open { transform: translateX(0); }
+    .cc-drawer-header { padding: 20px 24px; background: #1A2B5F; color: #fff; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+    .cc-drawer-title { font-size: 15px; font-weight: 700; flex: 1; margin-right: 12px; }
+    .cc-drawer-badge { background: #FFBF00; color: #1A2B5F; font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 20px; flex-shrink: 0; }
+    .cc-drawer-close-btn { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: background .2s; flex-shrink: 0; margin-left: 8px; }
+    .cc-drawer-close-btn:hover { background: rgba(255,255,255,.2); }
+    .cc-drawer-body { flex: 1; overflow-y: auto; padding: 16px; }
+    .cc-drawer-item { padding: 14px 16px; border-radius: 10px; margin-bottom: 10px; background: #F4F6FA; border: 1px solid #e2e8f0; }
+    .cc-drawer-item-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
+    .cc-drawer-num { font-size: 11px; color: #94a3b8; font-weight: 600; min-width: 24px; padding-top: 2px; flex-shrink: 0; }
+    .cc-drawer-company { font-size: 14px; font-weight: 700; color: #1A2B5F; }
+    .cc-drawer-badges { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 4px; }
+    .cc-drawer-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+    .cc-drawer-meta-item { font-size: 11px; color: #64748b; }
+    .cc-drawer-meta-item strong { color: #1A2B5F; }
+    .cc-drawer-remarks { font-size: 11px; color: #94a3b8; font-style: italic; margin-top: 6px; }
+    @media(max-width:900px){.cc-ov-grid{grid-template-columns:repeat(2,1fr)}.cc-tl-grid{grid-template-columns:1fr}.cc-kpi-gauges{flex-direction:column}}
+    @media(max-width:768px){.cc-tab-content{padding:16px}.cc-ov-grid{grid-template-columns:1fr}.cc-drawer-panel{width:100vw}}
   </style>
 </head>
 <body>
@@ -669,6 +765,7 @@
       Upcoming Meetings <span class="tab-count" id="tabUpcomingCount">&#8212;</span>
     </button>
     <button class="tab-btn" id="tab-admin" onclick="switchTab('admin')">Admin</button>
+    <button class="tab-btn" id="tab-cc" onclick="switchTab('cc')">MSII Command Council</button>
   </div>
 
   <!-- TAB 1: LOG MEETING -->
@@ -1148,6 +1245,86 @@
       </div>
     </div>
   </div>
+
+  <!-- TAB 5: MSII COMMAND COUNCIL -->
+  <div class="tab-panel" id="panel-cc">
+    <div id="cc-pin-screen" class="pin-screen">
+      <div class="pin-card">
+        <h2>MSII Command Council</h2>
+        <p>Enter your PIN to view this dashboard.</p>
+        <input type="password" id="ccPinInput" maxlength="4" placeholder="&#8226;&#8226;&#8226;&#8226;"
+          oninput="clearCCPinError()" onkeydown="if(event.key==='Enter')submitCCPin()" inputmode="numeric" />
+        <div class="pin-error" id="ccPinError">Incorrect PIN. Please try again.</div>
+        <button class="btn-unlock" onclick="submitCCPin()">Unlock</button>
+      </div>
+    </div>
+    <div id="cc-content" style="display:none;">
+    <div class="cc-tracker-panel">
+      <div class="cc-sub-tabs">
+        <button class="cc-tab-btn active" onclick="ccSwitchTab('overview',0)">Overview</button>
+        <button class="cc-tab-btn" onclick="ccSwitchTab('cc',1)">CC Productivity</button>
+        <button class="cc-tab-btn" onclick="ccSwitchTab('rm',2)">RM Productivity</button>
+      </div>
+      <!-- CC OVERVIEW -->
+      <div class="cc-tab-content active" id="cct-overview">
+        <div class="cc-ov-grid" id="cc-ov-grid"></div>
+        <div class="cc-tl-grid" id="cc-tl-grid"></div>
+      </div>
+      <!-- CC PRODUCTIVITY -->
+      <div class="cc-tab-content" id="cct-cc">
+        <div class="cc-kpi-gauges" id="cct-cc-gauges"></div>
+        <div class="cc-filter-bar">
+          <span class="cc-filter-label">Batch:</span>
+          <div class="cc-batch-toggle" id="cct-cc-batch-toggle">
+            <button class="cc-batch-btn active" onclick="setCCBatch2('all',this)">All Batches</button>
+            <button class="cc-batch-btn" onclick="setCCBatch2('b1',this)">Batch 1</button>
+            <button class="cc-batch-btn" onclick="setCCBatch2('b2',this)">Batch 2</button>
+          </div>
+        </div>
+        <div class="cc-table-wrap">
+          <div class="cc-table-scroll">
+            <table class="cc-table">
+              <thead><tr>
+                <th>CC MD</th><th>Targeted</th><th>Leads Accepted</th>
+                <th>Acceptance Rate %</th><th>Meetings Attended</th>
+                <th>Meeting Rate %</th><th>Status</th>
+              </tr></thead>
+              <tbody id="cct-cc-tbody"></tbody>
+              <tfoot id="cct-cc-tfoot"></tfoot>
+            </table>
+          </div>
+          <div class="cc-table-note">Acceptance Rate target: 75% &nbsp;|&nbsp; Meeting Rate target: 100%</div>
+        </div>
+      </div>
+      <!-- RM PRODUCTIVITY -->
+      <div class="cc-tab-content" id="cct-rm">
+        <div class="cc-kpi-gauges" id="cct-rm-gauges"></div>
+        <div class="cc-filter-bar">
+          <span class="cc-filter-label">Batch:</span>
+          <div class="cc-batch-toggle" id="cct-rm-batch-toggle">
+            <button class="cc-batch-btn active" onclick="setRMBatch2('all',this)">All Batches</button>
+            <button class="cc-batch-btn" onclick="setRMBatch2('b1',this)">Batch 1</button>
+            <button class="cc-batch-btn" onclick="setRMBatch2('b2',this)">Batch 2</button>
+          </div>
+        </div>
+        <div class="cc-table-wrap">
+          <div class="cc-table-scroll">
+            <table class="cc-table">
+              <thead><tr>
+                <th>MAMG RM</th><th>Meetings Attended</th><th>Converted</th>
+                <th>Conversion Rate %</th><th>Injection AUM</th><th>Status</th>
+              </tr></thead>
+              <tbody id="cct-rm-tbody"></tbody>
+              <tfoot id="cct-rm-tfoot"></tfoot>
+            </table>
+          </div>
+          <div class="cc-table-note">Note: All injection AUM data is Batch 1 only</div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /cc-content -->
+  </div>
+
 </div>
 
 <!-- Change Owner Modal -->
@@ -1172,6 +1349,17 @@
       <button onclick="closeChangeOwnerModal()" style="padding:13px 20px;background:var(--grey-lt);color:var(--grey);font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;border:none;border-radius:10px;cursor:pointer;">Cancel</button>
     </div>
   </div>
+</div>
+
+<!-- CC Tracker Drawer -->
+<div class="cc-drawer-overlay" id="cc-drawer-overlay" onclick="ccCloseDrawer()"></div>
+<div class="cc-drawer-panel" id="cc-drawer-panel">
+  <div class="cc-drawer-header">
+    <div class="cc-drawer-title" id="cc-drawer-title">Companies</div>
+    <div class="cc-drawer-badge" id="cc-drawer-badge">0</div>
+    <button class="cc-drawer-close-btn" onclick="ccCloseDrawer()">&#x2715;</button>
+  </div>
+  <div class="cc-drawer-body" id="cc-drawer-body"></div>
 </div>
 
 <script>
@@ -1228,6 +1416,15 @@ async function loadPotentialClients() {
       .select('client_name, segment, gb_cbd, msii_command_council, source').order('client_name');
     if (error) throw error;
     potentialClientsData = data || [];
+    // Supplement with Batch 2 companies not already in the Supabase list
+    const existingNames = new Set(potentialClientsData.map(c => c.client_name.toUpperCase()));
+    CCT_BATCH2.forEach(d => {
+      if (!existingNames.has(d.company.toUpperCase())) {
+        potentialClientsData.push({client_name: d.company, segment: '', gb_cbd: 'MSII', msii_command_council: true});
+        existingNames.add(d.company.toUpperCase());
+      }
+    });
+    potentialClientsData.sort((a, b) => a.client_name.localeCompare(b.client_name));
   } catch(err) {
     console.error('Failed to load clients:', err);
     showToast('Could not load client list from database.', 'error');
@@ -1247,7 +1444,7 @@ function filterCompanies() {
   const filtered = q.length === 0 ? potentialClientsData.slice(0,50) : potentialClientsData.filter(c => c.client_name.toLowerCase().includes(q));
   let html = '';
   filtered.forEach(c => {
-    const badge = c.gb_cbd === 'GB' ? `<span class="badge-new">GB</span>` : `<span class="badge-existing">CBD</span>`;
+    const badge = c.gb_cbd === 'GB' ? `<span class="badge-new">GB</span>` : c.gb_cbd === 'MSII' ? `<span class="badge-existing" style="background:#EEF2FF;color:var(--navy);">MSII B2</span>` : `<span class="badge-existing">CBD</span>`;
     const seg = c.segment ? `<span style="font-size:10px;color:var(--grey);">${c.segment}</span>` : '';
     html += `<div class="dropdown-item" onmousedown="selectClient('${esc(c.client_name)}','${esc(c.segment||'')}',${c.msii_command_council?'true':'false'})">
       <span style="flex:1;">${highlight(c.client_name,q)}</span>${seg}${badge}
@@ -1437,7 +1634,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ─── TAB SWITCHING ───────────────────────────────────────────────
 function switchTab(tab) {
-  if (!rmUnlocked && tab !== 'admin') tab = 'log';
+  if (!rmUnlocked && tab !== 'admin' && tab !== 'cc') tab = 'log';
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
@@ -1445,6 +1642,7 @@ function switchTab(tab) {
   if (tab === 'clients')  loadClientStatuses();
   if (tab === 'upcoming') loadUpcomingMeetings();
   if (tab === 'admin')    checkAdminAccess();
+  if (tab === 'cc')       checkCCAccess();
 }
 let calCurrentYear = new Date().getFullYear();
 let calCurrentMonth = new Date().getMonth();
@@ -1813,6 +2011,7 @@ function clearRMPinError() { document.getElementById('rmPinError').style.display
 
 // ─── ADMIN PIN ───────────────────────────────────────────────────
 const ADMIN_PIN_HASH = '158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab';
+let adminUnlocked = false;
 async function hashPin(pin) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
@@ -1822,6 +2021,7 @@ async function submitPin() {
   if (!pin) { showPinError('Please enter your PIN.'); return; }
   const hash = await hashPin(pin);
   if (hash === ADMIN_PIN_HASH) {
+    adminUnlocked = true;
     document.getElementById('pinScreen').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
     loadAdminDashboard();
@@ -1835,12 +2035,51 @@ async function submitPin() {
 function showPinError(msg) { const e=document.getElementById('pinError'); e.textContent=msg; e.style.display='block'; }
 function clearPinError() { document.getElementById('pinError').style.display='none'; }
 function checkAdminAccess() {
+  if (adminUnlocked) {
+    document.getElementById('pinScreen').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    loadAdminDashboard();
+    return;
+  }
   document.getElementById('pinScreen').style.display='flex';
   document.getElementById('adminContent').style.display='none';
   document.getElementById('pinInput').value='';
   document.getElementById('pinError').style.display='none';
   setTimeout(() => document.getElementById('pinInput').focus(), 150);
 }
+
+// ─── MSII COMMAND COUNCIL PIN ─────────────────────────────────────
+function checkCCAccess() {
+  if (adminUnlocked) {
+    document.getElementById('cc-pin-screen').style.display = 'none';
+    document.getElementById('cc-content').style.display = 'block';
+    ccInitTracker();
+    return;
+  }
+  document.getElementById('cc-pin-screen').style.display = 'flex';
+  document.getElementById('cc-content').style.display = 'none';
+  document.getElementById('ccPinInput').value = '';
+  document.getElementById('ccPinError').style.display = 'none';
+  setTimeout(() => document.getElementById('ccPinInput').focus(), 150);
+}
+async function submitCCPin() {
+  const pin = document.getElementById('ccPinInput').value;
+  if (!pin) { showCCPinError('Please enter your PIN.'); return; }
+  const hash = await hashPin(pin);
+  if (hash === ADMIN_PIN_HASH) {
+    adminUnlocked = true;
+    document.getElementById('cc-pin-screen').style.display = 'none';
+    document.getElementById('cc-content').style.display = 'block';
+    ccInitTracker();
+  } else {
+    showCCPinError('Incorrect PIN. Please try again.');
+    document.getElementById('ccPinInput').value = '';
+    document.getElementById('ccPinInput').classList.add('pin-shake');
+    setTimeout(() => document.getElementById('ccPinInput').classList.remove('pin-shake'), 500);
+  }
+}
+function showCCPinError(msg) { const e=document.getElementById('ccPinError'); e.textContent=msg; e.style.display='block'; }
+function clearCCPinError() { document.getElementById('ccPinError').style.display='none'; }
 
 // ─── ADMIN DATA ───────────────────────────────────────────────────
 let adminAllLogs = [];
@@ -1854,7 +2093,7 @@ async function loadAdminDashboard() {
   try {
     const [{data:logs, error}, {data:upcoming, error:upErr}] = await Promise.all([
       _sb.from('meeting_logs')
-        .select('id, rm_name, client_name_manual, msii_command_council, segment, referral, product_fund, status, potential_size_rm_mn, meeting_datetime, injected_amount, injection_date, meeting_type, no_meeting_today, updated_at, client_type, potential_injection_month')
+        .select('id, rm_name, client_name_manual, msii_command_council, segment, referral, product_fund, status, potential_size_rm_mn, meeting_datetime, injected_amount, injection_date, meeting_type, no_meeting_today, updated_at, client_type, potential_injection_month, remarks')
         .not('no_meeting_today', 'is', true)
         .order('meeting_datetime', {ascending:false}),
       _sb.from('upcoming_meetings')
@@ -1972,14 +2211,12 @@ function renderInjectionRunRate() {
   function buildClientRows(arr, key) {
     if (!arr.length) return '<tr><td colspan="4" style="text-align:center;color:var(--grey);padding:12px;">No clients in this bucket.</td></tr>';
     return arr.sort((a,b) => (a.client_name_manual||'').localeCompare(b.client_name_manual||'')).map(l => {
-      const typeBadge = l.client_type
-        ? `<span class="${l.client_type==='New'?'type-new':'type-existing'}">${l.client_type}</span>`
-        : '<span style="color:var(--grey);font-size:11px;">—</span>';
+      const remarksTxt = l.remarks ? (l.remarks.length > 60 ? l.remarks.substring(0,60)+'…' : l.remarks) : '—';
       const pot = parseFloat(l.potential_size_rm_mn)||0;
       return `<tr data-rm="${l.rm_name||''}" data-pot="${pot}">
         <td style="text-align:left;font-weight:600;color:var(--navy);">${l.client_name_manual||'—'}</td>
         <td style="text-align:left;">${l.rm_name||'—'}</td>
-        <td>${typeBadge}</td>
+        <td style="text-align:left;color:var(--grey);white-space:normal;line-height:1.4;">${remarksTxt}</td>
         <td style="text-align:right;">${fmtMn(pot)}</td>
       </tr>`;
     }).join('');
@@ -2012,7 +2249,7 @@ function renderInjectionRunRate() {
       </div>
       <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;overflow-x:auto;">
         <table class="irr-client-table">
-          <thead><tr><th>Client</th><th>RM</th><th>Type</th><th style="text-align:right;">Potential</th></tr></thead>
+          <thead><tr><th>Client</th><th>RM</th><th style="text-align:left;">Remarks</th><th style="text-align:right;">Potential</th></tr></thead>
           <tbody id="irr-tbody-${key}">${buildClientRows(arr, key)}</tbody>
           <tfoot><tr style="background:#FFF8E6;"><td colspan="3" style="font-weight:700;color:var(--navy);padding:7px 12px;">Total</td><td id="irr-tfoot-${key}" style="text-align:right;font-weight:700;color:var(--navy);padding:7px 12px;">${fmtMn(sumPot(arr))}</td></tr></tfoot>
         </table>
@@ -2024,43 +2261,102 @@ function renderInjectionRunRate() {
     </div>`;
   }
 
-  let html = `<div class="irr-grid">
-    <div class="irr-card irr-new" onclick="toggleIRRDrawer('new')">
-      <div class="irr-num irr-new-col">${fmtMn(sumPot(newClients))}</div>
-      <div class="irr-lbl">New Clients</div>
-      <div class="irr-sub">${newClients.length} client${newClients.length!==1?'s':''}</div>
+  // Current month new/existing breakdown
+  const currMonthNewClients   = currMonthClients.filter(l => l.client_type === 'New');
+  const currMonthExistClients = currMonthClients.filter(l => l.client_type === 'Existing');
+
+  // Future months: next month → December, individual buckets
+  const futureMonths = [];
+  for (let m = now.getMonth() + 1; m <= 11; m++) {
+    const mn = FULL_MONTHS[m];
+    const mc = pipeline.filter(l => l.potential_injection_month === mn);
+    futureMonths.push({ name: mn, key: 'month-' + mn, clients: mc, pot: sumPot(mc) });
+  }
+  const futureTotal        = futureMonths.reduce((s, fm) => s + fm.pot, 0) + sumPot(noMonthClients);
+  const futureTotalClients = futureMonths.reduce((s, fm) => s + fm.clients.length, 0) + noMonthClients.length;
+
+  const futureMonthRows = futureMonths.map(fm => {
+    const clickable = fm.clients.length > 0;
+    return `<tr id="irr-card-${fm.key}" class="irr-month-row" ${clickable ? `onclick="toggleIRRDrawer('${fm.key}')" style="cursor:pointer;"` : 'style="opacity:0.5;"'}>
+      <td style="padding:8px 12px;font-weight:600;color:var(--navy);">${fm.name}</td>
+      <td style="padding:8px 12px;text-align:right;font-weight:600;color:${fm.pot > 0 ? 'var(--navy)' : 'var(--grey)'};">${fm.pot > 0 ? fmtMn(fm.pot) : '—'}</td>
+      <td style="padding:8px 12px;text-align:center;color:var(--grey);">${fm.clients.length || '—'}</td>
+    </tr>`;
+  }).join('');
+
+  const noMonthRow = noMonthClients.length ? `<tr id="irr-card-month-none" class="irr-month-row" onclick="toggleIRRDrawer('month-none')" style="cursor:pointer;border-top:2px dashed var(--border);">
+    <td style="padding:8px 12px;font-weight:600;color:var(--grey);font-style:italic;">No Month Set</td>
+    <td style="padding:8px 12px;text-align:right;color:var(--grey);">${fmtMn(sumPot(noMonthClients))}</td>
+    <td style="padding:8px 12px;text-align:center;color:var(--grey);">${noMonthClients.length}</td>
+  </tr>` : '';
+
+  const futureMonthDrawers = futureMonths.filter(fm => fm.clients.length > 0).map(fm => drawerHTML(fm.key, fm.name, fm.clients)).join('');
+  const noMonthDrawer      = noMonthClients.length ? drawerHTML('month-none', 'No Month Assigned', noMonthClients) : '';
+
+  let html = `
+  <div style="background:var(--navy);color:var(--white);border-radius:10px;padding:16px 22px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <div>
+      <div style="font-size:10px;font-weight:700;opacity:0.65;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Total Potential Injection — Active Pipeline</div>
+      <div style="font-size:30px;font-weight:700;line-height:1;">${fmtMn(totPot)}</div>
     </div>
-    <div class="irr-card irr-exist" onclick="toggleIRRDrawer('existing')">
-      <div class="irr-num irr-exist-col">${fmtMn(sumPot(existingClients))}</div>
-      <div class="irr-lbl">Existing Clients</div>
-      <div class="irr-sub">${existingClients.length} client${existingClients.length!==1?'s':''}</div>
-    </div>
-    <div class="irr-card irr-curr" onclick="toggleIRRDrawer('curr')">
-      <div class="irr-num">${fmtMn(currPot)}</div>
-      <div class="irr-lbl">${currMonthName}</div>
-      <div class="irr-sub">${currMonthClients.length} client${currMonthClients.length!==1?'s':''}</div>
-    </div>
-    <div class="irr-card irr-next" onclick="toggleIRRDrawer('next')">
-      <div class="irr-num">${fmtMn(nextPot)}</div>
-      <div class="irr-lbl">${nextMonthName}</div>
-      <div class="irr-sub">${nextMonthClients.length} client${nextMonthClients.length!==1?'s':''}</div>
-    </div>
-    <div class="irr-card irr-rem" onclick="toggleIRRDrawer('remain')">
-      <div class="irr-num">${fmtMn(remainPot)}</div>
-      <div class="irr-lbl">Remaining Months</div>
-      <div class="irr-sub">${allRemainClients.length} client${allRemainClients.length!==1?'s':''}</div>
+    <div style="text-align:right;font-size:12px;opacity:0.8;line-height:1.6;">
+      <div>${pipeline.length} client${pipeline.length!==1?'s':''} in pipeline</div>
+      <div style="font-size:10px;opacity:0.65;">Excludes Successful, Rejected &amp; Stale</div>
     </div>
   </div>
-  <div style="font-size:11px;color:var(--grey);margin-bottom:10px;">
-    Total pipeline: <strong style="color:var(--navy);">${pipeline.length} clients · ${fmtMn(totPot)}</strong>
-    &nbsp;·&nbsp; Clients with no injection month assigned are counted in <em>Remaining Months</em>
-    &nbsp;·&nbsp; Excludes Successful, Rejected &amp; Stale
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+    <div class="irr-card irr-curr" id="irr-card-curr" onclick="toggleIRRDrawer('curr')" style="text-align:left;padding:16px 18px;">
+      <div style="font-size:10px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;">Current Month</div>
+      <div style="font-size:16px;font-weight:700;color:var(--navy);">${currMonthName}</div>
+      <div style="font-size:24px;font-weight:700;color:var(--navy);margin:4px 0;">${fmtMn(currPot)}</div>
+      <div style="font-size:11px;color:var(--grey);">${currMonthClients.length} client${currMonthClients.length!==1?'s':''}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;">
+        <div class="irr-card irr-new" id="irr-card-curr-new" onclick="event.stopPropagation();toggleIRRDrawer('curr-new')" style="padding:10px;text-align:center;">
+          <div style="font-size:10px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">New</div>
+          <div style="font-size:16px;font-weight:700;color:#2A9D5C;">${fmtMn(sumPot(currMonthNewClients))}</div>
+          <div style="font-size:10px;color:var(--grey);margin-top:2px;">${currMonthNewClients.length} client${currMonthNewClients.length!==1?'s':''}</div>
+        </div>
+        <div class="irr-card irr-exist" id="irr-card-curr-exist" onclick="event.stopPropagation();toggleIRRDrawer('curr-exist')" style="padding:10px;text-align:center;">
+          <div style="font-size:10px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Existing</div>
+          <div style="font-size:16px;font-weight:700;color:var(--navy);">${fmtMn(sumPot(currMonthExistClients))}</div>
+          <div style="font-size:10px;color:var(--grey);margin-top:2px;">${currMonthExistClients.length} client${currMonthExistClients.length!==1?'s':''}</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--white);border-radius:10px;border:1.5px solid var(--border);overflow:hidden;display:flex;flex-direction:column;">
+      <div style="padding:12px 16px;background:#F8F9FA;border-bottom:1.5px solid var(--border);flex-shrink:0;">
+        <div style="font-size:10px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:0.8px;">Upcoming Months</div>
+        <div style="font-size:11px;color:var(--grey);margin-top:2px;">${fmtMn(futureTotal)} &nbsp;·&nbsp; ${futureTotalClients} client${futureTotalClients!==1?'s':''}</div>
+      </div>
+      <div style="overflow-y:auto;flex:1;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead>
+            <tr style="background:var(--navy);color:var(--white);">
+              <th style="padding:8px 12px;text-align:left;font-size:11px;font-weight:600;">Month</th>
+              <th style="padding:8px 12px;text-align:right;font-size:11px;font-weight:600;">Potential</th>
+              <th style="padding:8px 12px;text-align:center;font-size:11px;font-weight:600;">Clients</th>
+            </tr>
+          </thead>
+          <tbody>${futureMonthRows}${noMonthRow}</tbody>
+          <tfoot>
+            <tr style="background:#FFF8E6;border-top:2px solid var(--border);">
+              <td style="padding:7px 12px;font-weight:700;color:var(--navy);font-size:12px;">Total</td>
+              <td style="padding:7px 12px;text-align:right;font-weight:700;color:var(--navy);font-size:12px;">${fmtMn(futureTotal)}</td>
+              <td style="padding:7px 12px;text-align:center;font-weight:700;color:var(--navy);font-size:12px;">${futureTotalClients}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
   </div>
-  ${drawerHTML('new',      'New Clients',        newClients)}
-  ${drawerHTML('existing', 'Existing Clients',   existingClients)}
-  ${drawerHTML('curr',     currMonthName + ' (Current Month)', currMonthClients)}
-  ${drawerHTML('next',     nextMonthName + ' (Following Month)', nextMonthClients)}
-  ${drawerHTML('remain',   'Remaining Months',   allRemainClients)}`;
+
+  ${drawerHTML('curr',       currMonthName + ' — Current Month',   currMonthClients)}
+  ${drawerHTML('curr-new',   currMonthName + ' — New Clients',     currMonthNewClients)}
+  ${drawerHTML('curr-exist', currMonthName + ' — Existing Clients',currMonthExistClients)}
+  ${futureMonthDrawers}
+  ${noMonthDrawer}`;
 
   container.innerHTML = html;
   container._irrActiveDrawer = null;
@@ -2070,15 +2366,14 @@ function toggleIRRDrawer(key) {
   const container = document.getElementById('injRunRateContainer');
   if (!container) return;
   const prev = container._irrActiveDrawer;
-  // Close all first
+  // Close all drawers and clear all active states
   container.querySelectorAll('.irr-drawer').forEach(d => d.classList.remove('open'));
-  container.querySelectorAll('.irr-card').forEach(c => c.classList.remove('irr-active'));
+  container.querySelectorAll('[id^="irr-card-"]').forEach(c => c.classList.remove('irr-active'));
   if (prev === key) { container._irrActiveDrawer = null; return; }
   const drawer = document.getElementById('irr-drawer-' + key);
-  const cards  = container.querySelectorAll('.irr-card');
-  const keyMap = ['new','existing','curr','next','remain'];
+  const card   = document.getElementById('irr-card-' + key);
   if (drawer) drawer.classList.add('open');
-  if (cards[keyMap.indexOf(key)]) cards[keyMap.indexOf(key)].classList.add('irr-active');
+  if (card)   card.classList.add('irr-active');
   container._irrActiveDrawer = key;
   drawer?.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
@@ -2314,7 +2609,8 @@ function renderPipelineCards() {
         rm: log.rm_name || '',
         potential: parseFloat(log.potential_size_rm_mn) || 0,
         injected: parseFloat(log.injected_amount) || 0,
-        product: log.product_fund || ''
+        product: log.product_fund || '',
+        remarks: log.remarks || ''
       });
       if (log.status === 'Pending Injection') pendingInjectionTotal += parseFloat(log.potential_size_rm_mn) || 0;
     }
@@ -2327,7 +2623,8 @@ function renderPipelineCards() {
     rm: log.rm_name || '',
     potential: parseFloat(log.potential_size_rm_mn) || 0,
     injected: parseFloat(log.injected_amount) || 0,
-    product: log.product_fund || ''
+    product: log.product_fund || '',
+    remarks: log.remarks || ''
   })).sort((a,b) => a.name.localeCompare(b.name));
 
   // Active pipeline = non-stale, excluding Successful and Rejected
@@ -2353,7 +2650,7 @@ function renderPipelineCards() {
   const stalePotSub = stalePot > 0 ? `<div class="p-inj">${fmtMn(stalePot)} potential injection</div>` : '';
   html += `<div class="p-card pc-stale p-card-clickable" id="pcard-__stale__" onclick="togglePipelineCardDrawer('__stale__')"><div class="p-num">${staleClients.length}</div><div class="p-lbl">Stale</div><div class="p-sub">&gt;60 / 90d threshold</div>${stalePotSub}</div>`;
   html += '</div>';
-  html += `<div class="p-drawer" id="pipelineCardDrawer"><div class="p-drawer-title"><span id="pipelineDrawerTitle"></span><span class="p-drawer-close" onclick="closePipelineCardDrawer()">&#x2715;</span></div><ol class="p-client-list" id="pipelineClientList"></ol></div>`;
+  html += `<div class="p-drawer" id="pipelineCardDrawer"><div class="p-drawer-title"><span id="pipelineDrawerTitle"></span><span class="p-drawer-close" onclick="closePipelineCardDrawer()">&#x2715;</span></div><div id="pipelineClientList"></div></div>`;
   html += '<div class="waterfall-wrap"><div id="pipelineWaterfallChart"></div></div>';
   document.getElementById('pipelineContainer').innerHTML = html;
 
@@ -2476,16 +2773,42 @@ function togglePipelineCardDrawer(sk) {
         </table>
       </div>` : '';
 
-    listEl.innerHTML = clients.length
-      ? clients.map(c => {
-          const amt = c[amtKey] || 0;
-          const potText = amt > 0 ? `RM ${amt.toFixed(1)} Mn` : '\u2014';
-          const rmText = c.rm ? ` <span style="color:var(--grey);font-size:10px;font-weight:400;">(${c.rm})</span>` : '';
-          const isLMSClient = c.product === 'LMS';
-          const lmsTag = isLMSClient ? ' <span style="background:var(--yellow);color:var(--navy);font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;vertical-align:middle;">LMS</span>' : '';
-          return `<li style="${isLMSClient ? 'background:#FFF8E6;border-radius:4px;padding:2px 4px;margin:-2px -4px;' : ''}"><span>${c.name}${rmText}${lmsTag}</span><span class="p-client-pot">${potText}</span></li>`;
-        }).join('')
-      : '<li style="color:var(--grey);font-size:12px;list-style:none;padding:2px 0;">No clients at this stage</li>';
+    if (clients.length) {
+      const rows = clients.map(c => {
+        const amt = c[amtKey] || 0;
+        const potText = amt > 0 ? `RM ${amt.toFixed(1)} Mn` : '—';
+        const isLMSClient = c.product === 'LMS';
+        const lmsTag = isLMSClient ? ' <span style="background:var(--yellow);color:var(--navy);font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;">LMS</span>' : '';
+        const remarksTxt = c.remarks ? (c.remarks.length > 80 ? c.remarks.substring(0,80)+'…' : c.remarks) : '—';
+        return `<tr style="${isLMSClient ? 'background:#FFF8E6;' : ''}">
+          <td style="text-align:left;font-weight:600;color:var(--navy);white-space:nowrap;">${c.name}${lmsTag}</td>
+          <td style="color:var(--grey);font-size:12px;white-space:nowrap;">${c.rm||'—'}</td>
+          <td style="font-size:12px;white-space:nowrap;">${c.product||'—'}</td>
+          <td style="text-align:right;font-size:12px;font-weight:600;color:var(--navy);white-space:nowrap;">${potText}</td>
+          <td style="font-size:11px;color:var(--grey);text-align:left;white-space:normal;line-height:1.4;max-width:200px;">${remarksTxt}</td>
+        </tr>`;
+      }).join('');
+      const totAmt = clients.reduce((s,c) => s + (c[amtKey]||0), 0);
+      listEl.innerHTML = `<div style="overflow-x:auto;max-height:300px;overflow-y:auto;margin-top:4px;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead><tr style="background:var(--navy);color:var(--white);position:sticky;top:0;z-index:1;">
+            <th style="padding:8px 10px;text-align:left;font-size:11px;white-space:nowrap;">Client</th>
+            <th style="padding:8px 10px;font-size:11px;white-space:nowrap;">RM</th>
+            <th style="padding:8px 10px;font-size:11px;white-space:nowrap;">Product</th>
+            <th style="padding:8px 10px;text-align:right;font-size:11px;white-space:nowrap;">${amtLabel} (RM Mn)</th>
+            <th style="padding:8px 10px;text-align:left;font-size:11px;white-space:nowrap;">Remarks</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+          <tfoot><tr style="background:#FFF8E6;">
+            <td colspan="3" style="padding:7px 10px;font-weight:700;color:var(--navy);font-size:12px;">Total</td>
+            <td style="padding:7px 10px;text-align:right;font-weight:700;color:var(--navy);font-size:12px;">RM ${totAmt.toFixed(1)} Mn</td>
+            <td></td>
+          </tr></tfoot>
+        </table>
+      </div>`;
+    } else {
+      listEl.innerHTML = '<p style="color:var(--grey);font-size:12px;padding:4px 0;">No clients at this stage</p>';
+    }
     // Append product breakdown after client list
     const drawerEl = document.getElementById('pipelineCardDrawer');
     let breakdownEl = drawerEl.querySelector('.p-product-breakdown');
@@ -2665,6 +2988,7 @@ function renderRMDrilldown(selectedRM) {
       const daysDisplay = isSuccessful ? 'N/A' : daysSince !== null ? daysSince + 'd' : '&#8212;';
       const injSubtext = isSuccessful && log.injected_amount != null
         ? `<br><small style="color:#1A6B3A;font-weight:600;">Injected: RM ${parseFloat(log.injected_amount).toFixed(1)} Mn</small>` : '';
+      const remarksText = log.remarks ? (log.remarks.length > 80 ? log.remarks.substring(0, 80) + '…' : log.remarks) : '&#8212;';
       tbody += `<tr>
         <td class="td-rm" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${log.client_name_manual||'&#8212;'}</td>
         <td class="td-grey">${log.rm_name||'&#8212;'}</td>
@@ -2673,11 +2997,12 @@ function renderRMDrilldown(selectedRM) {
         <td><span class="status-pill ${cls}">${log.status||'Not Met'}</span>${injSubtext}</td>
         <td class="td-grey">${log.product_fund||'&#8212;'}</td>
         <td class="td-grey">${log.potential_size_rm_mn != null ? 'RM ' + parseFloat(log.potential_size_rm_mn).toFixed(1) + ' Mn' : '&#8212;'}</td>
+        <td class="td-grey" style="max-width:200px;white-space:normal;font-size:11px;line-height:1.4;text-align:left;">${remarksText}</td>
       </tr>`;
     });
     return `<div class="admin-table-wrap" style="max-height:440px;overflow-y:auto;">
       <table class="admin-table"><thead><tr style="position:sticky;top:0;z-index:1;">
-        <th>Client Name</th><th>RM</th><th>${dateColHdr}</th><th>Days Since</th><th>Status</th><th>Product</th><th>Potential (RM Mn)</th>
+        <th>Client Name</th><th>RM</th><th>${dateColHdr}</th><th>Days Since</th><th>Status</th><th>Product</th><th>Potential (RM Mn)</th><th>Remarks</th>
       </tr></thead><tbody>${tbody}</tbody></table></div>`;
   }
 
@@ -2694,6 +3019,7 @@ function renderRMDrilldown(selectedRM) {
       const lastActivityDt = lastActivityDate ? new Date(lastActivityDate).toLocaleDateString('en-MY', {day:'2-digit', month:'short', year:'2-digit'}) : '&#8212;';
       const daysSince = lastActivityDate ? Math.floor((Date.now() - new Date(lastActivityDate)) / 86400000) : null;
       const threshold = getAgingThreshold(log.status);
+      const staleRemarksText = log.remarks ? (log.remarks.length > 80 ? log.remarks.substring(0, 80) + '…' : log.remarks) : '&#8212;';
       tbody += `<tr style="background:#FFF5F5;">
         <td class="td-rm" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${log.client_name_manual||'&#8212;'}</td>
         <td class="td-grey">${log.rm_name||'&#8212;'}</td>
@@ -2704,11 +3030,12 @@ function renderRMDrilldown(selectedRM) {
         <td class="td-grey" style="font-size:11px;">${threshold ? '&gt;' + threshold + 'd limit' : '&#8212;'}</td>
         <td class="td-grey">${log.product_fund||'&#8212;'}</td>
         <td class="td-grey">${log.potential_size_rm_mn != null ? 'RM ' + parseFloat(log.potential_size_rm_mn).toFixed(1) + ' Mn' : '&#8212;'}</td>
+        <td class="td-grey" style="max-width:200px;white-space:normal;font-size:11px;line-height:1.4;text-align:left;">${staleRemarksText}</td>
       </tr>`;
     });
     return `<div class="admin-table-wrap" style="max-height:440px;overflow-y:auto;">
       <table class="admin-table"><thead><tr style="background:#9B1C1C;position:sticky;top:0;z-index:1;">
-        <th>Client Name</th><th>RM</th><th>First Meeting</th><th>Last Activity</th><th>Aging</th><th>Status</th><th>Threshold</th><th>Product</th><th>Potential (RM Mn)</th>
+        <th>Client Name</th><th>RM</th><th>First Meeting</th><th>Last Activity</th><th>Aging</th><th>Status</th><th>Threshold</th><th>Product</th><th>Potential (RM Mn)</th><th>Remarks</th>
       </tr></thead><tbody>${tbody}</tbody></table></div>`;
   }
 
@@ -3552,6 +3879,571 @@ async function exportSectionPDF(sectionId, filename, btn) {
 function exportConversionPDF(btn) {
   const date = new Date().toISOString().slice(0,10);
   exportSectionPDF('conversionSummarySection', `Conversion-Summary-${date}.pdf`, btn);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ─── CC TRACKER MODULE ───────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+
+const CCT_BATCH1 = [
+  {company:"AIRWALLEX",cc_md:"ANNABELLE",cc_team:"CC INTERNATIONAL",rm:"AZMI",status:"MET",remarks:"2026-04-13"},
+  {company:"CHINA RUBBER INVESTMENT GROUP",cc_md:"ANNABELLE",cc_team:"CC INTERNATIONAL",rm:"AZMI",status:"ACCEPTED",remarks:"MAMG REJECT"},
+  {company:"MEHOW MEDICAL",cc_md:"ANNABELLE",cc_team:"CC INTERNATIONAL",rm:"AZMI",status:"ACCEPTED",remarks:"MAMG REJECT"},
+  {company:"AXIATA",cc_md:"AZZAHIR",cc_team:"GLC 1",rm:"NASYA",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
+  {company:"EPF",cc_md:"AZZAHIR",cc_team:"GLC 2",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
+  {company:"FELDA",cc_md:"AZZAHIR",cc_team:"GLC 3",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
+  {company:"JAKEL",cc_md:"AZZAHIR",cc_team:"GLC 4",rm:"NASYA",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
+  {company:"JOHOR CORP",cc_md:"AZZAHIR",cc_team:"GLC 3",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
+  {company:"LTAT/BOUSTEAD",cc_md:"AZZAHIR",cc_team:"GLC 4",rm:"NASYA",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
+  {company:"MAHB",cc_md:"AZZAHIR",cc_team:"GLC 1",rm:"NASYA",status:"MET",remarks:"2026-05-04"},
+  {company:"PETRONAS",cc_md:"AZZAHIR",cc_team:"GLC 1",rm:"NASYA",status:"ACCEPTED",remarks:""},
+  {company:"PNB",cc_md:"AZZAHIR",cc_team:"GLC 2",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
+  {company:"SIME DARBY",cc_md:"AZZAHIR",cc_team:"GLC 2",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
+  {company:"SIME DARBY PROPERTY",cc_md:"AZZAHIR",cc_team:"GLC 2",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
+  {company:"TNB",cc_md:"AZZAHIR",cc_team:"GLC 1",rm:"NASYA",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
+  {company:"UEM",cc_md:"AZZAHIR",cc_team:"GLC 4",rm:"NASYA",status:"REJECTED",remarks:"PENDING MAY FOR BOARD MEETING - UEM SUNRISE (not in list) CASA / FD / MMD preference"},
+  {company:"AEON",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"REJECTED",remarks:"Funds tied elsewhere"},
+  {company:"AJINOMOTO",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"REJECTED",remarks:"Funds tied elsewhere"},
+  {company:"AYALA",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
+  {company:"BERJAYA",cc_md:"CHING EAN",cc_team:"CC 3",rm:"ISKANDAR",status:"INJECTED",remarks:"SUBSIDIARY 7-ELEVEN RM10MN"},
+  {company:"CSC STEEL",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"REJECTED",remarks:"Client can only place with cash fund"},
+  {company:"GAMUDA",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"MET",remarks:"2026-04-30"},
+  {company:"GEK POH/HAP SENG",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"TOP UP",remarks:"HAP SENG PLANTATIONS (RIVER ESTATES) SB RM10MN"},
+  {company:"GENTING",cc_md:"CHING EAN",cc_team:"CC 1",rm:"FILZAH",status:"MET",remarks:"2026-05-06"},
+  {company:"GRAB INC",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:"No mandate for such investments"},
+  {company:"GUAN CHONG COCOA",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:"Funds tied elsewhere"},
+  {company:"HEXTAR GROUP",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"HONG LEONG GROUP",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:"Capital protected investment only"},
+  {company:"IJM",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"REJECTED",remarks:"Centralised group level decision"},
+  {company:"INSAS / INARI / HO HUP",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:"Funds tied elsewhere"},
+  {company:"IOI",cc_md:"CHING EAN",cc_team:"CC 4",rm:"AZMI",status:"ACCEPTED",remarks:"PENDING CC TO GIVE CLIENT CONTACT"},
+  {company:"KEYFIELD",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"KLK",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"TOP UP",remarks:"TOP UP RM64.8MN"},
+  {company:"KUB",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"KUOK",cc_md:"CHING EAN",cc_team:"RC",rm:"LEI KHIM",status:"MET SUBSIDIARY",remarks:"SHANGRI-LA"},
+  {company:"LENDLEASE",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:"Funds tied elsewhere"},
+  {company:"MALAYAN FLOUR",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"PENDING",remarks:""},
+  {company:"OSK",cc_md:"CHING EAN",cc_team:"CC 4",rm:"NASYA",status:"MET",remarks:"BOARD MEETING END OF MAY"},
+  {company:"QL",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"ACCEPTED",remarks:"AZMI TO UPDATE"},
+  {company:"SUNWAY",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"TOP UP",remarks:"SUBSIDIARY INVESTED"},
+  {company:"TS SYED MOKHTAR",cc_md:"CHING EAN",cc_team:"CC 4",rm:"FILZAH",status:"PENDING",remarks:"PENDING CC TO GIVE CLIENT CONTACT"},
+  {company:"TSS & FAMILY N(SAPURA)",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"EXISTING CLIENT",remarks:""},
+  {company:"USAHA TEGAS",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"MET",remarks:"2026-05-08"},
+  {company:"YINSON",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"MET",remarks:"2026-01-01"},
+  {company:"EKUINAS",cc_md:"JACK",cc_team:"GOM/FEDERAL GOVT",rm:"ISKANDAR",status:"REJECTED",remarks:"Capital protected investment only"},
+  {company:"GOM: JABATAN AKAUNTAN NEGARA M CAW JOHOR / CYBERSECURITY MALAYSIA / MARA-APS / JABATAN AKAUNTAN NEGARA M CAW PUTRAJAYA",cc_md:"JACK",cc_team:"GOM/FEDERAL GOVT",rm:"ISKANDAR",status:"REJECTED",remarks:"Capital protected investment only"},
+  {company:"KEDAH STATE: BINA DARULAMAN BERHAD",cc_md:"JACK",cc_team:"STATE GOVT",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
+  {company:"MOF INC",cc_md:"JACK",cc_team:"GOM/FEDERAL GOVT",rm:"NASYA",status:"TOP UP",remarks:"UDA HOLDINGS EXISTING CLIENT RM100K"},
+  {company:"NEGERI SEMBILAN STATE: SYARIKAT AIR NEGERI SEMBILAN SDN BHD",cc_md:"JACK",cc_team:"STATE GOVT",rm:"ISKANDAR",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
+  {company:"PENANG STATE: PERBADANAN BEKALAN AIR PULAU PINANG SDN.",cc_md:"JACK",cc_team:"STATE GOVT",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
+  {company:"PERKESO",cc_md:"JACK",cc_team:"GOM/FEDERAL GOVT",rm:"NASYA",status:"REJECTED",remarks:"Capital protected investment only"},
+  {company:"SARAWAK ENERGY",cc_md:"JACK",cc_team:"MC SBH/SWK",rm:"NASYA",status:"EXISTING CLIENT",remarks:"TO PUSH FOR TOP UP"},
+  {company:"SARAWAK STATE",cc_md:"JACK",cc_team:"SBH/SWK STATE",rm:"NASYA",status:"EXISTING CLIENT",remarks:"APPROVED, DOCUMENTATION IN PROGRESS (PETROLEUM SARAWAK BERHAD)"},
+  {company:"SELANGOR STATE",cc_md:"JACK",cc_team:"STATE GOVT",rm:"NASYA",status:"EXISTING CLIENT",remarks:"KUMPULAN PERANGSANG SELANGOR & PERANGSANG DINAMIK (MCMMI) RM400K"},
+  {company:"ASIABINA",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"AUSTIN POWDER",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"BEAVER PROPERTIES",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Funds tied elsewhere"},
+  {company:"BIG",cc_md:"JASON",cc_team:"CBD",rm:"NASYA",status:"EXISTING CLIENT",remarks:"TOP UP RM2.1MN"},
+  {company:"BOROCHEMIE (M) SDN. BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"No excess funds"},
+  {company:"BU",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"No excess funds"},
+  {company:"BWYS GROUP BERHAD",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Not keen to proceed"},
+  {company:"CUSTOM FOOD",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"DC HEALTHCARE HOLDINGS BERHAD",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Funds tied elsewhere"},
+  {company:"DKLS",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"ECONSAVE",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"ESRI MALAYSIA SDN BHD",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
+  {company:"EURO CHEMO",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Not keen to proceed"},
+  {company:"FAMILY CEREAL",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"FOCUS POINT",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"INJECTED",remarks:"22/01/2026: RM17MN"},
+  {company:"GIGA",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"MET",remarks:"2026-05-19"},
+  {company:"GUAN CHONG PROPERTIES",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"HONG SENG POWER SDN. BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Not keen to proceed"},
+  {company:"KIANLEESMR",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Client financial risk issue"},
+  {company:"KONG LONG HUAT",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Not keen to proceed"},
+  {company:"LIMA SEN SDN. BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Client financial risk issue"},
+  {company:"LONGSON FOOD",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"MET",remarks:"2026-04-09"},
+  {company:"MARINE & GENERAL BERHAD",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"OKA CORPORATION BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"No excess funds"},
+  {company:"OXFORD : CG SOLUTIONS ENTERPRISE SDN. BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"No excess funds"},
+  {company:"PATHLAB",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Funds tied elsewhere"},
+  {company:"PDG",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"PUBLIC PACKAGES",cc_md:"JASON",cc_team:"CBD",rm:"NASYA",status:"EXISTING CLIENT",remarks:"TOP UP RM3MN"},
+  {company:"REACH TEN",cc_md:"JASON",cc_team:"CBD",rm:"NASYA",status:"EXISTING CLIENT",remarks:""},
+  {company:"RK SOUTH",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Not keen to proceed"},
+  {company:"SKYWORLDDEVELOPMENT",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"MET",remarks:"2026-02-03"},
+  {company:"SL NG",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"No excess funds"},
+  {company:"SUPERLON",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
+  {company:"TGL",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"THE HOUR GLASS SDN. BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Funds tied elsewhere"},
+  {company:"TREEGROW BOTANICAL",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"TRITERRA METROPOLIS SDN. BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Not keen to proceed"},
+  {company:"YAMATO TRANSPORT",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"MET",remarks:"2026-04-17"},
+  {company:"ZUSPRESSO",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Funds tied elsewhere"},
+  {company:"ASIA FILE CORPORATION",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"ACCEPTED",remarks:"REVISIT"},
+  {company:"ATECH BERHAD",cc_md:"JESSIE",cc_team:"MC 4",rm:"AZMI",status:"REJECTED",remarks:"MAMG rejected client"},
+  {company:"BOARDROOM",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"REJECTED",remarks:"No mandate for such investments"},
+  {company:"EKSONS",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"REJECTED",remarks:"No excess funds"},
+  {company:"GD EXPRESS",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"MET",remarks:"2026-04-01"},
+  {company:"HUAT LAI RESOURCES",cc_md:"JESSIE",cc_team:"MC 3",rm:"AZMI",status:"ACCEPTED",remarks:"CC TO RE-ENGAGE"},
+  {company:"KAWAN",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"EXISTING CLIENT",remarks:""},
+  {company:"KUMP FIMA",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"EXISTING CLIENT",remarks:""},
+  {company:"LB ALUMINIUM",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"ACCEPTED",remarks:"PENDING MEETING DATE"},
+  {company:"MUHIBBAH",cc_md:"JESSIE",cc_team:"MC 3",rm:"AZMI",status:"MET SUBSIDIARY",remarks:"2026-04-10"},
+  {company:"OBYU/PETRA",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"MET",remarks:"2026-03-03"},
+  {company:"OIB/TIONG HUAT",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"MET",remarks:"2026-04-08"},
+  {company:"SKS",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"REJECTED",remarks:"No excess funds"},
+  {company:"SPRITZER",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"REJECTED",remarks:"AZMI TO UPDATE"},
+  {company:"TITIJAYA",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"MET",remarks:"2026-04-14"},
+  {company:"AIA GROUP",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"AMANAH RAYA BERHAD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Not keen to proceed"},
+  {company:"APEX EQUITY HOLDINGS BERHAD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"ACCEPTED",remarks:""},
+  {company:"ARECA CAPITAL SDN BHD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Funds managed by client internal investment arm"},
+  {company:"ASIAN INSTITUTE OF FINANCE BHD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Regulator - safeguard public funds"},
+  {company:"CREDIT GUARANTEE CORPORATION",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"CVC CAPITAL PARTNERS",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Funds tied elsewhere"},
+  {company:"GOVERNMENT OF KENYA",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"ACCEPTED",remarks:""},
+  {company:"IFAST CORPORATION LTD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Funds managed by client internal investment arm"},
+  {company:"INSAS BERHAD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Not keen to proceed"},
+  {company:"K & N KENANGA HOLDINGS BHD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"ACCEPTED",remarks:""},
+  {company:"MALAYSIAN INDUSTRIAL DEVELOPMENT FINANCE BHD (MIDF)",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"MANULIFE FINANCIAL CORP",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"MNRB HOLDINGS BHD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
+  {company:"MTRUSTEE",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"ACCEPTED",remarks:""},
+  {company:"NOMURA HOLDINGS INC",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"No mandate for such investments"},
+  {company:"OPUS ASSET MANAGEMENT SDN BHD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"ACCEPTED",remarks:""},
+  {company:"PACIFIC TRUSTEES BERHAD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
+  {company:"PHILLIP CAPITAL",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Funds managed by client internal investment arm"},
+  {company:"SECURITIES COMMISSION MALAYSIA",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Regulator - safeguard public funds"},
+  {company:"TA ENTERPRISE BERHAD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"ACCEPTED",remarks:""},
+  {company:"TMF GROUP",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"MET",remarks:"2026-04-16"},
+  {company:"TOKIO MARINE HOLDINGS INC",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"MET",remarks:"decline due to merger"},
+  {company:"UNITED OVERSEAS BANK (UOB)",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"MET",remarks:"2026-04-27"},
+  {company:"VISA INC",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Funds tied elsewhere"},
+];
+
+const CCT_BATCH2 = [
+  {company:"Glomac Berhad",cc_md:"AZZAHIR",cc_team:"GLC 4",rm:"NASYA",status:"REJECTED",remarks:"No requirement at the moment"},
+  {company:"KPJ Healthcare Berhad",cc_md:"AZZAHIR",cc_team:"GLC 3",rm:"NASYA",status:"PENDING",remarks:"CC - PENDING"},
+  {company:"Malaysian Resources Corporation Berhad",cc_md:"AZZAHIR",cc_team:"GLC 3",rm:"NASYA",status:"PENDING",remarks:"CC - PENDING"},
+  {company:"Menang Corporation (M) Berhad",cc_md:"AZZAHIR",cc_team:"GLC 4",rm:"NASYA",status:"REJECTED",remarks:"No requirement at the moment"},
+  {company:"MISC Berhad",cc_md:"AZZAHIR",cc_team:"GLC 1",rm:"NASYA",status:"PENDING",remarks:"CC - PENDING"},
+  {company:"S P Setia Berhad",cc_md:"AZZAHIR",cc_team:"GLC 2",rm:"NASYA",status:"REJECTED",remarks:""},
+  {company:"TH Plantations Berhad",cc_md:"AZZAHIR",cc_team:"GLC 3",rm:"NASYA",status:"PENDING",remarks:"CC - PENDING"},
+  {company:"TIME dotCom Berhad",cc_md:"AZZAHIR",cc_team:"GLC 1",rm:"NASYA",status:"PENDING",remarks:"CC - PENDING"},
+  {company:"Velesto Energy Berhad",cc_md:"AZZAHIR",cc_team:"GLC 2",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
+  {company:"Alcom Group Berhad",cc_md:"CB",cc_team:"CB",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Bintai Kinden Corporation Berhad",cc_md:"CB",cc_team:"CB",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Engtex Group Berhad",cc_md:"CB",cc_team:"CB",rm:"LEI KHIM",status:"MET",remarks:""},
+  {company:"Eversendai Corporation Berhad",cc_md:"CB",cc_team:"CB",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"Hua Yang Berhad",cc_md:"CB",cc_team:"CB",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"Magna Prima Berhad",cc_md:"CB",cc_team:"CB",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"Minho (M) Berhad",cc_md:"CB",cc_team:"CB",rm:"FILZAH",status:"ACCEPTED",remarks:""},
+  {company:"Protasco Berhad",cc_md:"CB",cc_team:"CB",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"Rapid Synergy Berhad",cc_md:"CB",cc_team:"CB",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"RGB International Bhd.",cc_md:"CB",cc_team:"CB",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Ajiya Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"FILZAH",status:"REJECTED",remarks:""},
+  {company:"Bermaz Auto Berhad",cc_md:"CHING EAN",cc_team:"CC 3",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
+  {company:"Capital A Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"Chin Hin Group Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"FILZAH",status:"REJECTED",remarks:""},
+  {company:"D & O Green Technologies Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"REJECTED",remarks:""},
+  {company:"Dialog Group Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"DXN Holdings Bhd.",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
+  {company:"Eastern & Oriental Berhad",cc_md:"CHING EAN",cc_team:"CC 1",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
+  {company:"Fiamma Holdings Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"FILZAH",status:"REJECTED",remarks:""},
+  {company:"Frontken Corporation Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"MET",remarks:""},
+  {company:"GuocoLand (Malaysia) Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"FILZAH",status:"REJECTED",remarks:""},
+  {company:"IGB Berhad",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"IGB Real Estate Investment Trust",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"Inari Amertron Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"Keck Seng (Malaysia) Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"ISKANDAR",status:"REJECTED",remarks:""},
+  {company:"KESM Industries Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"REJECTED",remarks:""},
+  {company:"Kossan Rubber Industries Bhd",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"PENDING",remarks:""},
+  {company:"Landmarks Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"AZMI",status:"PENDING",remarks:""},
+  {company:"Leong Hup International Berhad",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"REJECTED",remarks:""},
+  {company:"Lotte Chemical Titan Holding Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"ISKANDAR",status:"REJECTED",remarks:""},
+  {company:"Mah Sing Group Berhad",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"Malakoff Corporation Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"Malaysia Smelting Corporation Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"Malaysian Pacific Industries Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"Media Prima Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
+  {company:"Mega First Corporation Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"REJECTED",remarks:""},
+  {company:"MKH Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"MKH Oil Palm (East Kalimantan) Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"Oriental Holdings Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"Padini Holdings Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"Panasonic Manufacturing Malaysia Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"ISKANDAR",status:"REJECTED",remarks:""},
+  {company:"Press Metal Aluminium Holdings Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"REDtone Digital Berhad",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"Supermax Corporation Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:""},
+  {company:"Taliworks Corporation Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"FILZAH",status:"ACCEPTED",remarks:""},
+  {company:"TASCO Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"Teo Seng Capital Berhad",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"REJECTED",remarks:""},
+  {company:"TMC Life Sciences Berhad",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"PENDING",remarks:""},
+  {company:"V.S. Industry Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"ViTrox Corporation Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:""},
+  {company:"WCT Holdings Berhad",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"PENDING",remarks:""},
+  {company:"Y.S.P. Southeast Asia Holding Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"REJECTED",remarks:""},
+  {company:"YTL Power International Berhad",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"Far East Holdings Berhad",cc_md:"JACK",cc_team:"STATE GOVT",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"Orkim Berhad",cc_md:"JACK",cc_team:"GOM/FEDERAL GOVT",rm:"NASYA",status:"REJECTED",remarks:""},
+  {company:"Pasdec Holdings Berhad",cc_md:"JACK",cc_team:"STATE GOVT",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"PBA Holdings Bhd",cc_md:"JACK",cc_team:"STATE GOVT",rm:"ISKANDAR",status:"REJECTED",remarks:""},
+  {company:"Suria Capital Holdings Berhad",cc_md:"JACK",cc_team:"SBH/SWK STATE",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"Alpha IVF Group Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"Dufu Technology Corp. Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Efficient E-Solutions Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Eng Kah Corporation Berhad",cc_md:"JASON",cc_team:"CBD",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"Formosa Prosonic Industries Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"InNature Berhad",cc_md:"JASON",cc_team:"CBD",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"Khind Holdings Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Kobay Technology Bhd.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"Muar Ban Lee Group Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"QES Group Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Scicom (MSC) Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"SLP Resources Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"TT Vision Holdings Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Astino Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"AWC Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"Bonia Corporation Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
+  {company:"Can-One Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"CB Industrial Product Holding Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"Chin Well Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Choo Bee Metal Industries Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"PENDING",remarks:""},
+  {company:"Coastal Contracts Bhd",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"Dayang Enterprise Holdings Bhd",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"Econpile Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Eupe Corporation Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Favelle Favco Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"Gabungan AQRS Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"Gadang Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Globetronics Technology Bhd.",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
+  {company:"Harn Len Corporation Bhd",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"HeiTech Padu Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"REJECTED",remarks:""},
+  {company:"Homeritz Corporation Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"PENDING",remarks:""},
+  {company:"Hup Seng Industries Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"Infomina Berhad",cc_md:"JESSIE",cc_team:"MC 4",rm:"LEI KHIM",status:"REJECTED",remarks:""},
+  {company:"Iskandar Waterfront City Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
+  {company:"Jaya Tiasa Holdings Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"JKG Land Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"LEI KHIM",status:"REJECTED",remarks:""},
+  {company:"Johan Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"FILZAH",status:"ACCEPTED",remarks:""},
+  {company:"Kim Hin Industry Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"Kim Loong Resources Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"KKB Engineering Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"Kotra Industries Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
+  {company:"Kretam Holdings Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"KSL Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"Land & General Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"LBS Bina Group Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"PENDING",remarks:""},
+  {company:"Lii Hen Industries Bhd",cc_md:"JESSIE",cc_team:"MC 1",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"LTKM Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"Luxchem Corporation Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"Magni-Tech Industries Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"PENDING",remarks:""},
+  {company:"MBM Resources Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"PENDING",remarks:""},
+  {company:"Media Chinese International Limited",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"Mi Technovation Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Mulpha International Bhd",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"N2N Connect Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
+  {company:"Naim Holdings Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"NCT Alliance Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"OCK Group Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"ACCEPTED",remarks:""},
+  {company:"Oriental Interest Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
+  {company:"P.I.E. Industrial Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Paramount Corporation Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"Pecca Group Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"Pekat Group Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
+  {company:"Perdana Petroleum Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"Plenitude Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"REJECTED",remarks:""},
+  {company:"Poh Huat Resources Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"Power Root Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"AZMI",status:"REJECTED",remarks:""},
+  {company:"PRG Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"RCE Capital Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"ISKANDAR",status:"REJECTED",remarks:""},
+  {company:"Sarawak Plantation Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"Selangor Dredging Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
+  {company:"SHL Consolidated Bhd.",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
+  {company:"SMRT Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"FILZAH",status:"PENDING",remarks:""},
+  {company:"Southern Acids (M) Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"PENDING",remarks:""},
+  {company:"Sunsuria Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"LEI KHIM",status:"PENDING",remarks:""},
+  {company:"Ta Ann Holdings Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
+  {company:"Tambun Indah Land Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
+  {company:"Thong Guan Industries Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"PENDING",remarks:"CC YES - REVISIT"},
+  {company:"Tong Herr Resources Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:"Prefer non-sukuk funds"},
+  {company:"TSH Resources Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:"CC - PENDING"},
+  {company:"United Malacca Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:"CC - PENDING"},
+  {company:"Wellcall Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:"RM CONTACTED - PENDING CLIENT RESPONSE"},
+  {company:"ELK-Desa Resources Berhad",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"PENDING",remarks:""},
+];
+
+const CCT_INJECTIONS = [
+  {company:"7-ELEVEN MALAYSIA SDN BHD",group:"BERJAYA",segment:"CONGLO & LARGE CAP",amount:10000000,transactions:1,client_type:"New"},
+  {company:"BATU KAWAN BHD",group:"KLK",segment:"CONGLO & LARGE CAP",amount:64800000,transactions:4,client_type:"Existing"},
+  {company:"HAP SENG PLANTATIONS (RIVER ESTATES) SB",group:"GEK POH/HAP SENG",segment:"CONGLO & LARGE CAP",amount:10000000,transactions:1,client_type:"Existing"},
+  {company:"PUBLIC PACKAGES SDN. BHD.",group:"PUBLIC PACKAGES",segment:"CBD",amount:3000000,transactions:1,client_type:"Existing"},
+  {company:"PRESTAVEST BHD.",group:"ASIABINA",segment:"CBD",amount:400000,transactions:1,client_type:"Existing"},
+  {company:"FOCUS POINT VISION CARE GROUP SDN BHD",group:"FOCUS POINT",segment:"CBD",amount:10000000,transactions:1,client_type:"New"},
+  {company:"B.I.G. INDUSTRIAL GAS SDN. BHD.",group:"BIG",segment:"CBD",amount:2110000,transactions:4,client_type:"Existing"},
+  {company:"UDA HOLDINGS BERHAD",group:"MOF INC",segment:"FEDERAL & STATE GOV",amount:100000,transactions:1,client_type:"Existing"},
+  {company:"KUMPULAN PERANGSANG SELANGOR BHD.",group:"SELANGOR STATE",segment:"FEDERAL & STATE GOV",amount:400000,transactions:1,client_type:"Existing"},
+];
+
+const CCT_RM_ORDER   = ['AZMI','ISKANDAR','LEI KHIM','NASYA','FILZAH'];
+const CCT_CCMD_ORDER = ['ANNABELLE','AZZAHIR','CB','CHING EAN','JACK','JASON','JESSIE','NAELAH'];
+
+// ─── CCT HELPERS ──────────────────────────────────────────────────
+function cctIsLeadAccepted(s){return ['ACCEPTED','MET','MET SUBSIDIARY','INJECTED','EXISTING CLIENT','TOP UP'].includes(s);}
+function cctIsMet(s){return ['MET','MET SUBSIDIARY','INJECTED','TOP UP'].includes(s);}
+function cctIsInjectedSt(s){return ['INJECTED','TOP UP'].includes(s);}
+function cctIsActionReq(s){return ['PENDING','REJECTED'].includes(s);}
+
+const CCT_STATUS_BADGE_MAP = {
+  'MET':'cc-badge-met','MET SUBSIDIARY':'cc-badge-met-sub',
+  'EXISTING CLIENT':'cc-badge-existing','TOP UP':'cc-badge-top-up',
+  'INJECTED':'cc-badge-injected','ACCEPTED':'cc-badge-accepted',
+  'PENDING':'cc-badge-pending','REJECTED':'cc-badge-rejected'
+};
+function cctStatusBadge(s){return '<span class="cc-badge '+(CCT_STATUS_BADGE_MAP[s]||'')+'">'+(s||'')+'</span>';}
+function cctBatchTag(b){return '<span class="cc-badge '+(b==='B1'?'cc-badge-b1':'cc-badge-b2')+'">'+b+'</span>';}
+function cctFmtAmt(n){if(!n)return 'RM 0';return 'RM '+n.toLocaleString('en-MY');}
+function cctPct(num,den){if(!den)return 0;return Math.round(num/den*100);}
+function cctEscHtml(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function cctDaysSince(dateStr){return Math.floor((new Date()-new Date(dateStr))/86400000);}
+function cctBuildB1Map(){const m={};CCT_BATCH1.forEach(d=>{m[d.company]=d;});return m;}
+function cctBuildInjectionsByCC(){
+  const b1Map=cctBuildB1Map(),byCC={},byRM={};
+  CCT_INJECTIONS.forEach(inj=>{
+    const b1=b1Map[inj.group],cc=b1?b1.cc_md:null,rm=b1?b1.rm:null;
+    if(cc){if(!byCC[cc])byCC[cc]={amount:0,count:0};byCC[cc].amount+=inj.amount;byCC[cc].count++;}
+    if(rm){if(!byRM[rm])byRM[rm]={amount:0,count:0};byRM[rm].amount+=inj.amount;byRM[rm].count++;}
+  });
+  return {byCC,byRM};
+}
+
+// ─── CCT DRAWER ───────────────────────────────────────────────────
+function ccOpenDrawer(title,items){
+  document.getElementById('cc-drawer-title').textContent=title;
+  document.getElementById('cc-drawer-badge').textContent=items.length;
+  const body=document.getElementById('cc-drawer-body');
+  if(!items.length){body.innerHTML='<div style="text-align:center;padding:36px;color:#94a3b8;">No companies found.</div>';return;}
+  body.innerHTML=items.map((d,i)=>{
+    const rem=d.remarks?'<div class="cc-drawer-remarks">'+cctEscHtml(d.remarks)+'</div>':'';
+    return '<div class="cc-drawer-item">'
+      +'<div class="cc-drawer-item-top"><div class="cc-drawer-num">'+(i+1)+'</div>'
+      +'<div style="flex:1"><div class="cc-drawer-company">'+cctEscHtml(d.company)+'</div>'
+      +'<div class="cc-drawer-badges">'+cctBatchTag(d.batch)+' '+cctStatusBadge(d.status)+'</div></div></div>'
+      +'<div class="cc-drawer-meta">'
+      +'<span class="cc-drawer-meta-item"><strong>CC MD:</strong> '+cctEscHtml(d.cc_md)+'</span>'
+      +'<span class="cc-drawer-meta-item"><strong>Team:</strong> '+cctEscHtml(d.cc_team)+'</span>'
+      +'<span class="cc-drawer-meta-item"><strong>RM:</strong> '+cctEscHtml(d.rm)+'</span>'
+      +'</div>'+rem+'</div>';
+  }).join('');
+  document.getElementById('cc-drawer-overlay').classList.add('open');
+  document.getElementById('cc-drawer-panel').classList.add('open');
+}
+function ccCloseDrawer(){
+  document.getElementById('cc-drawer-overlay').classList.remove('open');
+  document.getElementById('cc-drawer-panel').classList.remove('open');
+}
+
+// ─── CCT OVERVIEW ─────────────────────────────────────────────────
+function ccRenderOverview(){
+  const b1=CCT_BATCH1.map(d=>({...d,batch:'B1'}));
+  const b2=CCT_BATCH2.map(d=>({...d,batch:'B2'}));
+  const all=[...b1,...b2];
+  const {byCC}=cctBuildInjectionsByCC();
+  const totalInj=CCT_INJECTIONS.reduce((s,i)=>s+i.amount,0);
+  const injCCBreakdown=CCT_CCMD_ORDER.filter(cc=>byCC[cc]).map(cc=>`<div class="cc-ov-breakdown-row"><span class="cc-ov-breakdown-name">${cctEscHtml(cc)}</span><span>${cctFmtAmt(byCC[cc].amount)} (${byCC[cc].count})</span></div>`).join('');
+  const metAll=all.filter(d=>cctIsMet(d.status)),metB1=b1.filter(d=>cctIsMet(d.status)),metB2=b2.filter(d=>cctIsMet(d.status));
+  const acceptedAll=all.filter(d=>cctIsLeadAccepted(d.status));
+  const meetingRatePct=cctPct(metAll.length,acceptedAll.length);
+  const meetingRateCls=meetingRatePct>=100?'cc-pct-green':meetingRatePct>=67?'cc-pct-amber':'cc-pct-red';
+  const metCCBreakdown=CCT_CCMD_ORDER.map(cc=>{const cnt=all.filter(d=>d.cc_md===cc&&cctIsMet(d.status)).length;return cnt?`<div class="cc-ov-breakdown-row"><span class="cc-ov-breakdown-name">${cctEscHtml(cc)}</span><span>${cnt}</span></div>`:''}).join('');
+  const accAll=all.filter(d=>cctIsLeadAccepted(d.status)),accB1=b1.filter(d=>cctIsLeadAccepted(d.status)),accB2=b2.filter(d=>cctIsLeadAccepted(d.status));
+  const accRatePct=cctPct(accAll.length,all.length);
+  const accRateCls=accRatePct>=75?'cc-pct-green':accRatePct>=50?'cc-pct-amber':'cc-pct-red';
+  const accCCBreakdown=CCT_CCMD_ORDER.map(cc=>{const cnt=all.filter(d=>d.cc_md===cc&&cctIsLeadAccepted(d.status)).length;return cnt?`<div class="cc-ov-breakdown-row"><span class="cc-ov-breakdown-name">${cctEscHtml(cc)}</span><span>${cnt}</span></div>`:''}).join('');
+  const actAll=all.filter(d=>cctIsActionReq(d.status)),actB1=b1.filter(d=>cctIsActionReq(d.status)),actB2=b2.filter(d=>cctIsActionReq(d.status));
+  const pendAll=all.filter(d=>d.status==='PENDING').length,rejAll=all.filter(d=>d.status==='REJECTED').length;
+  const actCCBreakdown=CCT_CCMD_ORDER.map(cc=>{const cnt=all.filter(d=>d.cc_md===cc&&cctIsActionReq(d.status)).length;return cnt?`<div class="cc-ov-breakdown-row"><span class="cc-ov-breakdown-name">${cctEscHtml(cc)}</span><span>${cnt}</span></div>`:''}).join('');
+  window._cctOvData={metAll,metB1,metB2,accAll,accB1,accB2,actAll,actB1,actB2,injItems:b1.filter(d=>cctIsInjectedSt(d.status))};
+  document.getElementById('cc-ov-grid').innerHTML=`
+    <div class="cc-ov-card gold" onclick="ccOpenDrawer('Injected Companies (B1)',window._cctOvData.injItems)">
+      <div class="cc-ov-card-label">Injection AUM</div><div class="cc-ov-card-value">${cctFmtAmt(totalInj)}</div>
+      <span class="cc-ov-pct-badge cc-pct-blue">${CCT_INJECTIONS.length} companies &middot; Batch 1</span>
+      <div class="cc-ov-breakdown">${injCCBreakdown}</div>
+      <div class="cc-ov-batch-row"><span class="cc-ov-chip b1">B1: ${cctFmtAmt(totalInj)}</span><span class="cc-ov-chip b2">B2: RM 0</span></div>
+    </div>
+    <div class="cc-ov-card green">
+      <div class="cc-ov-card-label">Clients Met</div><div class="cc-ov-card-value">${metAll.length}</div>
+      <span class="cc-ov-pct-badge ${meetingRateCls}">Meeting Rate: ${meetingRatePct}% (target 100%)</span>
+      <div class="cc-ov-breakdown">${metCCBreakdown}</div>
+      <div class="cc-ov-batch-row">
+        <span class="cc-ov-chip b1" onclick="event.stopPropagation();ccOpenDrawer('B1 Clients Met',window._cctOvData.metB1)">B1: ${metB1.length}</span>
+        <span class="cc-ov-chip b2" onclick="event.stopPropagation();ccOpenDrawer('B2 Clients Met',window._cctOvData.metB2)">B2: ${metB2.length}</span>
+      </div>
+    </div>
+    <div class="cc-ov-card blue">
+      <div class="cc-ov-card-label">Leads Accepted</div><div class="cc-ov-card-value">${accAll.length}</div>
+      <span class="cc-ov-pct-badge ${accRateCls}">Acceptance Rate: ${accRatePct}% (target 75%)</span>
+      <div class="cc-ov-breakdown">${accCCBreakdown}</div>
+      <div class="cc-ov-batch-row">
+        <span class="cc-ov-chip b1" onclick="event.stopPropagation();ccOpenDrawer('B1 Leads Accepted',window._cctOvData.accB1)">B1: ${accB1.length}</span>
+        <span class="cc-ov-chip b2" onclick="event.stopPropagation();ccOpenDrawer('B2 Leads Accepted',window._cctOvData.accB2)">B2: ${accB2.length}</span>
+      </div>
+    </div>
+    <div class="cc-ov-card red" onclick="ccOpenDrawer('Action Required (${actAll.length})',window._cctOvData.actAll)">
+      <div class="cc-ov-card-label">Action Required</div><div class="cc-ov-card-value">${actAll.length}</div>
+      <div class="cc-ov-sub">Pending: ${pendAll} &middot; Rejected: ${rejAll}</div>
+      <div class="cc-ov-breakdown" style="margin-top:10px">${actCCBreakdown}</div>
+      <div class="cc-ov-batch-row">
+        <span class="cc-ov-chip b1" onclick="event.stopPropagation();ccOpenDrawer('B1 Action Required',window._cctOvData.actB1)">B1: ${actB1.length}</span>
+        <span class="cc-ov-chip b2" onclick="event.stopPropagation();ccOpenDrawer('B2 Action Required',window._cctOvData.actB2)">B2: ${actB2.length}</span>
+      </div>
+    </div>`;
+  ccRenderTimeline(b1,b2);
+}
+
+function ccRenderTimeline(b1,b2){
+  const b1Acc=b1.filter(d=>cctIsLeadAccepted(d.status)),b1Met=b1.filter(d=>cctIsMet(d.status)),b1Inj=b1.filter(d=>cctIsInjectedSt(d.status));
+  const b1AccRate=cctPct(b1Acc.length,b1.length);
+  const b2Acc=b2.filter(d=>cctIsLeadAccepted(d.status)),b2Met=b2.filter(d=>cctIsMet(d.status)),b2Inj=b2.filter(d=>cctIsInjectedSt(d.status));
+  const b2AccRate=cctPct(b2Acc.length,b2.length);
+  const b1AUM=CCT_INJECTIONS.reduce((s,i)=>s+i.amount,0);
+  const d1=cctDaysSince('2026-03-17'),d2=cctDaysSince('2026-05-06');
+  function tlCard(days,batchName,deployDate,accRate,metCount,injCount,aum,pct){
+    const fillCls=pct>=75?'cc-gauge-fill-green':pct>=50?'cc-gauge-fill-amber':'cc-gauge-fill-red';
+    return `<div class="cc-tl-card"><div><div class="cc-tl-days-num">${days}</div><div class="cc-tl-days-lbl">days ago</div></div>
+      <div class="cc-tl-right"><div class="cc-tl-batch-name">${batchName}</div><div class="cc-tl-deploy-date">Deployed: ${deployDate}</div>
+      <div class="cc-tl-mini-stats">
+        <div class="cc-tl-mini-stat"><div class="cc-tl-mini-stat-val">${accRate}%</div><div class="cc-tl-mini-stat-lbl">Acceptance Rate</div></div>
+        <div class="cc-tl-mini-stat"><div class="cc-tl-mini-stat-val">${metCount}</div><div class="cc-tl-mini-stat-lbl">Meetings Attended</div></div>
+        <div class="cc-tl-mini-stat"><div class="cc-tl-mini-stat-val">${injCount}</div><div class="cc-tl-mini-stat-lbl">Converted</div></div>
+        <div class="cc-tl-mini-stat"><div class="cc-tl-mini-stat-val" style="font-size:13px">${cctFmtAmt(aum)}</div><div class="cc-tl-mini-stat-lbl">AUM</div></div>
+      </div>
+      <div style="font-size:10px;color:#94a3b8;margin-bottom:4px">Acceptance Rate Progress (75% target)</div>
+      <div class="cc-tl-progress-wrap">
+        <div class="cc-tl-progress-fill" style="width:${Math.min(pct,100)}%"></div>
+        <div class="cc-tl-progress-marker" style="left:75%"><div class="cc-tl-progress-marker-lbl">75%</div></div>
+      </div></div></div>`;
+  }
+  document.getElementById('cc-tl-grid').innerHTML=
+    tlCard(d1,'Batch 1','17 Mar 2026',b1AccRate,b1Met.length,b1Inj.length,b1AUM,b1AccRate)+
+    tlCard(d2,'Batch 2','6 May 2026',b2AccRate,b2Met.length,b2Inj.length,0,b2AccRate);
+}
+
+// ─── CCT SUB-TAB SWITCHING ────────────────────────────────────────
+function ccSwitchTab(tab,idx){
+  document.querySelectorAll('.cc-tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.cc-tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('cct-'+tab).classList.add('active');
+  document.querySelectorAll('#panel-cc .cc-tab-btn')[idx].classList.add('active');
+}
+
+// ─── CCT CC PRODUCTIVITY ──────────────────────────────────────────
+let _cctCCBatch='all';
+function setCCBatch2(batch,btn){
+  _cctCCBatch=batch;
+  document.querySelectorAll('#cct-cc-batch-toggle .cc-batch-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ccRenderCCTab(batch);
+}
+function ccRenderCCTab(batch){
+  const b1=CCT_BATCH1.map(d=>({...d,batch:'B1'})),b2=CCT_BATCH2.map(d=>({...d,batch:'B2'}));
+  const data=batch==='b1'?b1:batch==='b2'?b2:[...b1,...b2];
+  window._cctCCData={};
+  CCT_CCMD_ORDER.forEach(cc=>{
+    const rows=data.filter(d=>d.cc_md===cc),targeted=rows.length;
+    const accItems=rows.filter(d=>cctIsLeadAccepted(d.status)),metItems=rows.filter(d=>cctIsMet(d.status));
+    window._cctCCData[cc]={rows,targeted,accItems,metItems,accRate:cctPct(accItems.length,targeted),meetRate:cctPct(metItems.length,accItems.length)};
+  });
+  const totT=data.length,totA=data.filter(d=>cctIsLeadAccepted(d.status)).length,totM=data.filter(d=>cctIsMet(d.status)).length;
+  const oAcc=cctPct(totA,totT),oMeet=cctPct(totM,totA);
+  function gfc(v,t){return v>=t?'cc-gauge-fill-green':v>=t*0.667?'cc-gauge-fill-amber':'cc-gauge-fill-red';}
+  document.getElementById('cct-cc-gauges').innerHTML=`
+    <div class="cc-kpi-gauge-card"><div class="cc-kpi-gauge-label">Overall Acceptance Rate</div><div class="cc-kpi-gauge-num">${oAcc}%</div>
+      <div class="cc-kpi-gauge-sub">Leads Accepted / Targeted &nbsp;&nbsp; ${totA} / ${totT}</div>
+      <div class="cc-kpi-gauge-track"><div class="cc-kpi-gauge-fill ${gfc(oAcc,75)}" style="width:${Math.min(oAcc,100)}%"></div>
+        <div class="cc-kpi-gauge-marker" style="left:75%"><div class="cc-kpi-gauge-marker-lbl">75%</div></div></div></div>
+    <div class="cc-kpi-gauge-card"><div class="cc-kpi-gauge-label">Overall Meeting Rate</div><div class="cc-kpi-gauge-num">${oMeet}%</div>
+      <div class="cc-kpi-gauge-sub">Meetings Attended / Leads Accepted &nbsp;&nbsp; ${totM} / ${totA}</div>
+      <div class="cc-kpi-gauge-track"><div class="cc-kpi-gauge-fill ${gfc(oMeet,100)}" style="width:${Math.min(oMeet,100)}%"></div>
+        <div class="cc-kpi-gauge-marker" style="left:100%;transform:translateX(-100%)"><div class="cc-kpi-gauge-marker-lbl" style="transform:translateX(50%)">100%</div></div></div></div>`;
+  function pcc(v,t){return v>=t?'cc-pct-green':v>=t*0.667?'cc-pct-amber':'cc-pct-red';}
+  function pill(aR,mR){if(aR>=75&&mR>=100)return{cls:'cc-pill-green',label:'On Track'};if(aR>=37.5&&mR>=50)return{cls:'cc-pill-amber',label:'Approaching'};return{cls:'cc-pill-red',label:'At Risk'};}
+  let rows='',tfT=0,tfA=0,tfM=0;
+  CCT_CCMD_ORDER.forEach(cc=>{
+    const m=window._cctCCData[cc];if(!m||m.targeted===0)return;
+    tfT+=m.targeted;tfA+=m.accItems.length;tfM+=m.metItems.length;
+    const p=pill(m.accRate,m.meetRate),e=cctEscHtml(cc);
+    rows+=`<tr><td style="font-weight:700">${e}</td>
+      <td class="clickable-cell" onclick="ccOpenDrawer('${e} — All Targeted',window._cctCCData['${e}'].rows)">${m.targeted}</td>
+      <td class="clickable-cell" onclick="ccOpenDrawer('${e} — Leads Accepted',window._cctCCData['${e}'].accItems)">${m.accItems.length}</td>
+      <td><span class="cc-ov-pct-badge ${pcc(m.accRate,75)}">${m.accRate}%</span></td>
+      <td class="clickable-cell" onclick="ccOpenDrawer('${e} — Meetings Attended',window._cctCCData['${e}'].metItems)">${m.metItems.length}</td>
+      <td><span class="cc-ov-pct-badge ${pcc(m.meetRate,100)}">${m.meetRate}%</span></td>
+      <td><span class="cc-status-pill ${p.cls}">${p.label}</span></td></tr>`;
+  });
+  const tfAR=cctPct(tfA,tfT),tfMR=cctPct(tfM,tfA);
+  document.getElementById('cct-cc-tbody').innerHTML=rows||'<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">No data.</td></tr>';
+  document.getElementById('cct-cc-tfoot').innerHTML=`<tr><td>Total</td><td>${tfT}</td><td>${tfA}</td>
+    <td><span class="cc-ov-pct-badge ${pcc(tfAR,75)}">${tfAR}%</span></td>
+    <td>${tfM}</td><td><span class="cc-ov-pct-badge ${pcc(tfMR,100)}">${tfMR}%</span></td><td></td></tr>`;
+}
+
+// ─── CCT RM PRODUCTIVITY ──────────────────────────────────────────
+let _cctRMBatch='all';
+function setRMBatch2(batch,btn){
+  _cctRMBatch=batch;
+  document.querySelectorAll('#cct-rm-batch-toggle .cc-batch-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ccRenderRMTab(batch);
+}
+function ccRenderRMTab(batch){
+  const b1=CCT_BATCH1.map(d=>({...d,batch:'B1'})),b2=CCT_BATCH2.map(d=>({...d,batch:'B2'}));
+  const data=batch==='b1'?b1:batch==='b2'?b2:[...b1,...b2];
+  const {byRM}=cctBuildInjectionsByCC();
+  window._cctRMData={};
+  CCT_RM_ORDER.forEach(rm=>{
+    const rows=data.filter(d=>d.rm===rm);
+    const metItems=rows.filter(d=>cctIsMet(d.status)),injItems=rows.filter(d=>cctIsInjectedSt(d.status));
+    window._cctRMData[rm]={rows,metItems,injItems,convRate:cctPct(injItems.length,metItems.length),aum:(byRM[rm]||{}).amount||0};
+  });
+  const totM=data.filter(d=>cctIsMet(d.status)).length,totI=data.filter(d=>cctIsInjectedSt(d.status)).length;
+  const oConv=cctPct(totI,totM);
+  function gfc(v,t){return v>=t?'cc-gauge-fill-green':v>=t*0.667?'cc-gauge-fill-amber':'cc-gauge-fill-red';}
+  document.getElementById('cct-rm-gauges').innerHTML=`
+    <div class="cc-kpi-gauge-card"><div class="cc-kpi-gauge-label">Overall Conversion Rate</div><div class="cc-kpi-gauge-num">${oConv}%</div>
+      <div class="cc-kpi-gauge-sub">Injected / Meetings Attended &nbsp;&nbsp; ${totI} / ${totM}</div>
+      <div class="cc-kpi-gauge-track"><div class="cc-kpi-gauge-fill ${gfc(oConv,75)}" style="width:${Math.min(oConv,100)}%"></div>
+        <div class="cc-kpi-gauge-marker" style="left:75%"><div class="cc-kpi-gauge-marker-lbl">75%</div></div></div></div>`;
+  function pcc(v,t){return v>=t?'cc-pct-green':v>=t*0.667?'cc-pct-amber':'cc-pct-red';}
+  function pill(v){if(v>=75)return{cls:'cc-pill-green',label:'On Track'};if(v>=50)return{cls:'cc-pill-amber',label:'Approaching'};return{cls:'cc-pill-red',label:'At Risk'};}
+  let rows='',tfM2=0,tfI=0,tfAUM=0;
+  CCT_RM_ORDER.forEach(rm=>{
+    const m=window._cctRMData[rm];if(!m)return;
+    tfM2+=m.metItems.length;tfI+=m.injItems.length;tfAUM+=m.aum;
+    const p=pill(m.convRate),e=cctEscHtml(rm);
+    rows+=`<tr><td style="font-weight:700">${e}</td>
+      <td class="clickable-cell" onclick="ccOpenDrawer('${e} — Meetings Attended',window._cctRMData['${e}'].metItems)">${m.metItems.length}</td>
+      <td class="clickable-cell" onclick="ccOpenDrawer('${e} — Converted',window._cctRMData['${e}'].injItems)">${m.injItems.length}</td>
+      <td><span class="cc-ov-pct-badge ${pcc(m.convRate,75)}">${m.convRate}%</span></td>
+      <td style="font-weight:600">${m.aum?cctFmtAmt(m.aum):'—'}</td>
+      <td><span class="cc-status-pill ${p.cls}">${p.label}</span></td></tr>`;
+  });
+  const tfConv=cctPct(tfI,tfM2);
+  document.getElementById('cct-rm-tbody').innerHTML=rows||'<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px;">No data.</td></tr>';
+  document.getElementById('cct-rm-tfoot').innerHTML=`<tr><td>Total</td><td>${tfM2}</td><td>${tfI}</td>
+    <td><span class="cc-ov-pct-badge ${pcc(tfConv,75)}">${tfConv}%</span></td>
+    <td>${cctFmtAmt(tfAUM)}</td><td></td></tr>`;
+}
+
+// ─── CCT INIT ─────────────────────────────────────────────────────
+let _cctInited=false;
+function ccInitTracker(){
+  if(_cctInited)return;
+  ccRenderOverview();
+  ccRenderCCTab('all');
+  ccRenderRMTab('all');
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')ccCloseDrawer();});
+  _cctInited=true;
 }
 
 </script>
