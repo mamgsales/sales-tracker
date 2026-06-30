@@ -481,99 +481,10 @@
     .owner-modal-inner { background:var(--white); border-radius:16px; padding:32px; max-width:420px; width:90%; box-shadow:0 16px 48px rgba(0,0,0,0.25); }
     .owner-modal-inner h2 { font-size:18px; font-weight:700; color:var(--navy); margin-bottom:6px; }
 
-    /* ─── CC TRACKER TAB ──────────────────────────────────────── */
-    .cc-tracker-panel { background: #F4F6FA; padding: 0; border-radius: var(--radius); min-height: 400px; }
-    .cc-sub-tabs { background: #fff; border-bottom: 2px solid #e2e8f0; padding: 0 20px; display: flex; gap: 0; }
-    .cc-tab-btn { padding: 12px 24px; border: none; background: none; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all .2s; }
-    .cc-tab-btn.active { color: #1A2B5F; border-bottom-color: #FFBF00; }
-    .cc-tab-btn:hover { color: #1A2B5F; }
-    .cc-tab-content { display: none; padding: 20px; }
-    .cc-tab-content.active { display: block; }
-    .cc-ov-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
-    .cc-ov-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 6px rgba(0,0,0,.07); border-top: 4px solid #1A2B5F; cursor: pointer; transition: all .2s; }
-    .cc-ov-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.12); }
-    .cc-ov-card.gold { border-top-color: #FFBF00; } .cc-ov-card.green { border-top-color: #27AE60; } .cc-ov-card.blue { border-top-color: #1565C0; } .cc-ov-card.red { border-top-color: #C0392B; }
-    .cc-ov-card-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: #64748b; margin-bottom: 6px; }
-    .cc-ov-card-value { font-size: 22px; font-weight: 800; color: #1A2B5F; line-height: 1.1; margin-bottom: 8px; }
-    .cc-ov-pct-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 10px; }
-    .cc-pct-green { background: #dcfce7; color: #15803d; } .cc-pct-amber { background: #fef3c7; color: #92400e; } .cc-pct-red { background: #fee2e2; color: #991b1b; } .cc-pct-blue { background: #dbeafe; color: #1e40af; }
-    .cc-ov-breakdown { margin-top: 6px; }
-    .cc-ov-breakdown-row { display: flex; justify-content: space-between; font-size: 11px; color: #64748b; padding: 2px 0; border-bottom: 1px solid #f1f5f9; }
-    .cc-ov-breakdown-row:last-child { border-bottom: none; }
-    .cc-ov-breakdown-name { font-weight: 600; color: #1A2B5F; }
-    .cc-ov-batch-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-    .cc-ov-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; cursor: pointer; transition: opacity .2s; }
-    .cc-ov-chip:hover { opacity: .8; } .cc-ov-chip.b1 { background: #FFBF00; color: #1A2B5F; } .cc-ov-chip.b2 { background: #1A2B5F; color: #fff; }
-    .cc-ov-sub { font-size: 11px; color: #94a3b8; margin-top: 2px; }
-    .cc-tl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-    .cc-tl-card { background: #1A2B5F; border-radius: 12px; padding: 20px 24px; color: #fff; display: flex; gap: 20px; align-items: flex-start; }
-    .cc-tl-days-num { font-size: 52px; font-weight: 800; color: #FFBF00; line-height: 1; min-width: 70px; flex-shrink: 0; }
-    .cc-tl-days-lbl { font-size: 11px; color: #a0aec0; margin-top: 4px; }
-    .cc-tl-right { flex: 1; } .cc-tl-batch-name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 2px; } .cc-tl-deploy-date { font-size: 11px; color: #a0aec0; margin-bottom: 12px; }
-    .cc-tl-mini-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-    .cc-tl-mini-stat { background: rgba(255,255,255,.08); border-radius: 8px; padding: 8px 10px; }
-    .cc-tl-mini-stat-val { font-size: 18px; font-weight: 700; color: #FFBF00; } .cc-tl-mini-stat-lbl { font-size: 10px; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; }
-    .cc-tl-progress-wrap { position: relative; background: rgba(255,255,255,.15); height: 12px; border-radius: 10px; overflow: visible; margin-top: 8px; }
-    .cc-tl-progress-fill { height: 100%; border-radius: 10px; background: #FFBF00; transition: width .6s ease; }
-    .cc-tl-progress-marker { position: absolute; top: -16px; width: 2px; background: #fff; height: 28px; border-radius: 1px; }
-    .cc-tl-progress-marker-lbl { position: absolute; top: -28px; transform: translateX(-50%); font-size: 9px; color: #fff; white-space: nowrap; background: rgba(0,0,0,.4); padding: 1px 4px; border-radius: 3px; }
-    .cc-kpi-gauges { display: flex; gap: 16px; margin-bottom: 24px; }
-    .cc-kpi-gauge-card { background: #fff; border-radius: 12px; padding: 24px; flex: 1; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
-    .cc-kpi-gauge-num { font-size: 42px; font-weight: 800; color: #1A2B5F; line-height: 1; }
-    .cc-kpi-gauge-sub { font-size: 11px; color: #94a3b8; margin-top: 4px; margin-bottom: 14px; }
-    .cc-kpi-gauge-track { background: #e2e8f0; height: 12px; border-radius: 10px; position: relative; overflow: visible; margin-bottom: 6px; }
-    .cc-kpi-gauge-fill { height: 100%; border-radius: 10px; transition: width .6s ease; }
-    .cc-kpi-gauge-marker { position: absolute; top: -14px; width: 2px; background: #1A2B5F; height: 26px; border-radius: 1px; }
-    .cc-kpi-gauge-marker-lbl { position: absolute; top: -26px; transform: translateX(-50%); font-size: 9px; color: #1A2B5F; white-space: nowrap; background: #e2e8f0; padding: 1px 4px; border-radius: 3px; font-weight: 700; }
-    .cc-kpi-gauge-label { font-size: 13px; font-weight: 700; color: #1A2B5F; margin-bottom: 8px; }
-    .cc-gauge-fill-green { background: #27AE60; } .cc-gauge-fill-amber { background: #F39C12; } .cc-gauge-fill-red { background: #C0392B; }
-    .cc-filter-bar { background: #fff; border-radius: 12px; padding: 14px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
-    .cc-filter-label { font-size: 12px; font-weight: 600; color: #64748b; }
-    .cc-batch-toggle { display: flex; gap: 4px; }
-    .cc-batch-btn { padding: 6px 16px; border-radius: 20px; border: 2px solid #e2e8f0; background: #fff; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s; color: #64748b; }
-    .cc-batch-btn.active { background: #1A2B5F; border-color: #1A2B5F; color: #fff; }
-    .cc-batch-btn:hover:not(.active) { border-color: #1A2B5F; color: #1A2B5F; }
-    .cc-table-wrap { background: #fff; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,.07); overflow: hidden; margin-bottom: 28px; }
-    .cc-table-scroll { overflow-x: auto; }
-    .cc-table { width: 100%; border-collapse: collapse; }
-    .cc-table thead th { background: #F4F6FA; padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: #64748b; white-space: nowrap; border-bottom: 2px solid #e2e8f0; }
-    .cc-table tbody tr { border-bottom: 1px solid #f1f5f9; transition: background .15s; }
-    .cc-table tbody tr:hover { background: #f8fafc; } .cc-table tbody tr:last-child { border-bottom: none; }
-    .cc-table tbody td { padding: 10px 14px; font-size: 13px; color: #1A2B5F; vertical-align: middle; }
-    .cc-table tfoot td { padding: 10px 14px; font-size: 13px; font-weight: 700; background: #F4F6FA; }
-    .cc-table .clickable-cell { cursor: pointer; text-decoration: underline; text-decoration-style: dotted; transition: background .15s; border-radius: 4px; }
-    .cc-table .clickable-cell:hover { background: #dbeafe; }
-    .cc-table-note { font-size: 11px; color: #94a3b8; padding: 10px 20px; background: #fff; border-top: 1px solid #f1f5f9; font-style: italic; }
-    .cc-status-pill { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
-    .cc-pill-green { background: #dcfce7; color: #15803d; } .cc-pill-amber { background: #fef3c7; color: #92400e; } .cc-pill-red { background: #fee2e2; color: #991b1b; }
-    .cc-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; white-space: nowrap; }
-    .cc-badge-met { background: #dcfce7; color: #15803d; } .cc-badge-met-sub { background: #bbf7d0; color: #166534; }
-    .cc-badge-existing { background: #dbeafe; color: #1e40af; } .cc-badge-top-up { background: #e0e7ff; color: #3730a3; }
-    .cc-badge-injected { background: #fef3c7; color: #92400e; } .cc-badge-accepted { background: #fef9c3; color: #854d0e; }
-    .cc-badge-pending { background: #f3e8ff; color: #6b21a8; } .cc-badge-rejected { background: #fee2e2; color: #991b1b; }
-    .cc-badge-b1 { background: #FFBF00; color: #1A2B5F; font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 700; }
-    .cc-badge-b2 { background: #1A2B5F; color: #fff; font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 700; }
-    .cc-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .3s; }
-    .cc-drawer-overlay.open { opacity: 1; pointer-events: all; }
-    .cc-drawer-panel { position: fixed; top: 0; right: 0; width: 520px; max-width: 95vw; height: 100vh; background: #fff; z-index: 1001; transform: translateX(100%); transition: transform .3s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; box-shadow: -8px 0 30px rgba(0,0,0,.15); }
-    .cc-drawer-panel.open { transform: translateX(0); }
-    .cc-drawer-header { padding: 20px 24px; background: #1A2B5F; color: #fff; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-    .cc-drawer-title { font-size: 15px; font-weight: 700; flex: 1; margin-right: 12px; }
-    .cc-drawer-badge { background: #FFBF00; color: #1A2B5F; font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 20px; flex-shrink: 0; }
-    .cc-drawer-close-btn { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: background .2s; flex-shrink: 0; margin-left: 8px; }
-    .cc-drawer-close-btn:hover { background: rgba(255,255,255,.2); }
-    .cc-drawer-body { flex: 1; overflow-y: auto; padding: 16px; }
-    .cc-drawer-item { padding: 14px 16px; border-radius: 10px; margin-bottom: 10px; background: #F4F6FA; border: 1px solid #e2e8f0; }
-    .cc-drawer-item-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
-    .cc-drawer-num { font-size: 11px; color: #94a3b8; font-weight: 600; min-width: 24px; padding-top: 2px; flex-shrink: 0; }
-    .cc-drawer-company { font-size: 14px; font-weight: 700; color: #1A2B5F; }
-    .cc-drawer-badges { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 4px; }
-    .cc-drawer-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
-    .cc-drawer-meta-item { font-size: 11px; color: #64748b; }
-    .cc-drawer-meta-item strong { color: #1A2B5F; }
-    .cc-drawer-remarks { font-size: 11px; color: #94a3b8; font-style: italic; margin-top: 6px; }
-    @media(max-width:900px){.cc-ov-grid{grid-template-columns:repeat(2,1fr)}.cc-tl-grid{grid-template-columns:1fr}.cc-kpi-gauges{flex-direction:column}}
-    @media(max-width:768px){.cc-tab-content{padding:16px}.cc-ov-grid{grid-template-columns:1fr}.cc-drawer-panel{width:100vw}}
+    /* ─── CC BATCH BUTTONS (for Admin CC Summary) ──────────────── */
+    .cc-batch-btn { padding:5px 14px; border:1.5px solid var(--border); border-radius:20px; background:var(--white); font-family:'Poppins',sans-serif; font-size:12px; font-weight:600; color:var(--grey); cursor:pointer; transition:all 0.2s; }
+    .cc-batch-btn:hover { border-color:var(--yellow); color:var(--navy); }
+    .cc-batch-btn.active { background:var(--navy); color:var(--white); border-color:var(--navy); }
   </style>
 </head>
 <body>
@@ -641,6 +552,43 @@
         <div class="spinner" id="injSpinner" style="display:none;"></div>
       </button>
       <button class="btn-inj-cancel" onclick="closeInjectionModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="injectionHistoryModal">
+  <div class="injection-modal" style="max-width:560px;width:95%;">
+    <h2>Injection History</h2>
+    <div class="company-tag" id="injHistCompanyTag"></div>
+    <div id="injHistoryList" style="margin:12px 0;max-height:240px;overflow-y:auto;"></div>
+    <hr style="border:none;border-top:1.5px solid var(--border);margin:14px 0;" />
+    <div style="font-weight:700;color:var(--navy);font-size:13px;margin-bottom:10px;">Add New Injection</div>
+    <div class="inj-modal-row">
+      <div class="field" style="flex:1;">
+        <label>Amount (RM Mn) <span class="req">*</span></label>
+        <input type="number" id="injHistAmount" placeholder="e.g. 50" min="0" step="0.1" />
+      </div>
+      <div class="field" style="flex:1;"><label>Injection Date <span class="req">*</span></label><input type="date" id="injHistDate" /></div>
+    </div>
+    <div class="inj-modal-row">
+      <div class="field" style="flex:1;">
+        <label>RM</label>
+        <select id="injHistRM">
+          <option value="">— Select RM —</option>
+          <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
+          <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
+        </select>
+      </div>
+      <div class="field" style="flex:1;"></div>
+    </div>
+    <div class="field"><label>Remarks</label><textarea id="injHistRemarks" placeholder="Optional notes..." style="min-height:60px;"></textarea></div>
+    <input type="hidden" id="injHistClientName" />
+    <div class="inj-modal-btns">
+      <button class="btn-inj-confirm" onclick="confirmNewInjection()">
+        <span id="injHistBtnText">Save Injection</span>
+        <div class="spinner" id="injHistSpinner" style="display:none;"></div>
+      </button>
+      <button class="btn-inj-cancel" onclick="document.getElementById('injectionHistoryModal').classList.add('hidden')">Close</button>
     </div>
   </div>
 </div>
@@ -761,11 +709,7 @@
     <button class="tab-btn" id="tab-clients" onclick="switchTab('clients')">
       Client Status <span class="tab-count" id="tabClientCount">&#8212;</span>
     </button>
-    <button class="tab-btn" id="tab-upcoming" onclick="switchTab('upcoming')">
-      Upcoming Meetings <span class="tab-count" id="tabUpcomingCount">&#8212;</span>
-    </button>
     <button class="tab-btn" id="tab-admin" onclick="switchTab('admin')">Admin</button>
-    <button class="tab-btn" id="tab-cc" onclick="switchTab('cc')">MSII Command Council</button>
   </div>
 
   <!-- TAB 1: LOG MEETING -->
@@ -785,6 +729,22 @@
       <div class="card-title">Log a Client Meeting</div>
       <div class="card-sub">All fields are required. Entries are saved directly to the team database.</div>
       <div class="form-body" id="formBody">
+        <!-- Meeting Type — first selector; determines which form section shows -->
+        <div style="background:#F8F9FB;border:1.5px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:20px;">
+          <div class="field" id="fld-meetingType" style="margin-bottom:0;">
+            <label style="font-size:14px;font-weight:700;color:var(--navy);">What are you logging? <span class="req">*</span></label>
+            <select id="meetingTypeSelect" onchange="handleMeetingTypeChange();clearError('meetingType')" style="font-size:14px;font-weight:600;background:var(--white);">
+              <option value="">&#8212; Select meeting type &#8212;</option>
+              <option value="Upcoming Meeting">&#128197; Schedule Upcoming Meeting</option>
+              <option value="First Meeting">First Meeting</option>
+              <option value="Follow-up">Follow-up</option>
+              <option value="Other">Other</option>
+            </select>
+            <span class="err-msg">Please select the meeting type.</span>
+          </div>
+        </div>
+        <!-- LOG MEETING section (hidden until non-upcoming type selected) -->
+        <div id="logMeetingSection" style="display:none;">
         <div class="section-label">Meeting Details</div>
         <div class="form-grid">
           <div class="field full" id="fld-rm">
@@ -817,6 +777,16 @@
             <input type="hidden" id="isNewCompany" value="false" />
             <span class="err-msg" id="companyErrMsg">Please select or enter a client name.</span>
             <div class="msii-badge" id="msiiBadge">MSII Command Council</div>
+            <div id="subsidiaryField" style="display:none;margin-top:10px;background:#FFFDF0;border:1.5px solid var(--yellow);border-radius:8px;padding:12px 14px;">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:0;">
+                <input type="checkbox" id="subsidiaryCheck" onchange="toggleSubsidiaryInput()" style="width:16px;height:16px;accent-color:var(--navy);cursor:pointer;" />
+                Meeting is with a subsidiary company
+              </label>
+              <div id="subsidiaryInputWrap" style="display:none;margin-top:10px;">
+                <input type="text" id="subsidiaryName" placeholder="Enter subsidiary company name..." style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;font-family:Poppins,sans-serif;font-size:13px;" />
+                <div style="font-size:11px;color:var(--grey);margin-top:4px;">The parent company will be counted as MET in MSII CC tracking.</div>
+              </div>
+            </div>
             <div class="hint">Start typing to search from the potential client database, or type a new name to add it.</div>
           </div>
           <div class="full">
@@ -903,16 +873,6 @@
             </select>
             <span class="err-msg">Please select a status.</span>
           </div>
-          <div class="field" id="fld-meetingType">
-            <label>Meeting Type <span class="req">*</span></label>
-            <select id="meetingTypeSelect" onchange="clearError('meetingType')">
-              <option value="">&#8212; Select type &#8212;</option>
-              <option value="First Meeting">First Meeting</option>
-              <option value="Follow-up">Follow-up</option>
-              <option value="Other">Other</option>
-            </select>
-            <span class="err-msg">Please select the meeting type.</span>
-          </div>
           <div class="field" id="fld-interest">
             <label>Client Interest <span class="req">*</span></label>
             <select id="interestSelect" onchange="clearError('interest')">
@@ -953,6 +913,7 @@
             <span class="err-msg">Please add remarks for this meeting.</span>
           </div>
         </div>
+        </div><!-- end logMeetingSection -->
       </div>
       <div class="submit-wrap">
         <button class="btn-submit" id="submitBtn" onclick="submitForm()">
@@ -965,63 +926,11 @@
     <div style="text-align:center;font-size:11px;color:var(--grey);margin-top:8px;">
       Maybank Asset Management Group &middot; Client Meeting Log Tracker &middot; <span id="footerDate"></span>
     </div>
-    </div>
-  </div>
-
-  <!-- TAB 2: CLIENT STATUS -->
-  <div class="tab-panel" id="panel-clients">
-    <div class="cl-stats">
-      <div class="cl-stat"><div class="stat-num" id="statTotal">--</div><div class="stat-lbl">Total Clients</div></div>
-      <div class="cl-stat success-stat"><div class="stat-num" id="statInjected">--</div><div class="stat-lbl">Injected</div></div>
-      <div class="cl-stat highlight"><div class="stat-num" id="statPending">--</div><div class="stat-lbl">In Pursuit</div></div>
-      <div class="cl-stat" style="background:#FFF8E6;border-color:var(--yellow);"><div class="stat-num" id="statMSII" style="color:var(--yellow-dk);">--</div><div class="stat-lbl">MSII CC</div></div>
-    </div>
-    <div class="cl-toolbar">
-      <input class="cl-search" type="text" id="clSearch" placeholder="Search company name..." oninput="renderClientTable()" />
-      <select class="cl-filter" id="clFilterStatus" onchange="renderClientTable()">
-        <option value="">All Statuses</option>
-        <option value="Successful">Successful</option>
-        <option value="Pending Decision">Pending Decision</option>
-        <option value="Pending Board Approval">Pending Board Approval</option>
-        <option value="Pending Onboarding">Pending Onboarding</option>
-        <option value="Pending Injection">Pending Injection</option>
-        <option value="Rejected">Rejected</option>
-        <option value="Not Met">Not Met</option>
-      </select>
-      <select class="cl-filter" id="clFilterRM" onchange="renderClientTable()">
-        <option value="">All RMs</option>
-        <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-        <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
-      </select>
-      <select class="cl-filter" id="clFilterMSII" onchange="renderClientTable()">
-        <option value="">All Clients</option>
-        <option value="msii">MSII Command Council</option>
-        <option value="non-msii">Non-MSII</option>
-      </select>
-      <button class="btn-refresh" onclick="loadClientStatuses()">Refresh</button>
-    </div>
-    <div class="card" style="padding:0;">
-      <div class="cl-table-wrap">
-        <table class="cl-table">
-          <thead>
-            <tr>
-              <th>#</th><th>Client</th><th class="col-msii">MSII</th><th>Owner / RMs</th>
-              <th class="cl-col-product">Product</th><th class="cl-col-potential">Potential (RM Mn)</th><th>Status</th><th>Remarks</th><th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="clTableBody">
-            <tr><td colspan="10"><div class="empty-state"><div class="empty-icon"></div><p>Loading client data...</p></div></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- TAB 4: UPCOMING MEETINGS -->
-  <div class="tab-panel" id="panel-upcoming">
+    <!-- UPCOMING MEETING SECTION (shown when type = Upcoming Meeting) -->
+    <div id="upcomingMeetingSection" style="display:none;">
     <div class="card">
-      <div class="card-title">Log Upcoming Meeting</div>
-      <div class="card-sub">Schedule a future client meeting. RM, client name and meeting date are required.</div>
+      <div class="card-title">Schedule Upcoming Meeting</div>
+      <div class="card-sub">Log a future client meeting date. RM, client name, date, segment and referral are required.</div>
       <div class="upcoming-form-grid">
         <div class="field" id="ufld-rm">
           <label>RM Name <span class="req">*</span></label>
@@ -1123,7 +1032,58 @@
             <tr><th>#</th><th>RM</th><th>Client Name</th><th>Segment</th><th>Referred By</th><th>Meeting Date</th><th>Time</th><th>Purpose</th><th>Status</th><th>Action</th></tr>
           </thead>
           <tbody id="upcomingTableBody">
-            <tr><td colspan="10"><div class="empty-state"><div class="empty-icon"></div><p>Loading upcoming meetings...</p></div></td></tr>
+            <tr><td colspan="10"><div class="empty-state"><div class="empty-icon"></div><p>Select "Schedule Upcoming Meeting" above to view.</p></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div><!-- end upcomingMeetingSection -->
+    </div>
+  </div>
+
+  <!-- TAB 2: CLIENT STATUS -->
+  <div class="tab-panel" id="panel-clients">
+    <div class="cl-stats">
+      <div class="cl-stat"><div class="stat-num" id="statTotal">--</div><div class="stat-lbl">Total Clients</div></div>
+      <div class="cl-stat success-stat"><div class="stat-num" id="statInjected">--</div><div class="stat-lbl">Injected</div></div>
+      <div class="cl-stat highlight"><div class="stat-num" id="statPending">--</div><div class="stat-lbl">In Pursuit</div></div>
+      <div class="cl-stat" style="background:#FFF8E6;border-color:var(--yellow);"><div class="stat-num" id="statMSII" style="color:var(--yellow-dk);">--</div><div class="stat-lbl">MSII CC</div></div>
+    </div>
+    <div class="cl-toolbar">
+      <input class="cl-search" type="text" id="clSearch" placeholder="Search company name..." oninput="renderClientTable()" />
+      <select class="cl-filter" id="clFilterStatus" onchange="renderClientTable()">
+        <option value="">All Statuses</option>
+        <option value="Successful">Successful</option>
+        <option value="Pending Decision">Pending Decision</option>
+        <option value="Pending Board Approval">Pending Board Approval</option>
+        <option value="Pending Onboarding">Pending Onboarding</option>
+        <option value="Pending Injection">Pending Injection</option>
+        <option value="Rejected">Rejected</option>
+        <option value="Not Met">Not Met</option>
+      </select>
+      <select class="cl-filter" id="clFilterRM" onchange="renderClientTable()">
+        <option value="">All RMs</option>
+        <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
+        <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
+      </select>
+      <select class="cl-filter" id="clFilterMSII" onchange="renderClientTable()">
+        <option value="">All Clients</option>
+        <option value="msii">MSII Command Council</option>
+        <option value="non-msii">Non-MSII</option>
+      </select>
+      <button class="btn-refresh" onclick="loadClientStatuses()">Refresh</button>
+    </div>
+    <div class="card" style="padding:0;">
+      <div class="cl-table-wrap">
+        <table class="cl-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Client</th><th class="col-msii">MSII</th><th>Owner / RMs</th>
+              <th class="cl-col-product">Product</th><th class="cl-col-potential">Potential (RM Mn)</th><th>Status</th><th>Remarks</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="clTableBody">
+            <tr><td colspan="10"><div class="empty-state"><div class="empty-icon"></div><p>Loading client data...</p></div></td></tr>
           </tbody>
         </table>
       </div>
@@ -1198,6 +1158,17 @@
           <div class="admin-sub-title">Pipeline Summary &mdash; Clients by Stage</div>
           <div id="pipelineContainer"><div class="loading-row">Loading...</div></div>
         </div>
+        <div class="admin-sub" id="cc-summary-section">
+          <div class="admin-sub-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <span>MSII Command Council — CC &amp; RM Productivity</span>
+            <div style="display:flex;gap:3px;">
+              <button class="cc-batch-btn active" id="cc-sum-b-all" onclick="setCCSummaryBatch('all',this)">All</button>
+              <button class="cc-batch-btn" id="cc-sum-b-1" onclick="setCCSummaryBatch('b1',this)">B1</button>
+              <button class="cc-batch-btn" id="cc-sum-b-2" onclick="setCCSummaryBatch('b2',this)">B2</button>
+            </div>
+          </div>
+          <div id="cc-productivity-tables"><div class="loading-row">Loading CC data...</div></div>
+        </div>
         <div class="admin-sub">
           <div class="admin-sub-title">Conversion Summary &mdash; CC, CBD &amp; MSII Command Council
             <button class="btn-export-pdf" onclick="exportConversionPDF(this)" style="margin-left:12px;background:var(--navy);border:none;color:var(--white);">Export PDF</button>
@@ -1246,84 +1217,6 @@
     </div>
   </div>
 
-  <!-- TAB 5: MSII COMMAND COUNCIL -->
-  <div class="tab-panel" id="panel-cc">
-    <div id="cc-pin-screen" class="pin-screen">
-      <div class="pin-card">
-        <h2>MSII Command Council</h2>
-        <p>Enter your PIN to view this dashboard.</p>
-        <input type="password" id="ccPinInput" maxlength="4" placeholder="&#8226;&#8226;&#8226;&#8226;"
-          oninput="clearCCPinError()" onkeydown="if(event.key==='Enter')submitCCPin()" inputmode="numeric" />
-        <div class="pin-error" id="ccPinError">Incorrect PIN. Please try again.</div>
-        <button class="btn-unlock" onclick="submitCCPin()">Unlock</button>
-      </div>
-    </div>
-    <div id="cc-content" style="display:none;">
-    <div class="cc-tracker-panel">
-      <div class="cc-sub-tabs">
-        <button class="cc-tab-btn active" onclick="ccSwitchTab('overview',0)">Overview</button>
-        <button class="cc-tab-btn" onclick="ccSwitchTab('cc',1)">CC Productivity</button>
-        <button class="cc-tab-btn" onclick="ccSwitchTab('rm',2)">RM Productivity</button>
-      </div>
-      <!-- CC OVERVIEW -->
-      <div class="cc-tab-content active" id="cct-overview">
-        <div class="cc-ov-grid" id="cc-ov-grid"></div>
-        <div class="cc-tl-grid" id="cc-tl-grid"></div>
-      </div>
-      <!-- CC PRODUCTIVITY -->
-      <div class="cc-tab-content" id="cct-cc">
-        <div class="cc-kpi-gauges" id="cct-cc-gauges"></div>
-        <div class="cc-filter-bar">
-          <span class="cc-filter-label">Batch:</span>
-          <div class="cc-batch-toggle" id="cct-cc-batch-toggle">
-            <button class="cc-batch-btn active" onclick="setCCBatch2('all',this)">All Batches</button>
-            <button class="cc-batch-btn" onclick="setCCBatch2('b1',this)">Batch 1</button>
-            <button class="cc-batch-btn" onclick="setCCBatch2('b2',this)">Batch 2</button>
-          </div>
-        </div>
-        <div class="cc-table-wrap">
-          <div class="cc-table-scroll">
-            <table class="cc-table">
-              <thead><tr>
-                <th>CC MD</th><th>Targeted</th><th>Leads Accepted</th>
-                <th>Acceptance Rate %</th><th>Meetings Attended</th>
-                <th>Meeting Rate %</th><th>Status</th>
-              </tr></thead>
-              <tbody id="cct-cc-tbody"></tbody>
-              <tfoot id="cct-cc-tfoot"></tfoot>
-            </table>
-          </div>
-          <div class="cc-table-note">Acceptance Rate target: 75% &nbsp;|&nbsp; Meeting Rate target: 100%</div>
-        </div>
-      </div>
-      <!-- RM PRODUCTIVITY -->
-      <div class="cc-tab-content" id="cct-rm">
-        <div class="cc-kpi-gauges" id="cct-rm-gauges"></div>
-        <div class="cc-filter-bar">
-          <span class="cc-filter-label">Batch:</span>
-          <div class="cc-batch-toggle" id="cct-rm-batch-toggle">
-            <button class="cc-batch-btn active" onclick="setRMBatch2('all',this)">All Batches</button>
-            <button class="cc-batch-btn" onclick="setRMBatch2('b1',this)">Batch 1</button>
-            <button class="cc-batch-btn" onclick="setRMBatch2('b2',this)">Batch 2</button>
-          </div>
-        </div>
-        <div class="cc-table-wrap">
-          <div class="cc-table-scroll">
-            <table class="cc-table">
-              <thead><tr>
-                <th>MAMG RM</th><th>Meetings Attended</th><th>Converted</th>
-                <th>Conversion Rate %</th><th>Injection AUM</th><th>Status</th>
-              </tr></thead>
-              <tbody id="cct-rm-tbody"></tbody>
-              <tfoot id="cct-rm-tfoot"></tfoot>
-            </table>
-          </div>
-          <div class="cc-table-note">Note: All injection AUM data is Batch 1 only</div>
-        </div>
-      </div>
-    </div>
-    </div><!-- /cc-content -->
-  </div>
 
 </div>
 
@@ -1349,17 +1242,6 @@
       <button onclick="closeChangeOwnerModal()" style="padding:13px 20px;background:var(--grey-lt);color:var(--grey);font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;border:none;border-radius:10px;cursor:pointer;">Cancel</button>
     </div>
   </div>
-</div>
-
-<!-- CC Tracker Drawer -->
-<div class="cc-drawer-overlay" id="cc-drawer-overlay" onclick="ccCloseDrawer()"></div>
-<div class="cc-drawer-panel" id="cc-drawer-panel">
-  <div class="cc-drawer-header">
-    <div class="cc-drawer-title" id="cc-drawer-title">Companies</div>
-    <div class="cc-drawer-badge" id="cc-drawer-badge">0</div>
-    <button class="cc-drawer-close-btn" onclick="ccCloseDrawer()">&#x2715;</button>
-  </div>
-  <div class="cc-drawer-body" id="cc-drawer-body"></div>
 </div>
 
 <script>
@@ -1403,6 +1285,67 @@ function openConfig() {
 
 // ─── POTENTIAL CLIENTS ───────────────────────────────────────────
 let potentialClientsData = [];
+
+// ─── CC TRACKER STATE ────────────────────────────────────────────────────────
+let ccStatusMap = {}; // { 'COMPANY NAME UPPER': {status, remarks, sales_amount, updated_at, updated_by} }
+
+async function loadCCTrackerUpdates() {
+  if (demoMode || !_sb) return;
+  try {
+    const {data, error} = await _sb.from('cc_tracker_updates').select('*');
+    if (error) { console.warn('cc_tracker_updates not yet created:', error.message); return; }
+    ccStatusMap = {};
+    (data||[]).forEach(r => { ccStatusMap[r.company_name.toUpperCase()] = r; });
+  } catch(e) { console.warn('CC tracker load error:', e.message); }
+}
+
+function getCCLead(companyName) {
+  return CC_LEADS.find(d => d.company.toUpperCase() === (companyName||'').toUpperCase()) || null;
+}
+
+function getCCStatus(companyName) {
+  const override = ccStatusMap[(companyName||'').toUpperCase()];
+  if (override) return override;
+  const lead = getCCLead(companyName);
+  if (lead) return {status: lead.status, remarks: lead.remarks, sales_amount: lead.sales, updated_at: null, updated_by: null};
+  return null;
+}
+
+// Smarter status resolver — checks cc_tracker_updates → meeting_logs → CC_LEADS → default
+function resolveCCStatus(c) {
+  // Priority 1: manual override saved in cc_tracker_updates Supabase table
+  const override = ccStatusMap[(c.name||'').toUpperCase()];
+  if (override) return { ...override, source: 'override' };
+  // Priority 2: derive from actual Supabase meeting_logs data (c.latestLog)
+  if (c.latestLog) {
+    const ls = c.latestLog.status;
+    const inj = c.latestLog.injected_amount;
+    const rem = c.latestLog.remarks || '';
+    const hasSub = !!(c.latestLog.subsidiary_company);
+    if (ls === 'Successful') {
+      return inj != null
+        ? { status: 'INJECTED', sales_amount: parseFloat(inj) * 1e6, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' }
+        : { status: 'TOP UP', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
+    }
+    if (['Pending Decision', 'Pending Board Approval'].includes(ls))
+      return { status: 'MET', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
+    if (['Pending Onboarding', 'Pending Injection'].includes(ls))
+      return { status: 'ACCEPTED', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
+    if (ls === 'Rejected')
+      return { status: 'REJECTED', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
+    // If subsidiary was logged, at minimum count as MET even if status is Not Met
+    if (hasSub)
+      return { status: 'MET', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
+    if (ls === 'Not Met')
+      return { status: 'PENDING', sales_amount: null, remarks: rem, updated_at: null, updated_by: c.latestLog.rm_name, source: 'log' };
+  }
+  // Priority 3: CC_LEADS Excel default
+  const lead = getCCLead(c.name);
+  if (lead) return { status: lead.status, sales_amount: lead.sales, remarks: lead.remarks, updated_at: null, updated_by: null, source: 'excel' };
+  // No data — show PENDING for any MSII-flagged client
+  return { status: 'PENDING', sales_amount: null, remarks: '', updated_at: null, updated_by: null, source: 'default' };
+}
+
 async function loadPotentialClients() {
   if (demoMode || !_sb) {
     potentialClientsData = [
@@ -1416,11 +1359,11 @@ async function loadPotentialClients() {
       .select('client_name, segment, gb_cbd, msii_command_council, source').order('client_name');
     if (error) throw error;
     potentialClientsData = data || [];
-    // Supplement with Batch 2 companies not already in the Supabase list
+    // Supplement with CC_LEADS companies not already in the Supabase list
     const existingNames = new Set(potentialClientsData.map(c => c.client_name.toUpperCase()));
-    CCT_BATCH2.forEach(d => {
+    CC_LEADS.forEach(d => {
       if (!existingNames.has(d.company.toUpperCase())) {
-        potentialClientsData.push({client_name: d.company, segment: '', gb_cbd: 'MSII', msii_command_council: true});
+        potentialClientsData.push({client_name: d.company, segment: d.cc_team||'', gb_cbd: 'MSII CC', msii_command_council: true, cc_md: d.cc_md, cc_team: d.cc_team, cc_rm: d.rm, cc_batch: d.batch});
         existingNames.add(d.company.toUpperCase());
       }
     });
@@ -1474,6 +1417,24 @@ function selectClient(name, segment, msii) {
   clearFieldError('fld-company');
   document.getElementById('companySearch').classList.remove('error');
   document.getElementById('msiiBadge').classList.toggle('visible', selectedClient.msii);
+  // Show subsidiary field for CC leads
+  const ccLead = getCCLead(name);
+  const subEl = document.getElementById('subsidiaryField');
+  const subInput = document.getElementById('subsidiaryName');
+  if (subEl) {
+    if (ccLead) {
+      subEl.style.display = 'block';
+      // Pre-fill known subsidiary name
+      const knownSub = CC_SUBSIDIARY_MAP[(name||'').toUpperCase()];
+      if (knownSub && subInput) subInput.value = knownSub;
+    } else {
+      subEl.style.display = 'none';
+      if (subInput) subInput.value = '';
+      const chk = document.getElementById('subsidiaryCheck');
+      if (chk) { chk.checked = false; }
+      document.getElementById('subsidiaryInputWrap').style.display = 'none';
+    }
+  }
   if (segment) {
     const sel = document.getElementById('segmentSelect');
     if (!Array.from(sel.options).find(o => o.value === segment)) {
@@ -1489,12 +1450,19 @@ function unlockSegment() {
   sel.disabled = false; sel.classList.remove('segment-locked');
   document.getElementById('segmentAutoFill').classList.remove('visible');
 }
+function toggleSubsidiaryInput() {
+  const checked = document.getElementById('subsidiaryCheck')?.checked;
+  const wrap = document.getElementById('subsidiaryInputWrap');
+  if (wrap) wrap.style.display = checked ? 'block' : 'none';
+  if (!checked) { const inp = document.getElementById('subsidiaryName'); if (inp) inp.value = ''; }
+}
 function createNewCompany(name) {
   document.getElementById('companySearch').value = name;
   document.getElementById('isNewCompany').value = 'true';
   document.getElementById('selectedCompanyName').value = name;
   document.getElementById('dropdownList').classList.remove('open');
   document.getElementById('msiiBadge').classList.remove('visible');
+  const subEl = document.getElementById('subsidiaryField'); if (subEl) subEl.style.display = 'none';
   unlockSegment(); clearFieldError('fld-company');
 }
 function openDropdown() { filterCompanies(); }
@@ -1538,6 +1506,23 @@ function clearError(key) {
 }
 function clearFieldError(fldId) { document.getElementById(fldId)?.classList.remove('has-error'); }
 
+// ─── MEETING TYPE TOGGLE ──────────────────────────────────────────
+function handleMeetingTypeChange() {
+  const val = document.getElementById('meetingTypeSelect')?.value || '';
+  const logSec = document.getElementById('logMeetingSection');
+  const upSec  = document.getElementById('upcomingMeetingSection');
+  const submitBtn = document.getElementById('submitBtn');
+  if (val === 'Upcoming Meeting') {
+    if (logSec) logSec.style.display = 'none';
+    if (upSec)  { upSec.style.display = 'block'; loadUpcomingMeetings(); }
+    if (submitBtn) submitBtn.style.display = 'none';
+  } else {
+    if (logSec) logSec.style.display = val ? 'block' : 'none';
+    if (upSec)  upSec.style.display  = 'none';
+    if (submitBtn) submitBtn.style.display = '';
+  }
+}
+
 // ─── SUBMIT ──────────────────────────────────────────────────────
 async function submitForm() {
   if (!validateForm()) {
@@ -1568,6 +1553,7 @@ async function submitForm() {
     contact_position: document.getElementById('contactPosition').value.trim() || null,
     contact_phone:    document.getElementById('contactPhone').value.trim()     || null,
     contact_email:    document.getElementById('contactEmail').value.trim()     || null,
+    subsidiary_company: (document.getElementById('subsidiaryCheck')?.checked && document.getElementById('subsidiaryName')?.value.trim()) ? document.getElementById('subsidiaryName').value.trim() : null,
   };
   try {
     if (demoMode || !_sb) {
@@ -1604,6 +1590,17 @@ function resetForm() {
   unlockSegment(); selectedClient = null;
   document.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
   document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+  // Reset subsidiary field
+  const subEl = document.getElementById('subsidiaryField');
+  if (subEl) subEl.style.display = 'none';
+  const subChk = document.getElementById('subsidiaryCheck');
+  if (subChk) subChk.checked = false;
+  const subWrap = document.getElementById('subsidiaryInputWrap');
+  if (subWrap) subWrap.style.display = 'none';
+  const subInp = document.getElementById('subsidiaryName');
+  if (subInp) subInp.value = '';
+  // Reset meeting type toggle
+  handleMeetingTypeChange();
 }
 
 // ─── TOAST ───────────────────────────────────────────────────────
@@ -1634,15 +1631,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ─── TAB SWITCHING ───────────────────────────────────────────────
 function switchTab(tab) {
-  if (!rmUnlocked && tab !== 'admin' && tab !== 'cc') tab = 'log';
+  if (tab === 'upcoming') tab = 'log'; // upcoming merged into log tab
+  if (!rmUnlocked && tab !== 'admin') tab = 'log';
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
   document.getElementById('panel-' + tab).classList.add('active');
   if (tab === 'clients')  loadClientStatuses();
-  if (tab === 'upcoming') loadUpcomingMeetings();
   if (tab === 'admin')    checkAdminAccess();
-  if (tab === 'cc')       checkCCAccess();
 }
 let calCurrentYear = new Date().getFullYear();
 let calCurrentMonth = new Date().getMonth();
@@ -1669,6 +1665,7 @@ async function loadClientStatuses() {
       latestLog: i<20 ? {rm_name:['Azmi','Iskandar','Nasya','Lei Khim','Izzati','Filzah','Colin'][i%7], product_fund:['LMS','Private Mandate','Unit Trust','Sukuk'][i%4], potential_size_rm_mn:(Math.random()*200).toFixed(1), status:statuses[i%statuses.length], meeting_datetime:new Date(Date.now()-i*86400000*3).toISOString(), injected_amount:null, remarks:'Demo remarks for client '+i} : null,
       allRMs: i<20 ? [['Azmi','Iskandar','Nasya','Lei Khim','Izzati','Filzah','Colin'][i%7]] : [],
     }));
+    await loadCCTrackerUpdates();
     updateClientStats(); renderClientTable(); return;
   }
   try {
@@ -1685,12 +1682,21 @@ async function loadClientStatuses() {
       if (!allRMsMap[key]) allRMsMap[key]=new Set();
       if (log.rm_name) allRMsMap[key].add(log.rm_name);
     });
-    clientStatusData = clients.map(c => ({id:c.id, name:c.client_name, gb_cbd:c.gb_cbd, segment:c.segment, msii_command_council:c.msii_command_council, latestLog:logMap[c.client_name.toUpperCase()]||null, allRMs:[...(allRMsMap[c.client_name.toUpperCase()]||[])]}));
-    const knownNames = new Set(clients.map(c => c.client_name.toUpperCase()));
+    // Build clientStatusData from potential_clients, deduplicating by name (handles duplicate rows in DB)
+    const knownNames = new Set();
+    clientStatusData = [];
+    clients.forEach(c => {
+      const key = (c.client_name||'').toUpperCase().trim();
+      if (!key || knownNames.has(key)) return;
+      knownNames.add(key);
+      clientStatusData.push({id:c.id, name:c.client_name, gb_cbd:c.gb_cbd, segment:c.segment, msii_command_council:c.msii_command_council, latestLog:logMap[key]||null, allRMs:[...(allRMsMap[key]||[])]});
+    });
+    // Add any clients from meeting_logs not already in potential_clients
     logs.forEach(log => {
-      const key=(log.client_name_manual||'').toUpperCase();
+      const key=(log.client_name_manual||'').toUpperCase().trim();
       if (key && !knownNames.has(key)) { knownNames.add(key); clientStatusData.push({id:null, name:log.client_name_manual, gb_cbd:'', segment:'', msii_command_council:false, latestLog:log, allRMs:[...(allRMsMap[key]||[])]}); }
     });
+    await Promise.all([loadCCTrackerUpdates(), loadInjections()]);
     updateClientStats(); renderClientTable();
     document.getElementById('tabClientCount').textContent = clientStatusData.length;
   } catch(err) {
@@ -1714,29 +1720,93 @@ function renderClientTable() {
   const fRM = document.getElementById('clFilterRM')?.value||'';
   const fMSII = document.getElementById('clFilterMSII')?.value||'';
   const tbody = document.getElementById('clTableBody');
-  let rows = clientStatusData.filter(c => {
-    const matchQ = !q || c.name.toLowerCase().includes(q);
-    const st = c.latestLog ? c.latestLog.status : 'Not Met';
-    const matchS = !fStatus || st===fStatus;
-    const matchRM = !fRM || (c.latestLog?.rm_name === fRM);
-    const matchMSII = !fMSII || (fMSII==='msii' ? c.msii_command_council===true : c.msii_command_council!==true);
-    return matchQ && matchS && matchRM && matchMSII;
-  });
-  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="10"><div class="empty-state"><div class="empty-icon"></div><p>No clients match your filters.</p></div></td></tr>'; return; }
-  const priority = {'Successful':0,'Pending Decision':1,'Pending Board Approval':1,'Pending Onboarding':1,'Pending Injection':1,'Rejected':2,'Not Met':3};
-  rows.sort((a,b) => { const ap=priority[a.latestLog?.status||'Not Met']??7; const bp=priority[b.latestLog?.status||'Not Met']??7; return ap!==bp?ap-bp:a.name.localeCompare(b.name); });
+
+  let rows;
+  if (fMSII === 'msii') {
+    // ── MSII CC mode: use CC_LEADS 282 as canonical, look up live Supabase data per entry
+    const clientByName = {};
+    clientStatusData.forEach(c => { clientByName[(c.name||'').toUpperCase().trim()] = c; });
+
+    rows = CC_LEADS.map(d => {
+      const parentKey = d.company.toUpperCase().trim();
+      const directMatch = clientByName[parentKey];
+      const subMatches = clientStatusData.filter(c =>
+        (CC_PARENT_MAP[(c.name||'').toUpperCase().trim()] || '').toUpperCase() === parentKey
+      );
+      const knownSubName = CC_SUBSIDIARY_MAP[parentKey];
+      const knownSubMatch = knownSubName ? clientByName[knownSubName.toUpperCase().trim()] : null;
+      const allLogs = [directMatch?.latestLog, ...subMatches.map(c => c.latestLog), knownSubMatch?.latestLog].filter(Boolean);
+      const bestLog = [...allLogs].sort((a, b) => new Date(b.meeting_datetime) - new Date(a.meeting_datetime))[0] || null;
+      const allRMs = [...new Set(allLogs.map(l => l.rm_name).filter(Boolean))];
+      const subNamesSet = new Set();
+      subMatches.forEach(c => { if (c.name.toUpperCase().trim() !== parentKey) subNamesSet.add(c.name); });
+      if (knownSubMatch && knownSubMatch.name.toUpperCase().trim() !== parentKey) subNamesSet.add(knownSubMatch.name);
+      if (bestLog?.subsidiary_company) subNamesSet.add(bestLog.subsidiary_company);
+      return { id: directMatch?.id||null, name: d.company, msii_command_council: true, latestLog: bestLog, allRMs, ccLead: d, subNames: [...subNamesSet] };
+    });
+
+    rows = rows.filter(c => {
+      const matchQ = !q || c.name.toLowerCase().includes(q) || c.subNames.some(s => s.toLowerCase().includes(q));
+      const matchRM = !fRM || c.allRMs.some(r => r === fRM) || (c.ccLead?.rm?.toUpperCase() === fRM.toUpperCase());
+      return matchQ && matchRM;
+    });
+    const ccPriority = {'INJECTED':0,'TOP UP':0,'MET SUBSIDIARY':1,'MET':1,'ACCEPTED':2,'EXISTING CLIENT':2,'PENDING':3,'REJECTED':4};
+    rows.sort((a,b) => {
+      const as = resolveCCStatus(a)?.status||'PENDING', bs = resolveCCStatus(b)?.status||'PENDING';
+      const ap = ccPriority[as]??5, bp = ccPriority[bs]??5;
+      return ap!==bp ? ap-bp : a.name.localeCompare(b.name);
+    });
+  } else {
+    // ── Normal mode: filter from clientStatusData
+    rows = clientStatusData.filter(c => {
+      const matchQ = !q || c.name.toLowerCase().includes(q);
+      const st = c.latestLog ? c.latestLog.status : 'Not Met';
+      const matchS = !fStatus || st===fStatus;
+      const matchRM = !fRM || (c.latestLog?.rm_name === fRM) || (getCCLead(c.name)?.rm?.toUpperCase() === fRM.toUpperCase());
+      const matchMSII = !fMSII || c.msii_command_council!==true;
+      return matchQ && matchS && matchRM && matchMSII;
+    });
+    const priority = {'Successful':0,'Pending Decision':1,'Pending Board Approval':1,'Pending Onboarding':1,'Pending Injection':1,'Rejected':2,'Not Met':3};
+    rows.sort((a,b) => {
+      if (a.msii_command_council && !b.msii_command_council) return -1;
+      if (!a.msii_command_council && b.msii_command_council) return 1;
+      const ap=priority[a.latestLog?.status||'Not Met']??7; const bp=priority[b.latestLog?.status||'Not Met']??7;
+      return ap!==bp?ap-bp:a.name.localeCompare(b.name);
+    });
+  }
+  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><div class="empty-icon"></div><p>No clients match your filters.</p></div></td></tr>'; return; }
   tbody.innerHTML = rows.map((c,i) => {
     const log = c.latestLog;
     const status = log ? log.status : 'Not Met';
     const isInj = status==='Successful' && log?.injected_amount!=null;
-    const statusBadge = getStatusBadge(status, log?.injected_amount);
     const typeBadge = c.msii_command_council ? '<span style="background:var(--yellow);color:var(--navy);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;">MSII</span>' : '<span style="color:var(--grey);font-size:11px;">&#8212;</span>';
-    const injAmt = isInj && log.injected_amount ? `<br><small style="color:var(--success);font-weight:600;">Injected: RM ${parseFloat(log.injected_amount).toFixed(1)} Mn</small>` : '';
+    const injKey = (log?.client_name_manual || c.name||'').toUpperCase().trim();
+    const injHistory = (injectionsData[injKey] || []).filter(r => r.amount > 0);
+    const injFromHistory = injHistory.reduce((sum,r) => sum+r.amount, 0);
+    const injFromLog = (isInj && log?.injected_amount) ? parseFloat(log.injected_amount) : 0;
+    const injTotal = injFromLog + injFromHistory; // first injection + all top-ups
+    const statusBadge = getStatusBadge(status, injTotal || log?.injected_amount);
+    const injCount = injHistory.length;
+    const hasAnyInj = isInj || injCount > 0;
+    const injAmt = hasAnyInj
+      ? `<br><small style="color:var(--success);font-weight:600;">Injected: RM ${injTotal.toFixed(1)} Mn${injCount > 0 ? ` (+${injCount} top-up${injCount>1?'s':''})` : ''}</small>`
+      : '';
     const potential = log?.potential_size_rm_mn!=null ? `RM ${parseFloat(log.potential_size_rm_mn).toFixed(1)} Mn` : '&#8212;';
-    const statusCell = `${statusBadge}${injAmt}`;
+    const lead = getCCLead(c.name);
+    const subName = c.latestLog?.subsidiary_company || CC_SUBSIDIARY_MAP[(c.name||'').toUpperCase()] || null;
+    const ccSubNames = c.subNames && c.subNames.length ? c.subNames : (subName ? [subName] : []);
+    const displayName = ccSubNames.length
+      ? `${c.name} <span style="color:var(--grey);font-size:11px;font-weight:400;">(${ccSubNames.join(' · ')})</span>`
+      : c.name;
+    const ccData = c.msii_command_council ? resolveCCStatus(c) : null;
+    const CC_STATUS_PILL_MAP = {'PENDING':'s-pending','ACCEPTED':'s-decision','MET':'s-onboarding','MET SUBSIDIARY':'s-onboarding','EXISTING CLIENT':'s-topup','INJECTED':'s-injected','TOP UP':'s-topup','REJECTED':'s-rejected'};
+    const ccStatusPill = ccData ? `<br><span class="status-pill ${CC_STATUS_PILL_MAP[ccData.status]||'s-default'}" style="font-size:10px;margin-top:3px;">${ccData.status}</span>` : '';
+    const subRemark = subName ? `<span style="font-size:10px;color:var(--navy);font-weight:600;">Via subsidiary: ${subName}</span><br>` : '';
+    const remarksText = log?.remarks ? (log.remarks.length > 100 ? log.remarks.substring(0,100)+'…' : log.remarks) : '';
+    const hasInjHistory = injHistory.length > 0;
     const actionCell = `<div class="action-cell">
-      ${isInj
-        ? `<span style="color:var(--success);font-size:12px;font-weight:600;">Done</span>`
+      ${isInj || hasInjHistory
+        ? `<button class="btn-edit-row" style="font-size:11px;background:var(--success);color:#fff;border-color:var(--success);" onclick="openInjectionHistoryDrawer('${escQ(log?.client_name_manual || c.name)}')">+ Add Injection</button>`
         : `<button class="btn-edit-row" onclick="openInjectionModal('${c.id||''}','${escQ(c.name)}','${escQ(log?.rm_name||'')}')">Mark Injected</button>`}
       <button class="btn-edit-row btn-icon" onclick="openEditModal('${c.id||''}','${escQ(c.name)}')" title="Edit log">&#x270F;</button>
     </div>`;
@@ -1744,7 +1814,7 @@ function renderClientTable() {
       <td class="td-num">${i+1}</td>
       <td class="company-name">
         <button class="cl-name-btn" id="cl-name-btn-${i}" onclick="toggleContactDrawer('${escQ(c.name)}',${i})" title="Click to view contact details">
-          <span>${c.name}</span><span class="chevron">&#9660;</span>
+          <span>${displayName}</span><span class="chevron">&#9660;</span>
         </button>
       </td>
       <td class="col-msii">${typeBadge}</td>
@@ -1755,14 +1825,42 @@ function renderClientTable() {
       </td>
       <td class="cl-col-product td-bold">${log?.product_fund||'&#8212;'}</td>
       <td class="cl-col-potential">${potential}</td>
-      <td>${statusCell}</td>
-      <td style="max-width:200px;font-size:11px;color:var(--grey);text-align:left;white-space:normal;line-height:1.4;">${log?.remarks ? (log.remarks.length>100 ? log.remarks.substring(0,100)+'…' : log.remarks) : '&#8212;'}</td>
+      <td>${statusBadge}${injAmt}${ccStatusPill}</td>
+      <td style="max-width:200px;font-size:11px;color:var(--grey);text-align:left;white-space:normal;line-height:1.4;">${subRemark}${remarksText||'&#8212;'}</td>
       <td>${actionCell}</td>
     </tr>
     <tr class="drawer-row" id="cl-drawer-${i}" style="display:none;">
-      <td colspan="10"><div class="drawer-inner" id="cl-drawer-inner-${i}"><div class="drawer-loading">Loading contacts...</div></div></td>
+      <td colspan="9"><div class="drawer-inner" id="cl-drawer-inner-${i}"><div class="drawer-loading">Loading contacts...</div></div></td>
     </tr>`;
   }).join('');
+}
+
+function openCCEditRow(i) {
+  const editRow = document.getElementById(`cc-edit-row-${i}`);
+  if (editRow) editRow.style.display = editRow.style.display === 'none' ? 'table-row' : 'none';
+}
+
+async function saveCCStatus(companyName, i) {
+  const status = document.getElementById(`cc-edit-status-${i}`)?.value;
+  const remarks = document.getElementById(`cc-edit-remarks-${i}`)?.value||'';
+  const salesRaw = document.getElementById(`cc-edit-sales-${i}`)?.value;
+  const updatedBy = document.getElementById(`cc-edit-updby-${i}`)?.value||'';
+  const sales_amount = salesRaw ? parseFloat(salesRaw) : null;
+  if (demoMode || !_sb) {
+    ccStatusMap[companyName.toUpperCase()] = {status, remarks, sales_amount, updated_at: new Date().toISOString(), updated_by: updatedBy};
+    document.getElementById(`cc-edit-row-${i}`).style.display = 'none';
+    renderClientTable(); showToast('CC status updated (demo).', 'info'); return;
+  }
+  try {
+    const {error} = await _sb.from('cc_tracker_updates').upsert(
+      {company_name: companyName, status, remarks, sales_amount, updated_at: new Date().toISOString(), updated_by: updatedBy},
+      {onConflict: 'company_name'}
+    );
+    if (error) throw error;
+    ccStatusMap[companyName.toUpperCase()] = {status, remarks, sales_amount, updated_at: new Date().toISOString(), updated_by: updatedBy};
+    document.getElementById(`cc-edit-row-${i}`).style.display = 'none';
+    renderClientTable(); showToast(`CC status saved for ${companyName}.`, 'success');
+  } catch(err) { showToast('Error: ' + err.message, 'error'); }
 }
 
 // ─── CONTACT SECTION TOGGLE (form) ───────────────────────────────
@@ -1955,6 +2053,83 @@ function openInjectionModal(clientId, clientName) {
   document.getElementById('injectionModal').classList.remove('hidden');
 }
 function closeInjectionModal() { document.getElementById('injectionModal').classList.add('hidden'); }
+
+function openInjectionHistoryDrawer(clientName) {
+  document.getElementById('injHistCompanyTag').textContent = clientName;
+  document.getElementById('injHistClientName').value = clientName;
+  document.getElementById('injHistAmount').value = '';
+  document.getElementById('injHistDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('injHistRM').value = '';
+  document.getElementById('injHistRemarks').value = '';
+  // Build history list
+  const history = injectionsData[(clientName||'').toUpperCase().trim()] || [];
+  const listEl = document.getElementById('injHistoryList');
+  if (history.length) {
+    const total = history.reduce((s,r) => s+r.amount, 0);
+    listEl.innerHTML = `<div style="font-size:12px;color:var(--grey);margin-bottom:8px;">${history.length} injection${history.length>1?'s':''} · Total: <strong style="color:var(--success);">RM ${total.toFixed(1)} Mn</strong></div>` +
+      '<table style="width:100%;border-collapse:collapse;font-size:12px;">' +
+      '<thead><tr style="background:var(--grey-lt);"><th style="padding:5px 8px;text-align:left;">Date</th><th style="padding:5px 8px;text-align:right;">Amount (RM Mn)</th><th style="padding:5px 8px;">RM</th><th style="padding:5px 8px;">Remarks</th><th style="padding:5px 8px;"></th></tr></thead><tbody>' +
+      history.map(r => `<tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:5px 8px;white-space:nowrap;">${r.date||'—'}</td>
+        <td style="padding:5px 8px;text-align:right;font-weight:600;color:var(--success);">RM ${r.amount.toFixed(1)} Mn</td>
+        <td style="padding:5px 8px;">${r.rm||'—'}</td>
+        <td style="padding:5px 8px;font-size:11px;color:var(--grey);">${r.remarks||'—'}</td>
+        <td style="padding:5px 8px;"><button onclick="deleteInjection('${r.id}','${escQ(clientName)}')" style="background:none;border:1px solid #e74c3c;color:#e74c3c;border-radius:4px;padding:2px 7px;font-size:11px;cursor:pointer;" title="Delete this entry">✕</button></td>
+      </tr>`).join('') + '</tbody></table>';
+  } else {
+    listEl.innerHTML = '<div style="font-size:12px;color:var(--grey);padding:8px 0;">No injection history yet.</div>';
+  }
+  document.getElementById('injectionHistoryModal').classList.remove('hidden');
+}
+
+async function confirmNewInjection() {
+  const clientName = document.getElementById('injHistClientName').value;
+  const amount     = document.getElementById('injHistAmount').value;
+  const date       = document.getElementById('injHistDate').value;
+  const rm         = document.getElementById('injHistRM').value;
+  const remarks    = document.getElementById('injHistRemarks').value.trim();
+  if (!amount || isNaN(parseFloat(amount))) { showToast('Please enter the injected amount.', 'error'); return; }
+  if (!date)   { showToast('Please enter the injection date.', 'error'); return; }
+  document.getElementById('injHistBtnText').style.display = 'none';
+  document.getElementById('injHistSpinner').style.display = 'block';
+  document.querySelector('#injectionHistoryModal .btn-inj-confirm').disabled = true;
+  try {
+    const payload = { client_name: clientName, rm_name: rm||null, amount_rm_mn: parseFloat(amount), injection_date: date, remarks: remarks||null };
+    if (!demoMode && _sb) {
+      const {error} = await _sb.from('injections').insert(payload);
+      if (error) throw error;
+    }
+    const key = (clientName||'').toUpperCase().trim();
+    if (!injectionsData[key]) injectionsData[key] = [];
+    injectionsData[key].unshift({id: null, amount: parseFloat(amount), date, rm: rm||'', remarks});
+    document.getElementById('injectionHistoryModal').classList.add('hidden');
+    updateClientStats(); renderClientTable();
+    showToast(`Injection saved for ${clientName}! RM ${parseFloat(amount).toFixed(1)} Mn`, 'success');
+  } catch(err) { showToast('Error: ' + err.message, 'error'); }
+  finally {
+    document.getElementById('injHistBtnText').style.display = 'inline';
+    document.getElementById('injHistSpinner').style.display = 'none';
+    document.querySelector('#injectionHistoryModal .btn-inj-confirm').disabled = false;
+  }
+}
+
+async function deleteInjection(id, clientName) {
+  if (!confirm(`Delete this injection entry?`)) return;
+  try {
+    if (!demoMode && _sb) {
+      const {error} = await _sb.from('injections').delete().eq('id', id);
+      if (error) throw error;
+    }
+    const key = (clientName||'').toUpperCase().trim();
+    if (injectionsData[key]) {
+      injectionsData[key] = injectionsData[key].filter(r => String(r.id) !== String(id));
+    }
+    openInjectionHistoryDrawer(clientName); // refresh the drawer
+    updateClientStats(); renderClientTable();
+    showToast('Injection entry deleted.', 'success');
+  } catch(err) { showToast('Error: ' + err.message, 'error'); }
+}
+
 async function confirmInjection() {
   const clientId = document.getElementById('injLogId').value;
   const clientName = document.getElementById('injClientName').value;
@@ -2048,44 +2223,27 @@ function checkAdminAccess() {
   setTimeout(() => document.getElementById('pinInput').focus(), 150);
 }
 
-// ─── MSII COMMAND COUNCIL PIN ─────────────────────────────────────
-function checkCCAccess() {
-  if (adminUnlocked) {
-    document.getElementById('cc-pin-screen').style.display = 'none';
-    document.getElementById('cc-content').style.display = 'block';
-    ccInitTracker();
-    return;
-  }
-  document.getElementById('cc-pin-screen').style.display = 'flex';
-  document.getElementById('cc-content').style.display = 'none';
-  document.getElementById('ccPinInput').value = '';
-  document.getElementById('ccPinError').style.display = 'none';
-  setTimeout(() => document.getElementById('ccPinInput').focus(), 150);
-}
-async function submitCCPin() {
-  const pin = document.getElementById('ccPinInput').value;
-  if (!pin) { showCCPinError('Please enter your PIN.'); return; }
-  const hash = await hashPin(pin);
-  if (hash === ADMIN_PIN_HASH) {
-    adminUnlocked = true;
-    document.getElementById('cc-pin-screen').style.display = 'none';
-    document.getElementById('cc-content').style.display = 'block';
-    ccInitTracker();
-  } else {
-    showCCPinError('Incorrect PIN. Please try again.');
-    document.getElementById('ccPinInput').value = '';
-    document.getElementById('ccPinInput').classList.add('pin-shake');
-    setTimeout(() => document.getElementById('ccPinInput').classList.remove('pin-shake'), 500);
-  }
-}
-function showCCPinError(msg) { const e=document.getElementById('ccPinError'); e.textContent=msg; e.style.display='block'; }
-function clearCCPinError() { document.getElementById('ccPinError').style.display='none'; }
 
 // ─── ADMIN DATA ───────────────────────────────────────────────────
 let adminAllLogs = [];
 let adminLatestPerClient = {};
 let adminFirstDatePerClient = {};
 let upcomingMeetingsData = [];
+let injectionsData = {}; // key: CLIENT_NAME_UPPER → [{id, amount, date, fund, rm, remarks}]
+async function loadInjections() {
+  if (demoMode || !_sb) return;
+  try {
+    const {data, error} = await _sb.from('injections').select('*').order('injection_date', {ascending:false});
+    if (error) throw error;
+    injectionsData = {};
+    (data||[]).forEach(row => {
+      const key = (row.client_name||'').toUpperCase().trim();
+      if (!key) return;
+      if (!injectionsData[key]) injectionsData[key] = [];
+      injectionsData[key].push({id: row.id, amount: parseFloat(row.amount_rm_mn)||0, date: row.injection_date, fund: row.fund||'', rm: row.rm_name||'', remarks: row.remarks||''});
+    });
+  } catch(err) { console.warn('loadInjections:', err.message); }
+}
 
 async function loadAdminDashboard() {
   setAdminLoading();
@@ -2114,6 +2272,7 @@ async function loadAdminDashboard() {
       const key = (log.client_name_manual||'').toUpperCase().trim();
       if (key && log.meeting_datetime) adminFirstDatePerClient[key] = log.meeting_datetime;
     });
+    await loadInjections();
     renderAllAdminSections();
   } catch(err) {
     showToast('Error loading admin data: '+err.message, 'error');
@@ -2140,6 +2299,7 @@ function renderAllAdminSections() {
   renderUpcomingForDrilldown(document.getElementById('rmDrilldownSelect')?.value || 'all');
   const _calNow = new Date();
   renderAdminCalendar(_calNow.getFullYear(), _calNow.getMonth());
+  renderCCSummaryTables();
 }
 function renderAdminDemo() {
   document.getElementById('pipelineContainer').innerHTML = '<div class="admin-note">Connect to Supabase to load live dashboard data. Showing placeholder in demo mode.</div>';
@@ -2456,6 +2616,11 @@ function renderInjectionProgress() {
         map[key].rm_name = l.rm_name;
       }
     });
+    // Add top-ups from injections table so cumulative total is reflected
+    Object.keys(map).forEach(key => {
+      const hist = (injectionsData[key]||[]).filter(r=>r.amount>0).reduce((s,r)=>s+r.amount,0);
+      map[key].injected_amount += hist;
+    });
     return Object.values(map);
   }
 
@@ -2600,6 +2765,12 @@ function renderPipelineCards() {
   let pendingInjectionTotal = 0;
   stages.forEach(s => { counts[s.key] = 0; clientsByStatus[s.key] = []; });
 
+  function _cumInj(log) {
+    const k = (log.client_name_manual||'').toUpperCase().trim();
+    const hist = (injectionsData[k]||[]).filter(r=>r.amount>0).reduce((s,r)=>s+r.amount,0);
+    return (parseFloat(log.injected_amount)||0) + hist;
+  }
+
   // Only count non-stale clients in each stage
   nonStaleClients.forEach(log => {
     if (counts.hasOwnProperty(log.status)) {
@@ -2608,7 +2779,7 @@ function renderPipelineCards() {
         name: log.client_name_manual || 'Unknown',
         rm: log.rm_name || '',
         potential: parseFloat(log.potential_size_rm_mn) || 0,
-        injected: parseFloat(log.injected_amount) || 0,
+        injected: _cumInj(log),
         product: log.product_fund || '',
         remarks: log.remarks || ''
       });
@@ -2622,7 +2793,7 @@ function renderPipelineCards() {
     name: log.client_name_manual || 'Unknown',
     rm: log.rm_name || '',
     potential: parseFloat(log.potential_size_rm_mn) || 0,
-    injected: parseFloat(log.injected_amount) || 0,
+    injected: _cumInj(log),
     product: log.product_fund || '',
     remarks: log.remarks || ''
   })).sort((a,b) => a.name.localeCompare(b.name));
@@ -2841,7 +3012,10 @@ function renderRMOverviewTable() {
     const key = (log.client_name_manual||'').toUpperCase().trim();
     const firstDate = adminFirstDatePerClient[key];
     if (!firstDate || new Date(firstDate).getFullYear() !== currentYear) return;
-    const cl = {name: log.client_name_manual||'—', potential: parseFloat(log.potential_size_rm_mn)||0, injected: parseFloat(log.injected_amount)||0};
+    const _injKey = (log.client_name_manual||'').toUpperCase().trim();
+    const _injHist = (injectionsData[_injKey]||[]).filter(r=>r.amount>0).reduce((s,r)=>s+r.amount,0);
+    const _injLog = parseFloat(log.injected_amount)||0;
+    const cl = {name: log.client_name_manual||'—', potential: parseFloat(log.potential_size_rm_mn)||0, injected: _injLog + _injHist};
     if (log.status==='Successful') { stats[rm].successful++; clientsByRM[rm].successful.push(cl); }
     else if (log.status==='Rejected') { stats[rm].rejected++; clientsByRM[rm].rejected.push(cl); }
     else { stats[rm].active++; clientsByRM[rm].active.push(cl); }
@@ -2855,19 +3029,27 @@ function renderRMOverviewTable() {
   function popListId(rm, type) { return 'ovpop-' + rm.replace(/\s+/g,'_') + '-' + type; }
 
   let html = `<div class="admin-table-wrap"><table class="admin-table"><thead>
-    <tr><th>RM</th><th>Active</th><th>Successful</th><th>Rejected</th><th>Total Potential (RM Mn)</th></tr>
+    <tr><th>RM</th><th>Active</th><th>Successful</th><th>Rejected</th><th>Total Potential (RM Mn)</th><th>CC Targets</th></tr>
     </thead><tbody>`;
   RM_LIST.forEach(rm => {
     const s = stats[rm];
     const rmId = rm.replace(/\s+/g,'_');
+    const ccCount = CC_LEADS.filter(d => d.rm.toUpperCase() === rm.toUpperCase()).length;
+    const ccInj = CC_LEADS.filter(d => d.rm.toUpperCase() === rm.toUpperCase() && (d.status==='INJECTED'||d.status==='TOP UP')).length +
+      Object.values(ccStatusMap).filter(u => { const l=getCCLead(u.company_name); return l && l.rm.toUpperCase()===rm.toUpperCase() && (u.status==='INJECTED'||u.status==='TOP UP') && !['INJECTED','TOP UP'].includes(getCCLead(u.company_name)?.status); }).length;
+    const ccCell = ccCount > 0
+      ? `<td class="td-click" onclick="toggleCCTargetsDrawer('${rmId}','${rm}')" title="View CC targets">${ccCount} <span style="font-size:10px;color:var(--success);font-weight:700;">(${ccInj} inj)</span></td>`
+      : `<td style="color:var(--grey);">—</td>`;
     html += `<tr>
       <td class="td-rm">${rm}</td>
       <td class="td-click" onclick="toggleOVPopList('${rmId}','active','${rm}')">${s.active}</td>
       <td class="td-click ${s.successful>0?'td-success':''}" onclick="toggleOVPopList('${rmId}','successful','${rm}')">${s.successful}</td>
       <td class="td-click ${s.rejected>0?'td-reject':''}" onclick="toggleOVPopList('${rmId}','rejected','${rm}')">${s.rejected}</td>
       <td class="td-grey">RM ${s.potential.toFixed(1)} Mn</td>
+      ${ccCell}
     </tr>
-    <tr id="ovpop-${rmId}-row" style="display:none;"><td colspan="5" style="padding:0 8px 10px;"><div class="row-poplist" id="ovpop-${rmId}-box"></div></td></tr>`;
+    <tr id="ovpop-${rmId}-row" style="display:none;"><td colspan="6" style="padding:0 8px 10px;"><div class="row-poplist" id="ovpop-${rmId}-box"></div></td></tr>
+    <tr id="ccpop-${rmId}-row" style="display:none;"><td colspan="6" style="padding:0 8px 10px;"><div class="row-poplist" id="ccpop-${rmId}-box"></div></td></tr>`;
   });
   html += '</tbody></table></div>';
 
@@ -2927,14 +3109,50 @@ function toggleOVPopList(rmId, type, rmName) {
   const typeLabel = {active:'Active Pipeline', successful:'Successful', rejected:'Rejected'}[type] || type;
   const isSucc = type === 'successful';
   let rows = clients.length
-    ? clients.sort((a,b) => a.name.localeCompare(b.name)).map(c =>
-        `<tr><td>${c.name}</td><td style="text-align:right;">${isSucc ? 'Injected: RM ' + c.injected.toFixed(1) + ' Mn' : 'Potential: RM ' + c.potential.toFixed(1) + ' Mn'}</td></tr>`
-      ).join('')
-    : '<tr><td colspan="2" style="text-align:center;color:var(--grey);">No clients.</td></tr>';
-  box.innerHTML = `<table><thead><tr><th>${rmName} — ${typeLabel} (${clients.length})</th><th style="text-align:right;">${isSucc?'Injected':'Potential'}</th></tr></thead><tbody>${rows}</tbody></table>`;
+    ? clients.sort((a,b) => a.name.localeCompare(b.name)).map(c => {
+        const isCCLead = !!getCCLead(c.name);
+        const ccBadge = isCCLead
+          ? `<span style="background:var(--yellow);color:var(--navy);font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;">CC</span>`
+          : '<span style="color:var(--grey);font-size:11px;">—</span>';
+        const amtCell = isSucc ? 'Injected: RM ' + c.injected.toFixed(1) + ' Mn' : 'Potential: RM ' + c.potential.toFixed(1) + ' Mn';
+        return `<tr><td>${c.name}</td><td style="text-align:center;">${ccBadge}</td><td style="text-align:right;">${amtCell}</td></tr>`;
+      }).join('')
+    : '<tr><td colspan="3" style="text-align:center;color:var(--grey);">No clients.</td></tr>';
+  box.innerHTML = `<table><thead><tr><th>${rmName} — ${typeLabel} (${clients.length})</th><th style="text-align:center;">MSII CC</th><th style="text-align:right;">${isSucc?'Injected':'Potential'}</th></tr></thead><tbody>${rows}</tbody></table>`;
   row.dataset.activeType = type;
   row.style.display = '';
   row.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function toggleCCTargetsDrawer(rmId, rm) {
+  const row = document.getElementById('ccpop-' + rmId + '-row');
+  const box = document.getElementById('ccpop-' + rmId + '-box');
+  if (!row || !box) return;
+  document.querySelectorAll('[id^="ccpop-"][id$="-row"]').forEach(r => { if (r !== row) r.style.display = 'none'; });
+  if (row.style.display !== 'none') { row.style.display = 'none'; return; }
+  row.style.display = 'table-row';
+  const leads = CC_LEADS.filter(d => d.rm.toUpperCase() === rm.toUpperCase());
+  const CC_STATUS_MAP = {'PENDING':'s-pending','ACCEPTED':'s-decision','MET':'s-onboarding','MET SUBSIDIARY':'s-onboarding','EXISTING CLIENT':'s-topup','INJECTED':'s-injected','TOP UP':'s-topup','REJECTED':'s-rejected'};
+  const trs = leads.map(d => {
+    const override = ccStatusMap[d.company.toUpperCase()];
+    const st = override?.status || d.status;
+    const sales = override?.sales_amount || d.sales;
+    return `<tr>
+      <td style="font-weight:600;font-size:12px;">${d.company}</td>
+      <td style="font-size:11px;color:var(--grey);">${d.cc_md}</td>
+      <td><span class="status-pill ${CC_STATUS_MAP[st]||'s-default'}" style="font-size:10px;">${st}</span></td>
+      <td style="font-size:11px;color:var(--success);font-weight:600;">${sales?'RM '+(sales/1000000).toFixed(2)+'M':'—'}</td>
+    </tr>`;
+  }).join('');
+  box.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:12px;">
+    <thead><tr style="background:var(--navy);color:#fff;">
+      <th style="padding:6px 10px;text-align:left;">Company</th>
+      <th style="padding:6px 10px;text-align:left;">CC MD</th>
+      <th style="padding:6px 10px;">CC Status</th>
+      <th style="padding:6px 10px;text-align:right;">Sales</th>
+    </tr></thead>
+    <tbody>${trs||'<tr><td colspan="4" style="padding:10px;color:var(--grey);text-align:center;">No CC targets.</td></tr>'}</tbody>
+  </table>`;
 }
 
 // ─── RM DRILLDOWN (with stale section) ───────────────────────────
@@ -2975,24 +3193,29 @@ function renderRMDrilldown(selectedRM) {
   const followupRows = sortRows(activeRows.filter(l => !newClientKeys.has((l.client_name_manual||'').toUpperCase().trim())));
 
   function buildTable(tableRows, isNew) {
-    const dateColHdr = isNew ? 'First Meeting' : 'Last Meeting';
     let tbody = '';
     tableRows.forEach(log => {
       const cls = getStatusBadgeCls(log.status || 'Not Met');
       const clientKey = (log.client_name_manual || '').toUpperCase().trim();
       const dateSource = isNew ? firstMeetingDateMap[clientKey] : log.meeting_datetime;
-      const dateDt = dateSource ? new Date(dateSource).toLocaleDateString('en-MY', {day:'2-digit', month:'short', year:'2-digit'}) : '&#8212;';
       const daysSince = dateSource ? Math.floor((Date.now() - new Date(dateSource)) / 86400000) : null;
       const isSuccessful = log.status === 'Successful';
       const ageCls = isSuccessful ? 'td-grey' : daysSince === null ? 'td-grey' : daysSince > 60 ? 'td-aged-red' : daysSince > 30 ? 'td-aged-amber' : 'td-grey';
       const daysDisplay = isSuccessful ? 'N/A' : daysSince !== null ? daysSince + 'd' : '&#8212;';
-      const injSubtext = isSuccessful && log.injected_amount != null
-        ? `<br><small style="color:#1A6B3A;font-weight:600;">Injected: RM ${parseFloat(log.injected_amount).toFixed(1)} Mn</small>` : '';
+      const _bKey = (log.client_name_manual||'').toUpperCase().trim();
+      const _bHist = (injectionsData[_bKey]||[]).filter(r=>r.amount>0).reduce((s,r)=>s+r.amount,0);
+      const _bTotal = (parseFloat(log.injected_amount)||0) + _bHist;
+      const injSubtext = isSuccessful && (log.injected_amount != null || _bHist > 0)
+        ? `<br><small style="color:#1A6B3A;font-weight:600;">Injected: RM ${_bTotal.toFixed(1)} Mn${_bHist>0?' (incl. top-ups)':''}</small>` : '';
       const remarksText = log.remarks ? (log.remarks.length > 80 ? log.remarks.substring(0, 80) + '…' : log.remarks) : '&#8212;';
+      const isCCLead = !!getCCLead(log.client_name_manual);
+      const ccBadge = isCCLead
+        ? `<span style="background:var(--yellow);color:var(--navy);font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;">CC</span>`
+        : '<span style="color:var(--grey);">&#8212;</span>';
       tbody += `<tr>
         <td class="td-rm" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${log.client_name_manual||'&#8212;'}</td>
         <td class="td-grey">${log.rm_name||'&#8212;'}</td>
-        <td class="td-grey">${dateDt}</td>
+        <td style="text-align:center;">${ccBadge}</td>
         <td class="${ageCls}">${daysDisplay}</td>
         <td><span class="status-pill ${cls}">${log.status||'Not Met'}</span>${injSubtext}</td>
         <td class="td-grey">${log.product_fund||'&#8212;'}</td>
@@ -3002,7 +3225,7 @@ function renderRMDrilldown(selectedRM) {
     });
     return `<div class="admin-table-wrap" style="max-height:440px;overflow-y:auto;">
       <table class="admin-table"><thead><tr style="position:sticky;top:0;z-index:1;">
-        <th>Client Name</th><th>RM</th><th>${dateColHdr}</th><th>Days Since</th><th>Status</th><th>Product</th><th>Potential (RM Mn)</th><th>Remarks</th>
+        <th>Client Name</th><th>RM</th><th>MSII CC</th><th>Days Since</th><th>Status</th><th>Product</th><th>Potential (RM Mn)</th><th>Remarks</th>
       </tr></thead><tbody>${tbody}</tbody></table></div>`;
   }
 
@@ -3208,7 +3431,11 @@ function renderChairmanSection() {
     const referred = clients.filter(l => l.referral===ref);
     const converted = referred.filter(l => l.status==='Successful');
     const pot = referred.reduce((s,l) => s+(parseFloat(l.potential_size_rm_mn)||0),0);
-    const inj = referred.reduce((s,l) => s+(parseFloat(l.injected_amount)||0),0);
+    const inj = referred.reduce((s,l) => {
+      const k = (l.client_name_manual||'').toUpperCase().trim();
+      const hist = (injectionsData[k]||[]).filter(r=>r.amount>0).reduce((s2,r)=>s2+r.amount,0);
+      return s + (parseFloat(l.injected_amount)||0) + hist;
+    },0);
     const bySegment = {};
     referred.forEach(l => {
       const seg = l.segment || 'Unknown';
@@ -3222,7 +3449,11 @@ function renderChairmanSection() {
     const referred = clients.filter(l => l.msii_command_council === true);
     const converted = referred.filter(l => l.status === 'Successful');
     const pot = referred.reduce((s,l) => s+(parseFloat(l.potential_size_rm_mn)||0),0);
-    const inj = referred.reduce((s,l) => s+(parseFloat(l.injected_amount)||0),0);
+    const inj = referred.reduce((s,l) => {
+      const k = (l.client_name_manual||'').toUpperCase().trim();
+      const hist = (injectionsData[k]||[]).filter(r=>r.amount>0).reduce((s2,r)=>s2+r.amount,0);
+      return s + (parseFloat(l.injected_amount)||0) + hist;
+    },0);
     const bySegment = {};
     referred.forEach(l => {
       const seg = l.segment || 'Unknown';
@@ -3491,7 +3722,7 @@ function renderUpcomingByRM() {
   const currentYear = new Date().getFullYear();
 
   if (!upcomingMeetingsData.length) {
-    container.innerHTML = '<div class="admin-note">No upcoming meetings logged yet. Use the <strong>Upcoming Meetings</strong> tab to schedule future meetings.</div>';
+    container.innerHTML = '<div class="admin-note">No upcoming meetings logged yet. Go to <strong>Log Meeting</strong> tab, select <strong>Schedule Upcoming Meeting</strong> to add future meetings.</div>';
     return;
   }
 
@@ -3521,6 +3752,7 @@ function renderUpcomingByRM() {
     <tr>
       <th rowspan="2" style="vertical-align:middle;">RM</th>
       <th rowspan="2" style="vertical-align:middle;background:#1E4A73;">Total</th>
+      <th rowspan="2" style="vertical-align:middle;background:#D4A500;color:#1A3C5E;white-space:nowrap;" title="CC leads with ACCEPTED or PENDING status">CC Leads<br><small style="font-weight:500;">(Acc/Pend)</small></th>
       <th colspan="12" style="background:#1E4A73;text-align:center;border-bottom:1px solid rgba(255,255,255,0.2);">Upcoming Meetings by Month</th>
     </tr>
     <tr>${MONTH_LABELS.map(m => `<th>${m}</th>`).join('')}</tr>
@@ -3538,8 +3770,10 @@ function renderUpcomingByRM() {
     const totCell = tot > 0
       ? `<td class="td-hl td-click" onclick="toggleUPPopList('${rmId}','total','${rm}',-1)">${tot}</td>`
       : `<td>${tot}</td>`;
-    html += `<tr><td class="td-rm">${rm}</td>${totCell}${monthCells}</tr>
-    <tr id="uppop-${rmId}-row" style="display:none;"><td colspan="14" style="padding:0 8px 10px;"><div class="row-poplist" id="uppop-${rmId}-box"></div></td></tr>`;
+    const ccAccPend = CC_LEADS.filter(d => d.rm.toUpperCase() === rm.toUpperCase() && ['ACCEPTED','PENDING'].includes(d.status)).length;
+    const ccCell = `<td style="text-align:center;font-weight:700;color:var(--yellow-dk);">${ccAccPend > 0 ? ccAccPend : '—'}</td>`;
+    html += `<tr><td class="td-rm">${rm}</td>${totCell}${ccCell}${monthCells}</tr>
+    <tr id="uppop-${rmId}-row" style="display:none;"><td colspan="15" style="padding:0 8px 10px;"><div class="row-poplist" id="uppop-${rmId}-box"></div></td></tr>`;
   });
   html += '</tbody></table></div>';
   container.innerHTML = html;
@@ -3558,11 +3792,19 @@ function toggleUPPopList(rmId, slotKey, rmName, monthIdx) {
   const MONTH_NAMES_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   const label = monthIdx === -1 ? 'All' : MONTH_NAMES_FULL[monthIdx];
   const rows = clients.length
-    ? clients.sort((a,b) => a.name.localeCompare(b.name)).map(c =>
-        `<tr><td>${c.name}</td><td style="text-align:right;color:var(--grey);font-size:11px;">${c.date}${c.purpose ? ' · ' + c.purpose : ''}</td></tr>`
-      ).join('')
-    : '<tr><td colspan="2" style="text-align:center;color:var(--grey);">No meetings.</td></tr>';
-  box.innerHTML = `<table><thead><tr><th>${rmName} — Upcoming Meetings · ${label} (${clients.length})</th><th style="text-align:right;">Date / Purpose</th></tr></thead><tbody>${rows}</tbody></table>`;
+    ? clients.sort((a,b) => a.name.localeCompare(b.name)).map(c => {
+        const hasMet = !!(adminFirstDatePerClient[(c.name||'').toUpperCase().trim()]);
+        const metBadge = hasMet
+          ? `<span style="background:#E8F5E9;color:#2A9D5C;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;">Met</span>`
+          : `<span style="background:#F4F4F4;color:#6B6B6B;font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;">Not Yet</span>`;
+        const isCCLead = !!getCCLead(c.name);
+        const ccBadge = isCCLead
+          ? `<span style="background:var(--yellow);color:var(--navy);font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;">CC</span>`
+          : '<span style="color:var(--grey);font-size:11px;">—</span>';
+        return `<tr><td>${c.name}</td><td style="color:var(--grey);font-size:11px;">${c.date}${c.purpose ? ' · ' + c.purpose : ''}</td><td style="text-align:center;">${ccBadge}</td><td style="text-align:center;">${metBadge}</td></tr>`;
+      }).join('')
+    : '<tr><td colspan="4" style="text-align:center;color:var(--grey);">No meetings.</td></tr>';
+  box.innerHTML = `<table><thead><tr><th>${rmName} — Upcoming Meetings · ${label} (${clients.length})</th><th>Date / Purpose</th><th style="text-align:center;">MSII CC</th><th style="text-align:center;">Met?</th></tr></thead><tbody>${rows}</tbody></table>`;
   row.dataset.slot = slotKey;
   row.style.display = '';
   row.scrollIntoView({behavior:'smooth', block:'nearest'});
@@ -3881,569 +4123,601 @@ function exportConversionPDF(btn) {
   exportSectionPDF('conversionSummarySection', `Conversion-Summary-${date}.pdf`, btn);
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// ─── CC TRACKER MODULE ───────────────────────────────────────────
-// ═══════════════════════════════════════════════════════════════════
-
-const CCT_BATCH1 = [
-  {company:"AIRWALLEX",cc_md:"ANNABELLE",cc_team:"CC INTERNATIONAL",rm:"AZMI",status:"MET",remarks:"2026-04-13"},
-  {company:"CHINA RUBBER INVESTMENT GROUP",cc_md:"ANNABELLE",cc_team:"CC INTERNATIONAL",rm:"AZMI",status:"ACCEPTED",remarks:"MAMG REJECT"},
-  {company:"MEHOW MEDICAL",cc_md:"ANNABELLE",cc_team:"CC INTERNATIONAL",rm:"AZMI",status:"ACCEPTED",remarks:"MAMG REJECT"},
-  {company:"AXIATA",cc_md:"AZZAHIR",cc_team:"GLC 1",rm:"NASYA",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
-  {company:"EPF",cc_md:"AZZAHIR",cc_team:"GLC 2",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
-  {company:"FELDA",cc_md:"AZZAHIR",cc_team:"GLC 3",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
-  {company:"JAKEL",cc_md:"AZZAHIR",cc_team:"GLC 4",rm:"NASYA",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
-  {company:"JOHOR CORP",cc_md:"AZZAHIR",cc_team:"GLC 3",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
-  {company:"LTAT/BOUSTEAD",cc_md:"AZZAHIR",cc_team:"GLC 4",rm:"NASYA",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
-  {company:"MAHB",cc_md:"AZZAHIR",cc_team:"GLC 1",rm:"NASYA",status:"MET",remarks:"2026-05-04"},
-  {company:"PETRONAS",cc_md:"AZZAHIR",cc_team:"GLC 1",rm:"NASYA",status:"ACCEPTED",remarks:""},
-  {company:"PNB",cc_md:"AZZAHIR",cc_team:"GLC 2",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
-  {company:"SIME DARBY",cc_md:"AZZAHIR",cc_team:"GLC 2",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
-  {company:"SIME DARBY PROPERTY",cc_md:"AZZAHIR",cc_team:"GLC 2",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
-  {company:"TNB",cc_md:"AZZAHIR",cc_team:"GLC 1",rm:"NASYA",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
-  {company:"UEM",cc_md:"AZZAHIR",cc_team:"GLC 4",rm:"NASYA",status:"REJECTED",remarks:"PENDING MAY FOR BOARD MEETING - UEM SUNRISE (not in list) CASA / FD / MMD preference"},
-  {company:"AEON",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"REJECTED",remarks:"Funds tied elsewhere"},
-  {company:"AJINOMOTO",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"REJECTED",remarks:"Funds tied elsewhere"},
-  {company:"AYALA",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
-  {company:"BERJAYA",cc_md:"CHING EAN",cc_team:"CC 3",rm:"ISKANDAR",status:"INJECTED",remarks:"SUBSIDIARY 7-ELEVEN RM10MN"},
-  {company:"CSC STEEL",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"REJECTED",remarks:"Client can only place with cash fund"},
-  {company:"GAMUDA",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"MET",remarks:"2026-04-30"},
-  {company:"GEK POH/HAP SENG",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"TOP UP",remarks:"HAP SENG PLANTATIONS (RIVER ESTATES) SB RM10MN"},
-  {company:"GENTING",cc_md:"CHING EAN",cc_team:"CC 1",rm:"FILZAH",status:"MET",remarks:"2026-05-06"},
-  {company:"GRAB INC",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:"No mandate for such investments"},
-  {company:"GUAN CHONG COCOA",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:"Funds tied elsewhere"},
-  {company:"HEXTAR GROUP",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"HONG LEONG GROUP",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:"Capital protected investment only"},
-  {company:"IJM",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"REJECTED",remarks:"Centralised group level decision"},
-  {company:"INSAS / INARI / HO HUP",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:"Funds tied elsewhere"},
-  {company:"IOI",cc_md:"CHING EAN",cc_team:"CC 4",rm:"AZMI",status:"ACCEPTED",remarks:"PENDING CC TO GIVE CLIENT CONTACT"},
-  {company:"KEYFIELD",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"KLK",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"TOP UP",remarks:"TOP UP RM64.8MN"},
-  {company:"KUB",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"KUOK",cc_md:"CHING EAN",cc_team:"RC",rm:"LEI KHIM",status:"MET SUBSIDIARY",remarks:"SHANGRI-LA"},
-  {company:"LENDLEASE",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:"Funds tied elsewhere"},
-  {company:"MALAYAN FLOUR",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"PENDING",remarks:""},
-  {company:"OSK",cc_md:"CHING EAN",cc_team:"CC 4",rm:"NASYA",status:"MET",remarks:"BOARD MEETING END OF MAY"},
-  {company:"QL",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"ACCEPTED",remarks:"AZMI TO UPDATE"},
-  {company:"SUNWAY",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"TOP UP",remarks:"SUBSIDIARY INVESTED"},
-  {company:"TS SYED MOKHTAR",cc_md:"CHING EAN",cc_team:"CC 4",rm:"FILZAH",status:"PENDING",remarks:"PENDING CC TO GIVE CLIENT CONTACT"},
-  {company:"TSS & FAMILY N(SAPURA)",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"EXISTING CLIENT",remarks:""},
-  {company:"USAHA TEGAS",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"MET",remarks:"2026-05-08"},
-  {company:"YINSON",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"MET",remarks:"2026-01-01"},
-  {company:"EKUINAS",cc_md:"JACK",cc_team:"GOM/FEDERAL GOVT",rm:"ISKANDAR",status:"REJECTED",remarks:"Capital protected investment only"},
-  {company:"GOM: JABATAN AKAUNTAN NEGARA M CAW JOHOR / CYBERSECURITY MALAYSIA / MARA-APS / JABATAN AKAUNTAN NEGARA M CAW PUTRAJAYA",cc_md:"JACK",cc_team:"GOM/FEDERAL GOVT",rm:"ISKANDAR",status:"REJECTED",remarks:"Capital protected investment only"},
-  {company:"KEDAH STATE: BINA DARULAMAN BERHAD",cc_md:"JACK",cc_team:"STATE GOVT",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
-  {company:"MOF INC",cc_md:"JACK",cc_team:"GOM/FEDERAL GOVT",rm:"NASYA",status:"TOP UP",remarks:"UDA HOLDINGS EXISTING CLIENT RM100K"},
-  {company:"NEGERI SEMBILAN STATE: SYARIKAT AIR NEGERI SEMBILAN SDN BHD",cc_md:"JACK",cc_team:"STATE GOVT",rm:"ISKANDAR",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
-  {company:"PENANG STATE: PERBADANAN BEKALAN AIR PULAU PINANG SDN.",cc_md:"JACK",cc_team:"STATE GOVT",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
-  {company:"PERKESO",cc_md:"JACK",cc_team:"GOM/FEDERAL GOVT",rm:"NASYA",status:"REJECTED",remarks:"Capital protected investment only"},
-  {company:"SARAWAK ENERGY",cc_md:"JACK",cc_team:"MC SBH/SWK",rm:"NASYA",status:"EXISTING CLIENT",remarks:"TO PUSH FOR TOP UP"},
-  {company:"SARAWAK STATE",cc_md:"JACK",cc_team:"SBH/SWK STATE",rm:"NASYA",status:"EXISTING CLIENT",remarks:"APPROVED, DOCUMENTATION IN PROGRESS (PETROLEUM SARAWAK BERHAD)"},
-  {company:"SELANGOR STATE",cc_md:"JACK",cc_team:"STATE GOVT",rm:"NASYA",status:"EXISTING CLIENT",remarks:"KUMPULAN PERANGSANG SELANGOR & PERANGSANG DINAMIK (MCMMI) RM400K"},
-  {company:"ASIABINA",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"AUSTIN POWDER",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"BEAVER PROPERTIES",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Funds tied elsewhere"},
-  {company:"BIG",cc_md:"JASON",cc_team:"CBD",rm:"NASYA",status:"EXISTING CLIENT",remarks:"TOP UP RM2.1MN"},
-  {company:"BOROCHEMIE (M) SDN. BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"No excess funds"},
-  {company:"BU",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"No excess funds"},
-  {company:"BWYS GROUP BERHAD",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Not keen to proceed"},
-  {company:"CUSTOM FOOD",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"DC HEALTHCARE HOLDINGS BERHAD",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Funds tied elsewhere"},
-  {company:"DKLS",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"ECONSAVE",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"ESRI MALAYSIA SDN BHD",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
-  {company:"EURO CHEMO",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Not keen to proceed"},
-  {company:"FAMILY CEREAL",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"FOCUS POINT",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"INJECTED",remarks:"22/01/2026: RM17MN"},
-  {company:"GIGA",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"MET",remarks:"2026-05-19"},
-  {company:"GUAN CHONG PROPERTIES",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"HONG SENG POWER SDN. BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Not keen to proceed"},
-  {company:"KIANLEESMR",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Client financial risk issue"},
-  {company:"KONG LONG HUAT",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Not keen to proceed"},
-  {company:"LIMA SEN SDN. BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Client financial risk issue"},
-  {company:"LONGSON FOOD",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"MET",remarks:"2026-04-09"},
-  {company:"MARINE & GENERAL BERHAD",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"OKA CORPORATION BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"No excess funds"},
-  {company:"OXFORD : CG SOLUTIONS ENTERPRISE SDN. BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"No excess funds"},
-  {company:"PATHLAB",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Funds tied elsewhere"},
-  {company:"PDG",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"PUBLIC PACKAGES",cc_md:"JASON",cc_team:"CBD",rm:"NASYA",status:"EXISTING CLIENT",remarks:"TOP UP RM3MN"},
-  {company:"REACH TEN",cc_md:"JASON",cc_team:"CBD",rm:"NASYA",status:"EXISTING CLIENT",remarks:""},
-  {company:"RK SOUTH",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Not keen to proceed"},
-  {company:"SKYWORLDDEVELOPMENT",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"MET",remarks:"2026-02-03"},
-  {company:"SL NG",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"No excess funds"},
-  {company:"SUPERLON",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
-  {company:"TGL",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"THE HOUR GLASS SDN. BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Funds tied elsewhere"},
-  {company:"TREEGROW BOTANICAL",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"TRITERRA METROPOLIS SDN. BHD.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Not keen to proceed"},
-  {company:"YAMATO TRANSPORT",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"MET",remarks:"2026-04-17"},
-  {company:"ZUSPRESSO",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"REJECTED",remarks:"Funds tied elsewhere"},
-  {company:"ASIA FILE CORPORATION",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"ACCEPTED",remarks:"REVISIT"},
-  {company:"ATECH BERHAD",cc_md:"JESSIE",cc_team:"MC 4",rm:"AZMI",status:"REJECTED",remarks:"MAMG rejected client"},
-  {company:"BOARDROOM",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"REJECTED",remarks:"No mandate for such investments"},
-  {company:"EKSONS",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"REJECTED",remarks:"No excess funds"},
-  {company:"GD EXPRESS",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"MET",remarks:"2026-04-01"},
-  {company:"HUAT LAI RESOURCES",cc_md:"JESSIE",cc_team:"MC 3",rm:"AZMI",status:"ACCEPTED",remarks:"CC TO RE-ENGAGE"},
-  {company:"KAWAN",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"EXISTING CLIENT",remarks:""},
-  {company:"KUMP FIMA",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"EXISTING CLIENT",remarks:""},
-  {company:"LB ALUMINIUM",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"ACCEPTED",remarks:"PENDING MEETING DATE"},
-  {company:"MUHIBBAH",cc_md:"JESSIE",cc_team:"MC 3",rm:"AZMI",status:"MET SUBSIDIARY",remarks:"2026-04-10"},
-  {company:"OBYU/PETRA",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"MET",remarks:"2026-03-03"},
-  {company:"OIB/TIONG HUAT",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"MET",remarks:"2026-04-08"},
-  {company:"SKS",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"REJECTED",remarks:"No excess funds"},
-  {company:"SPRITZER",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"REJECTED",remarks:"AZMI TO UPDATE"},
-  {company:"TITIJAYA",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"MET",remarks:"2026-04-14"},
-  {company:"AIA GROUP",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"AMANAH RAYA BERHAD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Not keen to proceed"},
-  {company:"APEX EQUITY HOLDINGS BERHAD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"ACCEPTED",remarks:""},
-  {company:"ARECA CAPITAL SDN BHD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Funds managed by client internal investment arm"},
-  {company:"ASIAN INSTITUTE OF FINANCE BHD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Regulator - safeguard public funds"},
-  {company:"CREDIT GUARANTEE CORPORATION",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"CVC CAPITAL PARTNERS",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Funds tied elsewhere"},
-  {company:"GOVERNMENT OF KENYA",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"ACCEPTED",remarks:""},
-  {company:"IFAST CORPORATION LTD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Funds managed by client internal investment arm"},
-  {company:"INSAS BERHAD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Not keen to proceed"},
-  {company:"K & N KENANGA HOLDINGS BHD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"ACCEPTED",remarks:""},
-  {company:"MALAYSIAN INDUSTRIAL DEVELOPMENT FINANCE BHD (MIDF)",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"MANULIFE FINANCIAL CORP",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"MNRB HOLDINGS BHD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"CASA / FD / MMD preference"},
-  {company:"MTRUSTEE",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"ACCEPTED",remarks:""},
-  {company:"NOMURA HOLDINGS INC",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"No mandate for such investments"},
-  {company:"OPUS ASSET MANAGEMENT SDN BHD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"ACCEPTED",remarks:""},
-  {company:"PACIFIC TRUSTEES BERHAD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"No excess funds"},
-  {company:"PHILLIP CAPITAL",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Funds managed by client internal investment arm"},
-  {company:"SECURITIES COMMISSION MALAYSIA",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Regulator - safeguard public funds"},
-  {company:"TA ENTERPRISE BERHAD",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"ACCEPTED",remarks:""},
-  {company:"TMF GROUP",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"MET",remarks:"2026-04-16"},
-  {company:"TOKIO MARINE HOLDINGS INC",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"MET",remarks:"decline due to merger"},
-  {company:"UNITED OVERSEAS BANK (UOB)",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"MET",remarks:"2026-04-27"},
-  {company:"VISA INC",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"REJECTED",remarks:"Funds tied elsewhere"},
+const CC_LEADS = [
+  {batch:2,company:'Glomac Berhad',cc_md:'AZZAHIR',cc_team:'GLC 4',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:2,company:'KPJ Healthcare Berhad',cc_md:'AZZAHIR',cc_team:'GLC 3',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'Malaysian Resources Corporation Berhad',cc_md:'AZZAHIR',cc_team:'GLC 3',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'Menang Corporation (M) Berhad',cc_md:'AZZAHIR',cc_team:'GLC 4',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:2,company:'MISC Berhad',cc_md:'AZZAHIR',cc_team:'GLC 1',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'S P Setia Berhad',cc_md:'AZZAHIR',cc_team:'GLC 2',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:2,company:'TH Plantations Berhad',cc_md:'AZZAHIR',cc_team:'GLC 3',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'TIME dotCom Berhad',cc_md:'AZZAHIR',cc_team:'GLC 1',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'Velesto Energy Berhad',cc_md:'AZZAHIR',cc_team:'GLC 2',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Alcom Group Berhad',cc_md:'CB',cc_team:'CB',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Bintai Kinden Corporation Berhad',cc_md:'CB',cc_team:'CB',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Engtex Group Berhad',cc_md:'CB',cc_team:'CB',rm:'LEI KHIM',status:'MET',sales:null},
+  {batch:2,company:'Eversendai Corporation Berhad',cc_md:'CB',cc_team:'CB',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'Hua Yang Berhad',cc_md:'CB',cc_team:'CB',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'Magna Prima Berhad',cc_md:'CB',cc_team:'CB',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'Minho (M) Berhad',cc_md:'CB',cc_team:'CB',rm:'FILZAH',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Protasco Berhad',cc_md:'CB',cc_team:'CB',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'Rapid Synergy Berhad',cc_md:'CB',cc_team:'CB',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'RGB International Bhd.',cc_md:'CB',cc_team:'CB',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Ajiya Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'FILZAH',status:'EXISTING CLIENT',sales:null},
+  {batch:2,company:'Bermaz Auto Berhad',cc_md:'CHING EAN',cc_team:'CC 3',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Capital A Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'Chin Hin Group Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'FILZAH',status:'EXISTING CLIENT',sales:null},
+  {batch:2,company:'D & O Green Technologies Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'ISKANDAR',status:'REJECTED',sales:null},
+  {batch:2,company:'Dialog Group Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'DXN Holdings Bhd.',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Eastern & Oriental Berhad',cc_md:'CHING EAN',cc_team:'CC 1',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Fiamma Holdings Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'FILZAH',status:'EXISTING CLIENT',sales:null},
+  {batch:2,company:'Frontken Corporation Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'MET',sales:null},
+  {batch:2,company:'GuocoLand (Malaysia) Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'FILZAH',status:'REJECTED',sales:null},
+  {batch:2,company:'IGB Berhad',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'IGB Real Estate Investment Trust',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Inari Amertron Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'Keck Seng (Malaysia) Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'ISKANDAR',status:'REJECTED',sales:null},
+  {batch:2,company:'KESM Industries Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:2,company:'Kossan Rubber Industries Bhd',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'MET',sales:null},
+  {batch:2,company:'Landmarks Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'AZMI',status:'PENDING',sales:null},
+  {batch:2,company:'Leong Hup International Berhad',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:2,company:'Lotte Chemical Titan Holding Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'ISKANDAR',status:'REJECTED',sales:null},
+  {batch:2,company:'Mah Sing Group Berhad',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Malakoff Corporation Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'Malaysia Smelting Corporation Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Malaysian Pacific Industries Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'Media Prima Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Mega First Corporation Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'ISKANDAR',status:'REJECTED',sales:null},
+  {batch:2,company:'MKH Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'FILZAH',status:'ACCEPTED',sales:null},
+  {batch:2,company:'MKH Oil Palm (East Kalimantan) Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'FILZAH',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Oriental Holdings Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'Padini Holdings Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'Panasonic Manufacturing Malaysia Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'ISKANDAR',status:'REJECTED',sales:null},
+  {batch:2,company:'Press Metal Aluminium Holdings Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
+  {batch:2,company:'REDtone Digital Berhad',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Supermax Corporation Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:2,company:'Taliworks Corporation Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'FILZAH',status:'ACCEPTED',sales:null},
+  {batch:2,company:'TASCO Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Teo Seng Capital Berhad',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:2,company:'TMC Life Sciences Berhad',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'PENDING',sales:null},
+  {batch:2,company:'V.S. Industry Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'ViTrox Corporation Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:2,company:'WCT Holdings Berhad',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'PENDING',sales:null},
+  {batch:2,company:'Y.S.P. Southeast Asia Holding Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:2,company:'YTL Power International Berhad',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Far East Holdings Berhad',cc_md:'JACK',cc_team:'STATE GOVT',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'Orkim Berhad',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:2,company:'Pasdec Holdings Berhad',cc_md:'JACK',cc_team:'STATE GOVT',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'PBA Holdings Bhd',cc_md:'JACK',cc_team:'STATE GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
+  {batch:2,company:'Suria Capital Holdings Berhad',cc_md:'JACK',cc_team:'SBH/SWK STATE',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'Alpha IVF Group Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Dufu Technology Corp. Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Efficient E-Solutions Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Eng Kah Corporation Berhad',cc_md:'JASON',cc_team:'CBD',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'Formosa Prosonic Industries Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'InNature Berhad',cc_md:'JASON',cc_team:'CBD',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'Khind Holdings Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Kobay Technology Bhd.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Muar Ban Lee Group Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
+  {batch:2,company:'QES Group Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Scicom (MSC) Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'SLP Resources Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'TT Vision Holdings Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Astino Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'AWC Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Bonia Corporation Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:2,company:'Can-One Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'CB Industrial Product Holding Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'Chin Well Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Choo Bee Metal Industries Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'PENDING',sales:null},
+  {batch:2,company:'Coastal Contracts Bhd',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'Dayang Enterprise Holdings Bhd',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'Econpile Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Eupe Corporation Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Favelle Favco Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'Gabungan AQRS Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'Gadang Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Globetronics Technology Bhd.',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:2,company:'Harn Len Corporation Bhd',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'HeiTech Padu Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:2,company:'Homeritz Corporation Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'PENDING',sales:null},
+  {batch:2,company:'Hup Seng Industries Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'Infomina Berhad',cc_md:'JESSIE',cc_team:'MC 4',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:2,company:'Iskandar Waterfront City Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:2,company:'Jaya Tiasa Holdings Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'JKG Land Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:2,company:'Johan Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'FILZAH',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Kim Hin Industry Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'Kim Loong Resources Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'KKB Engineering Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'Kotra Industries Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:2,company:'Kretam Holdings Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'KSL Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Land & General Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'LBS Bina Group Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'MET',sales:null},
+  {batch:2,company:'Lii Hen Industries Bhd',cc_md:'JESSIE',cc_team:'MC 1',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'LTKM Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'Luxchem Corporation Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'Magni-Tech Industries Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'PENDING',sales:null},
+  {batch:2,company:'MBM Resources Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'PENDING',sales:null},
+  {batch:2,company:'Media Chinese International Limited',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'Mi Technovation Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Mulpha International Bhd',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'N2N Connect Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:2,company:'Naim Holdings Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'NCT Alliance Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'OCK Group Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Oriental Interest Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'INJECTED',sales:20017828.84},
+  {batch:2,company:'P.I.E. Industrial Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Paramount Corporation Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'Pecca Group Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'Pekat Group Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
+  {batch:2,company:'Perdana Petroleum Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'Plenitude Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Poh Huat Resources Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Power Root Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:2,company:'PRG Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'RCE Capital Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'ISKANDAR',status:'REJECTED',sales:null},
+  {batch:2,company:'Sarawak Plantation Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'Selangor Dredging Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:2,company:'SHL Consolidated Bhd.',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:2,company:'SMRT Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'Southern Acids (M) Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'PENDING',sales:null},
+  {batch:2,company:'Sunsuria Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'Ta Ann Holdings Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:2,company:'Tambun Indah Land Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
+  {batch:2,company:'Thong Guan Industries Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'PENDING',sales:null},
+  {batch:2,company:'Tong Herr Resources Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'TSH Resources Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'United Malacca Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:2,company:'Wellcall Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:2,company:'ELK-Desa Resources Berhad',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'AIRWALLEX',cc_md:'ANNABELLE',cc_team:'CC INTERNATIONAL',rm:'AZMI',status:'MET',sales:null},
+  {batch:1,company:'MAHB',cc_md:'AZZAHIR',cc_team:'GLC 1',rm:'FILZAH',status:'MET',sales:null},
+  {batch:1,company:'BERJAYA',cc_md:'CHING EAN',cc_team:'CC 3',rm:'ISKANDAR',status:'INJECTED',sales:10069531.12},
+  {batch:1,company:'GAMUDA',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'MET',sales:null},
+  {batch:1,company:'GEK POH/HAP SENG',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'TOP UP',sales:25500090.01},
+  {batch:1,company:'GENTING',cc_md:'CHING EAN',cc_team:'CC 1',rm:'FILZAH',status:'MET',sales:null},
+  {batch:1,company:'KLK',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'TOP UP',sales:172500000.0},
+  {batch:1,company:'KUOK',cc_md:'CHING EAN',cc_team:'RC',rm:'LEI KHIM',status:'MET SUBSIDIARY',sales:null},
+  {batch:1,company:'OSK',cc_md:'CHING EAN',cc_team:'CC 4',rm:'NASYA',status:'MET',sales:null},
+  {batch:1,company:'SUNWAY',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'TOP UP',sales:372088719.41},
+  {batch:1,company:'TSS & FAMILY N(SAPURA)',cc_md:'CHING EAN',cc_team:'CC 4',rm:'ISKANDAR',status:'TOP UP',sales:5116370.54},
+  {batch:1,company:'USAHA TEGAS',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'MET',sales:null},
+  {batch:1,company:'YINSON',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'INJECTED',sales:22248308.5},
+  {batch:1,company:'MOF INC (UDA HOLDINGS)',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'NASYA',status:'TOP UP',sales:100599.53},
+  {batch:1,company:'SARAWAK ENERGY',cc_md:'JACK',cc_team:'MC SBH/SWK',rm:'NASYA',status:'EXISTING CLIENT',sales:null},
+  {batch:1,company:'SARAWAK STATE',cc_md:'JACK',cc_team:'SBH/SWK STATE',rm:'NASYA',status:'EXISTING CLIENT',sales:null},
+  {batch:1,company:'SELANGOR STATE',cc_md:'JACK',cc_team:'STATE GOVT',rm:'NASYA',status:'TOP UP',sales:99345.9},
+  {batch:1,company:'BIG',cc_md:'JASON',cc_team:'CBD',rm:'NASYA',status:'TOP UP',sales:7820058.77},
+  {batch:1,company:'FOCUS POINT',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'INJECTED',sales:17135710.13},
+  {batch:1,company:'GIGA',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'MET',sales:null},
+  {batch:1,company:'LONGSON FOOD',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'MET',sales:null},
+  {batch:1,company:'PUBLIC PACKAGES',cc_md:'JASON',cc_team:'CBD',rm:'NASYA',status:'TOP UP',sales:7628899.13},
+  {batch:1,company:'REACH TEN',cc_md:'JASON',cc_team:'CBD',rm:'NASYA',status:'TOP UP',sales:59548109.17},
+  {batch:1,company:'SKYWORLDDEVELOPMENT',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'MET',sales:null},
+  {batch:1,company:'YAMATO TRANSPORT',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'MET',sales:null},
+  {batch:1,company:'GD EXPRESS',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'MET',sales:null},
+  {batch:1,company:'KAWAN',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'EXISTING CLIENT',sales:null},
+  {batch:1,company:'KUMP FIMA',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'TOP UP',sales:13266994.38},
+  {batch:1,company:'MUHIBBAH',cc_md:'JESSIE',cc_team:'MC 3',rm:'AZMI',status:'MET SUBSIDIARY',sales:null},
+  {batch:1,company:'OBYU/PETRA',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'MET',sales:null},
+  {batch:1,company:'OIB/TIONG HUAT',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'MET',sales:null},
+  {batch:1,company:'TITIJAYA',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'MET',sales:null},
+  {batch:1,company:'TMF GROUP',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'MET',sales:null},
+  {batch:1,company:'TOKIO MARINE HOLDINGS INC',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'MET',sales:null},
+  {batch:1,company:'UNITED OVERSEAS BANK (UOB)',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'MET',sales:null},
+  {batch:1,company:'CHINA RUBBER INVESTMENT GROUP',cc_md:'ANNABELLE',cc_team:'CC INTERNATIONAL',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'MEHOW MEDICAL',cc_md:'ANNABELLE',cc_team:'CC INTERNATIONAL',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'AXIATA',cc_md:'AZZAHIR',cc_team:'GLC 1',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'EPF',cc_md:'AZZAHIR',cc_team:'GLC 2',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'FELDA',cc_md:'AZZAHIR',cc_team:'GLC 3',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'JAKEL',cc_md:'AZZAHIR',cc_team:'GLC 4',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'JOHOR CORP',cc_md:'AZZAHIR',cc_team:'GLC 3',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'LTAT/BOUSTEAD',cc_md:'AZZAHIR',cc_team:'GLC 4',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'PETRONAS',cc_md:'AZZAHIR',cc_team:'GLC 1',rm:'NASYA',status:'ACCEPTED',sales:null},
+  {batch:1,company:'PNB',cc_md:'AZZAHIR',cc_team:'GLC 2',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'SIME DARBY',cc_md:'AZZAHIR',cc_team:'GLC 2',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'SIME DARBY PROPERTY',cc_md:'AZZAHIR',cc_team:'GLC 2',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'TNB',cc_md:'AZZAHIR',cc_team:'GLC 1',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'UEM',cc_md:'AZZAHIR',cc_team:'GLC 4',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'AEON',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'AJINOMOTO',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'AYALA',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'CSC STEEL',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'GRAB INC',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'GUAN CHONG COCOA',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'HEXTAR GROUP',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:1,company:'HONG LEONG GROUP',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'IJM',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'INSAS / INARI / HO HUP',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'IOI',cc_md:'CHING EAN',cc_team:'CC 4',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:1,company:'KEYFIELD',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:1,company:'KUB',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:1,company:'LENDLEASE',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'MALAYAN FLOUR',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'PENDING',sales:null},
+  {batch:1,company:'QL',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'MET SUBSIDIARY',sales:null},
+  {batch:1,company:'TS SYED MOKHTAR',cc_md:'CHING EAN',cc_team:'CC 4',rm:'FILZAH',status:'PENDING',sales:null},
+  {batch:1,company:'EKUINAS',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
+  {batch:1,company:'GOM: JABATAN AKAUNTAN NEGARA M CAW JOHOR',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
+  {batch:1,company:'CYBERSECURITY MALAYSIA',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
+  {batch:1,company:'MARA-APS',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
+  {batch:1,company:'JABATAN AKAUNTAN NEGARA M CAW PUTRAJAYA',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
+  {batch:1,company:'KEDAH STATE: BINA DARULAMAN BERHAD',cc_md:'JACK',cc_team:'STATE GOVT',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
+  {batch:1,company:'NEGERI SEMBILAN STATE: SYARIKAT AIR NEGERI SEMBILAN SDN BHD',cc_md:'JACK',cc_team:'STATE GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
+  {batch:1,company:'PENANG STATE: PERBADANAN BEKALAN AIR PULAU PINANG SDN.',cc_md:'JACK',cc_team:'STATE GOVT',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
+  {batch:1,company:'PERKESO',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'ASIABINA',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'INJECTED',sales:3372963.73},
+  {batch:1,company:'AUSTIN POWDER',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:1,company:'BEAVER PROPERTIES',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'BOROCHEMIE (M) SDN. BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'BU',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'BWYS GROUP BERHAD',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'CUSTOM FOOD',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
+  {batch:1,company:'DC HEALTHCARE HOLDINGS BERHAD',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'DKLS',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
+  {batch:1,company:'ECONSAVE',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
+  {batch:1,company:'ESRI MALAYSIA SDN BHD',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'EURO CHEMO',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'FAMILY CEREAL',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
+  {batch:1,company:'GUAN CHONG PROPERTIES',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
+  {batch:1,company:'HONG SENG POWER SDN. BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'KIANLEESMR',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'KONG LONG HUAT',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'LIMA SEN SDN. BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'MARINE & GENERAL BERHAD',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
+  {batch:1,company:'OKA CORPORATION BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'OXFORD : CG SOLUTIONS ENTERPRISE SDN. BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'PATHLAB',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'PDG',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
+  {batch:1,company:'RK SOUTH',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'SL NG',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'SUPERLON',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'TGL',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
+  {batch:1,company:'THE HOUR GLASS SDN. BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'TREEGROW BOTANICAL',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
+  {batch:1,company:'TRITERRA METROPOLIS SDN. BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'ZUSPRESSO',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
+  {batch:1,company:'ASIA FILE CORPORATION',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:1,company:'ATECH BERHAD',cc_md:'JESSIE',cc_team:'MC 4',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'BOARDROOM',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'EKSONS',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'HUAT LAI RESOURCES',cc_md:'JESSIE',cc_team:'MC 3',rm:'AZMI',status:'ACCEPTED',sales:null},
+  {batch:1,company:'LB ALUMINIUM',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'MET',sales:null},
+  {batch:1,company:'SKS',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'SPRITZER',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'REJECTED',sales:null},
+  {batch:1,company:'AIA GROUP',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:1,company:'AMANAH RAYA BERHAD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'APEX EQUITY HOLDINGS BERHAD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'ACCEPTED',sales:null},
+  {batch:1,company:'ARECA CAPITAL SDN BHD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'ASIAN INSTITUTE OF FINANCE BHD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'CREDIT GUARANTEE CORPORATION',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:1,company:'CVC CAPITAL PARTNERS',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'GOVERNMENT OF KENYA',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'ACCEPTED',sales:null},
+  {batch:1,company:'IFAST CORPORATION LTD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'INSAS BERHAD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'K & N KENANGA HOLDINGS BHD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'ACCEPTED',sales:null},
+  {batch:1,company:'MALAYSIAN INDUSTRIAL DEVELOPMENT FINANCE BHD (MIDF)',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:1,company:'MANULIFE FINANCIAL CORP',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'PENDING',sales:null},
+  {batch:1,company:'MNRB HOLDINGS BHD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'MTRUSTEE',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'ACCEPTED',sales:null},
+  {batch:1,company:'NOMURA HOLDINGS INC',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'OPUS ASSET MANAGEMENT SDN BHD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'ACCEPTED',sales:null},
+  {batch:1,company:'PACIFIC TRUSTEES BERHAD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'PHILLIP CAPITAL',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'SECURITIES COMMISSION MALAYSIA',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
+  {batch:1,company:'TA ENTERPRISE BERHAD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'ACCEPTED',sales:null},
+  {batch:1,company:'VISA INC',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
 ];
 
-const CCT_BATCH2 = [
-  {company:"Glomac Berhad",cc_md:"AZZAHIR",cc_team:"GLC 4",rm:"NASYA",status:"REJECTED",remarks:"No requirement at the moment"},
-  {company:"KPJ Healthcare Berhad",cc_md:"AZZAHIR",cc_team:"GLC 3",rm:"NASYA",status:"PENDING",remarks:"CC - PENDING"},
-  {company:"Malaysian Resources Corporation Berhad",cc_md:"AZZAHIR",cc_team:"GLC 3",rm:"NASYA",status:"PENDING",remarks:"CC - PENDING"},
-  {company:"Menang Corporation (M) Berhad",cc_md:"AZZAHIR",cc_team:"GLC 4",rm:"NASYA",status:"REJECTED",remarks:"No requirement at the moment"},
-  {company:"MISC Berhad",cc_md:"AZZAHIR",cc_team:"GLC 1",rm:"NASYA",status:"PENDING",remarks:"CC - PENDING"},
-  {company:"S P Setia Berhad",cc_md:"AZZAHIR",cc_team:"GLC 2",rm:"NASYA",status:"REJECTED",remarks:""},
-  {company:"TH Plantations Berhad",cc_md:"AZZAHIR",cc_team:"GLC 3",rm:"NASYA",status:"PENDING",remarks:"CC - PENDING"},
-  {company:"TIME dotCom Berhad",cc_md:"AZZAHIR",cc_team:"GLC 1",rm:"NASYA",status:"PENDING",remarks:"CC - PENDING"},
-  {company:"Velesto Energy Berhad",cc_md:"AZZAHIR",cc_team:"GLC 2",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
-  {company:"Alcom Group Berhad",cc_md:"CB",cc_team:"CB",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Bintai Kinden Corporation Berhad",cc_md:"CB",cc_team:"CB",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Engtex Group Berhad",cc_md:"CB",cc_team:"CB",rm:"LEI KHIM",status:"MET",remarks:""},
-  {company:"Eversendai Corporation Berhad",cc_md:"CB",cc_team:"CB",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"Hua Yang Berhad",cc_md:"CB",cc_team:"CB",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"Magna Prima Berhad",cc_md:"CB",cc_team:"CB",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"Minho (M) Berhad",cc_md:"CB",cc_team:"CB",rm:"FILZAH",status:"ACCEPTED",remarks:""},
-  {company:"Protasco Berhad",cc_md:"CB",cc_team:"CB",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"Rapid Synergy Berhad",cc_md:"CB",cc_team:"CB",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"RGB International Bhd.",cc_md:"CB",cc_team:"CB",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Ajiya Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"FILZAH",status:"REJECTED",remarks:""},
-  {company:"Bermaz Auto Berhad",cc_md:"CHING EAN",cc_team:"CC 3",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
-  {company:"Capital A Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"Chin Hin Group Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"FILZAH",status:"REJECTED",remarks:""},
-  {company:"D & O Green Technologies Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"REJECTED",remarks:""},
-  {company:"Dialog Group Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"DXN Holdings Bhd.",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
-  {company:"Eastern & Oriental Berhad",cc_md:"CHING EAN",cc_team:"CC 1",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
-  {company:"Fiamma Holdings Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"FILZAH",status:"REJECTED",remarks:""},
-  {company:"Frontken Corporation Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"MET",remarks:""},
-  {company:"GuocoLand (Malaysia) Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"FILZAH",status:"REJECTED",remarks:""},
-  {company:"IGB Berhad",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"IGB Real Estate Investment Trust",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"Inari Amertron Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"Keck Seng (Malaysia) Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"ISKANDAR",status:"REJECTED",remarks:""},
-  {company:"KESM Industries Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"REJECTED",remarks:""},
-  {company:"Kossan Rubber Industries Bhd",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"PENDING",remarks:""},
-  {company:"Landmarks Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"AZMI",status:"PENDING",remarks:""},
-  {company:"Leong Hup International Berhad",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"REJECTED",remarks:""},
-  {company:"Lotte Chemical Titan Holding Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"ISKANDAR",status:"REJECTED",remarks:""},
-  {company:"Mah Sing Group Berhad",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"Malakoff Corporation Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"Malaysia Smelting Corporation Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"Malaysian Pacific Industries Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"Media Prima Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"ACCEPTED",remarks:""},
-  {company:"Mega First Corporation Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"REJECTED",remarks:""},
-  {company:"MKH Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"MKH Oil Palm (East Kalimantan) Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"Oriental Holdings Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"Padini Holdings Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"Panasonic Manufacturing Malaysia Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"ISKANDAR",status:"REJECTED",remarks:""},
-  {company:"Press Metal Aluminium Holdings Berhad",cc_md:"CHING EAN",cc_team:"CC 4",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"REDtone Digital Berhad",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"Supermax Corporation Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:""},
-  {company:"Taliworks Corporation Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"FILZAH",status:"ACCEPTED",remarks:""},
-  {company:"TASCO Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"Teo Seng Capital Berhad",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"REJECTED",remarks:""},
-  {company:"TMC Life Sciences Berhad",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"PENDING",remarks:""},
-  {company:"V.S. Industry Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"ViTrox Corporation Berhad",cc_md:"CHING EAN",cc_team:"CC 2",rm:"AZMI",status:"REJECTED",remarks:""},
-  {company:"WCT Holdings Berhad",cc_md:"CHING EAN",cc_team:"CC 1",rm:"AZMI",status:"PENDING",remarks:""},
-  {company:"Y.S.P. Southeast Asia Holding Berhad",cc_md:"CHING EAN",cc_team:"RC",rm:"AZMI",status:"REJECTED",remarks:""},
-  {company:"YTL Power International Berhad",cc_md:"CHING EAN",cc_team:"CC 3",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"Far East Holdings Berhad",cc_md:"JACK",cc_team:"STATE GOVT",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"Orkim Berhad",cc_md:"JACK",cc_team:"GOM/FEDERAL GOVT",rm:"NASYA",status:"REJECTED",remarks:""},
-  {company:"Pasdec Holdings Berhad",cc_md:"JACK",cc_team:"STATE GOVT",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"PBA Holdings Bhd",cc_md:"JACK",cc_team:"STATE GOVT",rm:"ISKANDAR",status:"REJECTED",remarks:""},
-  {company:"Suria Capital Holdings Berhad",cc_md:"JACK",cc_team:"SBH/SWK STATE",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"Alpha IVF Group Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"Dufu Technology Corp. Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Efficient E-Solutions Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Eng Kah Corporation Berhad",cc_md:"JASON",cc_team:"CBD",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"Formosa Prosonic Industries Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"InNature Berhad",cc_md:"JASON",cc_team:"CBD",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"Khind Holdings Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Kobay Technology Bhd.",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"Muar Ban Lee Group Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"QES Group Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Scicom (MSC) Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"SLP Resources Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"TT Vision Holdings Berhad",cc_md:"JASON",cc_team:"CBD",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Astino Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"AWC Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"Bonia Corporation Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
-  {company:"Can-One Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"CB Industrial Product Holding Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"Chin Well Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Choo Bee Metal Industries Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"PENDING",remarks:""},
-  {company:"Coastal Contracts Bhd",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"Dayang Enterprise Holdings Bhd",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"Econpile Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Eupe Corporation Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Favelle Favco Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"Gabungan AQRS Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"Gadang Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Globetronics Technology Bhd.",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
-  {company:"Harn Len Corporation Bhd",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"HeiTech Padu Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"REJECTED",remarks:""},
-  {company:"Homeritz Corporation Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"PENDING",remarks:""},
-  {company:"Hup Seng Industries Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"Infomina Berhad",cc_md:"JESSIE",cc_team:"MC 4",rm:"LEI KHIM",status:"REJECTED",remarks:""},
-  {company:"Iskandar Waterfront City Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
-  {company:"Jaya Tiasa Holdings Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"JKG Land Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"LEI KHIM",status:"REJECTED",remarks:""},
-  {company:"Johan Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"FILZAH",status:"ACCEPTED",remarks:""},
-  {company:"Kim Hin Industry Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"Kim Loong Resources Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"KKB Engineering Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"Kotra Industries Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
-  {company:"Kretam Holdings Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"KSL Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"Land & General Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"LBS Bina Group Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"PENDING",remarks:""},
-  {company:"Lii Hen Industries Bhd",cc_md:"JESSIE",cc_team:"MC 1",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"LTKM Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"Luxchem Corporation Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"Magni-Tech Industries Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"PENDING",remarks:""},
-  {company:"MBM Resources Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"PENDING",remarks:""},
-  {company:"Media Chinese International Limited",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"Mi Technovation Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Mulpha International Bhd",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"N2N Connect Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
-  {company:"Naim Holdings Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"NCT Alliance Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"OCK Group Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"ACCEPTED",remarks:""},
-  {company:"Oriental Interest Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
-  {company:"P.I.E. Industrial Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Paramount Corporation Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"Pecca Group Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"Pekat Group Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"ISKANDAR",status:"PENDING",remarks:""},
-  {company:"Perdana Petroleum Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"Plenitude Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"REJECTED",remarks:""},
-  {company:"Poh Huat Resources Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"Power Root Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"AZMI",status:"REJECTED",remarks:""},
-  {company:"PRG Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"RCE Capital Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"ISKANDAR",status:"REJECTED",remarks:""},
-  {company:"Sarawak Plantation Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"Selangor Dredging Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"REJECTED",remarks:""},
-  {company:"SHL Consolidated Bhd.",cc_md:"JESSIE",cc_team:"MC 1",rm:"AZMI",status:"ACCEPTED",remarks:""},
-  {company:"SMRT Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"FILZAH",status:"PENDING",remarks:""},
-  {company:"Southern Acids (M) Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"PENDING",remarks:""},
-  {company:"Sunsuria Berhad",cc_md:"JESSIE",cc_team:"MC 3",rm:"LEI KHIM",status:"PENDING",remarks:""},
-  {company:"Ta Ann Holdings Berhad",cc_md:"JESSIE",cc_team:"MC SBH/SWK",rm:"NASYA",status:"PENDING",remarks:""},
-  {company:"Tambun Indah Land Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"ACCEPTED",remarks:""},
-  {company:"Thong Guan Industries Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"AZMI",status:"PENDING",remarks:"CC YES - REVISIT"},
-  {company:"Tong Herr Resources Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:"Prefer non-sukuk funds"},
-  {company:"TSH Resources Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:"CC - PENDING"},
-  {company:"United Malacca Berhad",cc_md:"JESSIE",cc_team:"MC 1",rm:"FILZAH",status:"PENDING",remarks:"CC - PENDING"},
-  {company:"Wellcall Holdings Berhad",cc_md:"JESSIE",cc_team:"MC 2",rm:"LEI KHIM",status:"PENDING",remarks:"RM CONTACTED - PENDING CLIENT RESPONSE"},
-  {company:"ELK-Desa Resources Berhad",cc_md:"NAELAH",cc_team:"FIG",rm:"NASYA",status:"PENDING",remarks:""},
-];
+// Total: 282 rows
 
-const CCT_INJECTIONS = [
-  {company:"7-ELEVEN MALAYSIA SDN BHD",group:"BERJAYA",segment:"CONGLO & LARGE CAP",amount:10000000,transactions:1,client_type:"New"},
-  {company:"BATU KAWAN BHD",group:"KLK",segment:"CONGLO & LARGE CAP",amount:64800000,transactions:4,client_type:"Existing"},
-  {company:"HAP SENG PLANTATIONS (RIVER ESTATES) SB",group:"GEK POH/HAP SENG",segment:"CONGLO & LARGE CAP",amount:10000000,transactions:1,client_type:"Existing"},
-  {company:"PUBLIC PACKAGES SDN. BHD.",group:"PUBLIC PACKAGES",segment:"CBD",amount:3000000,transactions:1,client_type:"Existing"},
-  {company:"PRESTAVEST BHD.",group:"ASIABINA",segment:"CBD",amount:400000,transactions:1,client_type:"Existing"},
-  {company:"FOCUS POINT VISION CARE GROUP SDN BHD",group:"FOCUS POINT",segment:"CBD",amount:10000000,transactions:1,client_type:"New"},
-  {company:"B.I.G. INDUSTRIAL GAS SDN. BHD.",group:"BIG",segment:"CBD",amount:2110000,transactions:4,client_type:"Existing"},
-  {company:"UDA HOLDINGS BERHAD",group:"MOF INC",segment:"FEDERAL & STATE GOV",amount:100000,transactions:1,client_type:"Existing"},
-  {company:"KUMPULAN PERANGSANG SELANGOR BHD.",group:"SELANGOR STATE",segment:"FEDERAL & STATE GOV",amount:400000,transactions:1,client_type:"Existing"},
-];
-
-const CCT_RM_ORDER   = ['AZMI','ISKANDAR','LEI KHIM','NASYA','FILZAH'];
-const CCT_CCMD_ORDER = ['ANNABELLE','AZZAHIR','CB','CHING EAN','JACK','JASON','JESSIE','NAELAH'];
-
-// ─── CCT HELPERS ──────────────────────────────────────────────────
-function cctIsLeadAccepted(s){return ['ACCEPTED','MET','MET SUBSIDIARY','INJECTED','EXISTING CLIENT','TOP UP'].includes(s);}
-function cctIsMet(s){return ['MET','MET SUBSIDIARY','INJECTED','TOP UP'].includes(s);}
-function cctIsInjectedSt(s){return ['INJECTED','TOP UP'].includes(s);}
-function cctIsActionReq(s){return ['PENDING','REJECTED'].includes(s);}
-
-const CCT_STATUS_BADGE_MAP = {
-  'MET':'cc-badge-met','MET SUBSIDIARY':'cc-badge-met-sub',
-  'EXISTING CLIENT':'cc-badge-existing','TOP UP':'cc-badge-top-up',
-  'INJECTED':'cc-badge-injected','ACCEPTED':'cc-badge-accepted',
-  'PENDING':'cc-badge-pending','REJECTED':'cc-badge-rejected'
+// Known subsidiary companies for MSII CC leads
+const CC_SUBSIDIARY_MAP = {
+  'BERJAYA': '7-Eleven Malaysia Sdn Bhd',
+  'ORIENTAL INTEREST BERHAD': 'MDCON Holdings Sdn Bhd',
+  'YINSON': 'Green EV Sdn Bhd',
+  'ASIABINA': 'Prestavest Sdn Bhd',
+  'KUOK': 'Shangri-La',
+  'MUHIBBAH': 'Sedia Teguh Sdn Bhd',
 };
-function cctStatusBadge(s){return '<span class="cc-badge '+(CCT_STATUS_BADGE_MAP[s]||'')+'">'+(s||'')+'</span>';}
-function cctBatchTag(b){return '<span class="cc-badge '+(b==='B1'?'cc-badge-b1':'cc-badge-b2')+'">'+b+'</span>';}
-function cctFmtAmt(n){if(!n)return 'RM 0';return 'RM '+n.toLocaleString('en-MY');}
-function cctPct(num,den){if(!den)return 0;return Math.round(num/den*100);}
-function cctEscHtml(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function cctDaysSince(dateStr){return Math.floor((new Date()-new Date(dateStr))/86400000);}
-function cctBuildB1Map(){const m={};CCT_BATCH1.forEach(d=>{m[d.company]=d;});return m;}
-function cctBuildInjectionsByCC(){
-  const b1Map=cctBuildB1Map(),byCC={},byRM={};
-  CCT_INJECTIONS.forEach(inj=>{
-    const b1=b1Map[inj.group],cc=b1?b1.cc_md:null,rm=b1?b1.rm:null;
-    if(cc){if(!byCC[cc])byCC[cc]={amount:0,count:0};byCC[cc].amount+=inj.amount;byCC[cc].count++;}
-    if(rm){if(!byRM[rm])byRM[rm]={amount:0,count:0};byRM[rm].amount+=inj.amount;byRM[rm].count++;}
+
+// Maps Supabase company names (UPPER) → CC_LEADS parent group name (UPPER)
+// Used so when fMSII==='msii', subsidiaries are aggregated under their parent
+const CC_PARENT_MAP = {
+  // BERJAYA (Batch 1)
+  '7-ELEVEN MALAYSIA SDN BHD': 'BERJAYA',
+  '7-ELEVEN MALAYSIA': 'BERJAYA',
+  'BERJAYA CAPITAL BERHAD': 'BERJAYA',
+  'BERJAYA CORPORATION BERHAD': 'BERJAYA',
+  'BERJAYA MUTUAL BERHAD': 'BERJAYA',
+  'SPORTS TOTO BERHAD': 'BERJAYA',
+  'SPORTS TOTO': 'BERJAYA',
+  // GENTING (Batch 1)
+  'GENTING BERHAD': 'GENTING',
+  'GENTING DEMENTIA CENTRE SDN. BHD.': 'GENTING',
+  'GENTING DEMENTIA CENTRE': 'GENTING',
+  'GENTING TAURX DIAGNOSTIC CENTRE SDN. BHD': 'GENTING',
+  'GENTING TAURX DIAGNOSTIC CENTRE SDN BHD': 'GENTING',
+  'GENTING TAURX': 'GENTING',
+  'GOLDEN SCREEN CINEMAS SDN. BHD.': 'GENTING',
+  'GOLDEN SCREEN CINEMAS': 'GENTING',
+  // GAMUDA (Batch 1)
+  'GAMUDA BERHAD': 'GAMUDA',
+  'GAMUDA GM SDN. BHD.': 'GAMUDA',
+  'GAMUDA GM SDN BHD': 'GAMUDA',
+  'GAMUDA LAND (BOTANIC) SDN. BHD.': 'GAMUDA',
+  'GAMUDA LAND (BOTANIC)': 'GAMUDA',
+  'GAMUDA LAND (T12) SDN. BHD.': 'GAMUDA',
+  'GAMUDA LAND (T12)': 'GAMUDA',
+  // MAHB (Batch 1)
+  'MALAYSIA AIRPORTS SDN. BHD.': 'MAHB',
+  'MALAYSIA AIRPORTS SDN BHD': 'MAHB',
+  'MALAYSIA AIRPORTS (NIAGA) SDN. BHD.': 'MAHB',
+  'MALAYSIA AIRPORTS (NIAGA) SDN BHD': 'MAHB',
+  'MALAYSIA AIRPORTS (PROPERTIES) SDN BHD': 'MAHB',
+  'MALAYSIA AIRPORTS (PROPERTIES) SDN. BHD.': 'MAHB',
+  'MALAYSIA AIRPORTS (SEPANG) SDN. BHD.': 'MAHB',
+  'MALAYSIA AIRPORTS (SEPANG) SDN BHD': 'MAHB',
+  'K.L. AIRPORT HOTEL SDN. BHD.': 'MAHB',
+  'KL AIRPORT HOTEL SDN BHD': 'MAHB',
+  // AXIATA (Batch 1)
+  'AXIATA DIGITAL ECODE SDN. BHD.': 'AXIATA',
+  'AXIATA DIGITAL ECODE SDN BHD': 'AXIATA',
+  'CELCOM BERHAD': 'AXIATA',
+  'EDOTCO MALAYSIA SDN. BHD.': 'AXIATA',
+  'EDOTCO MALAYSIA SDN BHD': 'AXIATA',
+  // YINSON (Batch 1)
+  'GREEN EV SDN BHD': 'YINSON',
+  'GREEN EV SDN. BHD.': 'YINSON',
+  // KUOK (Batch 1)
+  'SHANGRI-LA HOTELS (M) BERHAD': 'KUOK',
+  'SHANGRI-LA': 'KUOK',
+  // ASIABINA (Batch 1)
+  'PRESTAVEST SDN BHD': 'ASIABINA',
+  'PRESTAVEST SDN. BHD.': 'ASIABINA',
+  // MUHIBBAH (Batch 1)
+  'SEDIA TEGUH SDN BHD': 'MUHIBBAH',
+  'SEDIA TEGUH SDN. BHD.': 'MUHIBBAH',
+  // OSK (Batch 1)
+  'OSK HOLDINGS BERHAD': 'OSK',
+  'OSK HOLDINGS': 'OSK',
+  // SUNWAY (Batch 1)
+  'SUNWAY BERHAD': 'SUNWAY',
+  'SUNWAY CONSTRUCTION GROUP BERHAD': 'SUNWAY',
+  'SUNWAY REIT': 'SUNWAY',
+  'SUNWAY REAL ESTATE INVESTMENT TRUST': 'SUNWAY',
+  // KLK (Batch 1)
+  'KL KEPONG BERHAD': 'KLK',
+  'KL KEPONG': 'KLK',
+  'KUALA LUMPUR KEPONG BERHAD': 'KLK',
+  // GEK POH / HAP SENG (Batch 1)
+  'HAP SENG CONSOLIDATED BERHAD': 'GEK POH/HAP SENG',
+  'HAP SENG CONSOLIDATED': 'GEK POH/HAP SENG',
+  'HAP SENG PLANTATIONS HOLDINGS BERHAD': 'GEK POH/HAP SENG',
+  // USAHA TEGAS (Batch 1)
+  'USAHA TEGAS SDN. BHD.': 'USAHA TEGAS',
+  'USAHA TEGAS SDN BHD': 'USAHA TEGAS',
+  // IOI (Batch 1)
+  'IOI CORPORATION BERHAD': 'IOI',
+  'IOI CORPORATION': 'IOI',
+  'IOI PROPERTIES GROUP BERHAD': 'IOI',
+  // IJM (Batch 1)
+  'IJM CORPORATION BERHAD': 'IJM',
+  'IJM CORPORATION': 'IJM',
+  // SIME DARBY (Batch 1)
+  'SIME DARBY BERHAD': 'SIME DARBY',
+  // SIME DARBY PROPERTY (Batch 1)
+  'SIME DARBY PROPERTY BERHAD': 'SIME DARBY PROPERTY',
+  // PETRONAS (Batch 1)
+  'PETROLIAM NASIONAL BERHAD': 'PETRONAS',
+  'PETRONAS DAGANGAN BERHAD': 'PETRONAS',
+  'PETRONAS GAS BERHAD': 'PETRONAS',
+  // TNB (Batch 1)
+  'TENAGA NASIONAL BERHAD': 'TNB',
+  // EPF (Batch 1)
+  'KUMPULAN WANG SIMPANAN PEKERJA': 'EPF',
+  // SARAWAK ENERGY (Batch 1)
+  'SARAWAK ENERGY BERHAD': 'SARAWAK ENERGY',
+  // MOF INC (UDA HOLDINGS) (Batch 1)
+  'UDA HOLDINGS BERHAD': 'MOF INC (UDA HOLDINGS)',
+  'MOF INCORPORATED': 'MOF INC (UDA HOLDINGS)',
+  // SELANGOR STATE (Batch 1)
+  'KUMPULAN PERANGSANG SELANGOR BERHAD': 'SELANGOR STATE',
+  'PERANGSANG DINAMIK SDN BHD': 'SELANGOR STATE',
+  // BIG (Batch 1)
+  'BIGLIFE SDN BHD': 'BIG',
+  'BIGLIFE SDN. BHD.': 'BIG',
+  // ORIENTAL INTEREST BERHAD (Batch 2) — already has MDCON sub
+  'MDCON HOLDINGS SDN BHD': 'ORIENTAL INTEREST BERHAD',
+  'MDCON HOLDINGS SDN. BHD.': 'ORIENTAL INTEREST BERHAD',
+};
+
+// ─── CC SUMMARY TABLES ────────────────────────────────────────────
+let _ccSumBatch = 'all';
+let _ccFilter1CCMD = ''; // filter for Table 1 (CC MD Productivity)
+let _ccFilter2RM   = ''; // filter for Table 2 (MAMG RM Productivity)
+function setCCSummaryBatch(b, btn) {
+  _ccSumBatch = b;
+  document.querySelectorAll('#cc-sum-b-all,#cc-sum-b-1,#cc-sum-b-2').forEach(el => el.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderCCSummaryTables();
+}
+
+// Build CC leads with live Supabase data overlaid (priority: cc_tracker_updates > meeting_logs > CC_LEADS default)
+function buildCCLeadsWithLiveData() {
+  // Build a map of clientStatusData by company name for live meeting_logs lookup
+  const clientLookup = {};
+  (clientStatusData || []).forEach(c => { clientLookup[(c.name||'').toUpperCase()] = c; });
+
+  return CC_LEADS.map(d => {
+    // Priority 1: manual override in cc_tracker_updates
+    const ov = ccStatusMap[d.company.toUpperCase()];
+    if (ov) return {...d, status: ov.status, sales: ov.sales_amount ?? d.sales};
+    // Priority 2: actual Supabase meeting_logs via clientStatusData
+    const cl = clientLookup[d.company.toUpperCase()];
+    if (cl?.latestLog) {
+      const ls = cl.latestLog.status;
+      const inj = cl.latestLog.injected_amount;
+      const _ck = (cl.latestLog.client_name_manual||d.company).toUpperCase().trim();
+      const _ch = (injectionsData[_ck]||[]).filter(r=>r.amount>0).reduce((s,r)=>s+r.amount,0);
+      const injCumulative = (parseFloat(inj)||0) + _ch;
+      let st = d.status, sales = d.sales;
+      if (ls === 'Successful') {
+        st = (inj != null || _ch > 0) ? 'INJECTED' : 'TOP UP';
+        sales = injCumulative > 0 ? injCumulative * 1e6 : sales;
+      } else if (['Pending Decision','Pending Board Approval'].includes(ls)) { st = 'MET'; }
+      else if (['Pending Onboarding','Pending Injection'].includes(ls)) { st = 'ACCEPTED'; }
+      else if (ls === 'Rejected') { st = 'REJECTED'; }
+      return {...d, status: st, sales};
+    }
+    return {...d};
   });
-  return {byCC,byRM};
 }
 
-// ─── CCT DRAWER ───────────────────────────────────────────────────
-function ccOpenDrawer(title,items){
-  document.getElementById('cc-drawer-title').textContent=title;
-  document.getElementById('cc-drawer-badge').textContent=items.length;
-  const body=document.getElementById('cc-drawer-body');
-  if(!items.length){body.innerHTML='<div style="text-align:center;padding:36px;color:#94a3b8;">No companies found.</div>';return;}
-  body.innerHTML=items.map((d,i)=>{
-    const rem=d.remarks?'<div class="cc-drawer-remarks">'+cctEscHtml(d.remarks)+'</div>':'';
-    return '<div class="cc-drawer-item">'
-      +'<div class="cc-drawer-item-top"><div class="cc-drawer-num">'+(i+1)+'</div>'
-      +'<div style="flex:1"><div class="cc-drawer-company">'+cctEscHtml(d.company)+'</div>'
-      +'<div class="cc-drawer-badges">'+cctBatchTag(d.batch)+' '+cctStatusBadge(d.status)+'</div></div></div>'
-      +'<div class="cc-drawer-meta">'
-      +'<span class="cc-drawer-meta-item"><strong>CC MD:</strong> '+cctEscHtml(d.cc_md)+'</span>'
-      +'<span class="cc-drawer-meta-item"><strong>Team:</strong> '+cctEscHtml(d.cc_team)+'</span>'
-      +'<span class="cc-drawer-meta-item"><strong>RM:</strong> '+cctEscHtml(d.rm)+'</span>'
-      +'</div>'+rem+'</div>';
-  }).join('');
-  document.getElementById('cc-drawer-overlay').classList.add('open');
-  document.getElementById('cc-drawer-panel').classList.add('open');
-}
-function ccCloseDrawer(){
-  document.getElementById('cc-drawer-overlay').classList.remove('open');
-  document.getElementById('cc-drawer-panel').classList.remove('open');
-}
+function renderCCSummaryTables() {
+  const el = document.getElementById('cc-productivity-tables');
+  if (!el) return;
 
-// ─── CCT OVERVIEW ─────────────────────────────────────────────────
-function ccRenderOverview(){
-  const b1=CCT_BATCH1.map(d=>({...d,batch:'B1'}));
-  const b2=CCT_BATCH2.map(d=>({...d,batch:'B2'}));
-  const all=[...b1,...b2];
-  const {byCC}=cctBuildInjectionsByCC();
-  const totalInj=CCT_INJECTIONS.reduce((s,i)=>s+i.amount,0);
-  const injCCBreakdown=CCT_CCMD_ORDER.filter(cc=>byCC[cc]).map(cc=>`<div class="cc-ov-breakdown-row"><span class="cc-ov-breakdown-name">${cctEscHtml(cc)}</span><span>${cctFmtAmt(byCC[cc].amount)} (${byCC[cc].count})</span></div>`).join('');
-  const metAll=all.filter(d=>cctIsMet(d.status)),metB1=b1.filter(d=>cctIsMet(d.status)),metB2=b2.filter(d=>cctIsMet(d.status));
-  const acceptedAll=all.filter(d=>cctIsLeadAccepted(d.status));
-  const meetingRatePct=cctPct(metAll.length,acceptedAll.length);
-  const meetingRateCls=meetingRatePct>=100?'cc-pct-green':meetingRatePct>=67?'cc-pct-amber':'cc-pct-red';
-  const metCCBreakdown=CCT_CCMD_ORDER.map(cc=>{const cnt=all.filter(d=>d.cc_md===cc&&cctIsMet(d.status)).length;return cnt?`<div class="cc-ov-breakdown-row"><span class="cc-ov-breakdown-name">${cctEscHtml(cc)}</span><span>${cnt}</span></div>`:''}).join('');
-  const accAll=all.filter(d=>cctIsLeadAccepted(d.status)),accB1=b1.filter(d=>cctIsLeadAccepted(d.status)),accB2=b2.filter(d=>cctIsLeadAccepted(d.status));
-  const accRatePct=cctPct(accAll.length,all.length);
-  const accRateCls=accRatePct>=75?'cc-pct-green':accRatePct>=50?'cc-pct-amber':'cc-pct-red';
-  const accCCBreakdown=CCT_CCMD_ORDER.map(cc=>{const cnt=all.filter(d=>d.cc_md===cc&&cctIsLeadAccepted(d.status)).length;return cnt?`<div class="cc-ov-breakdown-row"><span class="cc-ov-breakdown-name">${cctEscHtml(cc)}</span><span>${cnt}</span></div>`:''}).join('');
-  const actAll=all.filter(d=>cctIsActionReq(d.status)),actB1=b1.filter(d=>cctIsActionReq(d.status)),actB2=b2.filter(d=>cctIsActionReq(d.status));
-  const pendAll=all.filter(d=>d.status==='PENDING').length,rejAll=all.filter(d=>d.status==='REJECTED').length;
-  const actCCBreakdown=CCT_CCMD_ORDER.map(cc=>{const cnt=all.filter(d=>d.cc_md===cc&&cctIsActionReq(d.status)).length;return cnt?`<div class="cc-ov-breakdown-row"><span class="cc-ov-breakdown-name">${cctEscHtml(cc)}</span><span>${cnt}</span></div>`:''}).join('');
-  window._cctOvData={metAll,metB1,metB2,accAll,accB1,accB2,actAll,actB1,actB2,injItems:b1.filter(d=>cctIsInjectedSt(d.status))};
-  document.getElementById('cc-ov-grid').innerHTML=`
-    <div class="cc-ov-card gold" onclick="ccOpenDrawer('Injected Companies (B1)',window._cctOvData.injItems)">
-      <div class="cc-ov-card-label">Injection AUM</div><div class="cc-ov-card-value">${cctFmtAmt(totalInj)}</div>
-      <span class="cc-ov-pct-badge cc-pct-blue">${CCT_INJECTIONS.length} companies &middot; Batch 1</span>
-      <div class="cc-ov-breakdown">${injCCBreakdown}</div>
-      <div class="cc-ov-batch-row"><span class="cc-ov-chip b1">B1: ${cctFmtAmt(totalInj)}</span><span class="cc-ov-chip b2">B2: RM 0</span></div>
+  const SEL_STYLE = `padding:5px 24px 5px 8px;border:1.5px solid var(--border);border-radius:7px;font-family:Poppins,sans-serif;font-size:12px;background:var(--white) url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B6B6B%22 stroke-width=%222.5%22%3E%3Cpolyline points=%226 9 12 15 18 9%22%3E%3C/polyline%3E%3C/svg%3E') no-repeat right 6px center;appearance:none;min-height:32px;`;
+
+  const isAccepted = s => ['ACCEPTED','MET','MET SUBSIDIARY','EXISTING CLIENT','INJECTED','TOP UP'].includes(s);
+  const isMet      = s => ['MET','MET SUBSIDIARY','INJECTED','TOP UP'].includes(s);
+  const isInjected = s => ['INJECTED','TOP UP'].includes(s);
+  const pct = (n,d) => d===0 ? '—' : (n/d*100).toFixed(1)+'%';
+  const rColor = (v,t) => { if(v==='—') return 'var(--grey)'; const n=parseFloat(v); return n>=t?'var(--success)':n>=t*0.5?'#E07B39':'var(--error)'; };
+  const sfmt = s => s ? `RM ${(s/1e6).toFixed(2)}M` : '—';
+
+  const CC_MDS_ORDER = ['CHING EAN','JESSIE','JACK','AZZAHIR','ANNABELLE','NAELAH','JASON','CB'];
+  const RM_CC_LIST   = ['AZMI','ISKANDAR','NASYA','LEI KHIM','FILZAH'];
+
+  const allLeads = buildCCLeadsWithLiveData();
+  let batchLeads = allLeads;
+  if (_ccSumBatch === 'b1') batchLeads = batchLeads.filter(d => d.batch === 1);
+  if (_ccSumBatch === 'b2') batchLeads = batchLeads.filter(d => d.batch === 2);
+
+  // ── Table 1: CC MD Productivity (filtered by CC MD only) ──
+  const leads1 = _ccFilter1CCMD ? batchLeads.filter(d => d.cc_md.toUpperCase() === _ccFilter1CCMD) : batchLeads;
+  let ccRows='', totT=0,totA=0,totM=0,totI=0,totS=0;
+  CC_MDS_ORDER.forEach(ccmd => {
+    const grp = leads1.filter(d => d.cc_md === ccmd);
+    if (!grp.length) return;
+    const target=grp.length, accepted=grp.filter(d=>isAccepted(d.status)).length;
+    const met=grp.filter(d=>isMet(d.status)).length, inj=grp.filter(d=>isInjected(d.status)).length;
+    const sales=grp.reduce((s,d)=>s+(d.sales||0),0);
+    const accR=pct(accepted,target), metR=pct(met,accepted);
+    totT+=target; totA+=accepted; totM+=met; totI+=inj; totS+=sales;
+    ccRows+=`<tr>
+      <td style="font-weight:600;color:var(--navy);">${ccmd}</td>
+      <td class="td-click" onclick="showCCLeadDrawer('ccmd','${ccmd}','all')">${target}</td>
+      <td class="td-click" onclick="showCCLeadDrawer('ccmd','${ccmd}','accepted')">${accepted}</td>
+      <td style="font-weight:700;color:${rColor(accR,75)};">${accR}</td>
+      <td class="td-click" onclick="showCCLeadDrawer('ccmd','${ccmd}','met')">${met}</td>
+      <td style="font-weight:700;color:${rColor(metR,100)};">${metR}</td>
+      <td class="td-click" onclick="showCCLeadDrawer('ccmd','${ccmd}','injected')">${inj}</td>
+      <td style="font-weight:600;color:var(--success);">${sfmt(sales)}</td>
+    </tr>`;
+  });
+  ccRows+=`<tr style="background:var(--navy);color:#fff;font-weight:700;">
+    <td>TOTAL</td><td>${totT}</td><td>${totA}</td><td>${pct(totA,totT)}</td>
+    <td>${totM}</td><td>${pct(totM,totA)}</td><td>${totI}</td><td style="color:#90EE90;">${sfmt(totS)}</td>
+  </tr>`;
+
+  // ── Table 2: MAMG RM Productivity (filtered by RM only) ──
+  const leads2 = _ccFilter2RM ? batchLeads.filter(d => d.rm.toUpperCase() === _ccFilter2RM) : batchLeads;
+  let rmRows='', rT=0,rA=0,rM=0,rI=0,rS=0;
+  RM_CC_LIST.forEach(rm => {
+    const grp = leads2.filter(d => d.rm.toUpperCase() === rm);
+    if (!grp.length) return;
+    const target=grp.length, accepted=grp.filter(d=>isAccepted(d.status)).length;
+    const met=grp.filter(d=>isMet(d.status)).length, inj=grp.filter(d=>isInjected(d.status)).length;
+    const sales=grp.reduce((s,d)=>s+(d.sales||0),0);
+    const accR=pct(accepted,target), convR=pct(inj,met);
+    rT+=target; rA+=accepted; rM+=met; rI+=inj; rS+=sales;
+    rmRows+=`<tr>
+      <td style="font-weight:600;color:var(--navy);">${rm}</td>
+      <td class="td-click" onclick="showCCLeadDrawer('rm','${rm}','all')">${target}</td>
+      <td class="td-click" onclick="showCCLeadDrawer('rm','${rm}','accepted')">${accepted}</td>
+      <td style="font-weight:700;color:${rColor(accR,75)};">${accR}</td>
+      <td class="td-click" onclick="showCCLeadDrawer('rm','${rm}','met')">${met}</td>
+      <td class="td-click" onclick="showCCLeadDrawer('rm','${rm}','injected')">${inj}</td>
+      <td style="font-weight:700;color:${rColor(convR,75)};">${convR}</td>
+      <td style="font-weight:600;color:var(--success);">${sfmt(sales)}</td>
+    </tr>`;
+  });
+  rmRows+=`<tr style="background:var(--navy);color:#fff;font-weight:700;">
+    <td>TOTAL</td><td>${rT}</td><td>${rA}</td><td>${pct(rA,rT)}</td>
+    <td>${rM}</td><td>${rI}</td><td>${pct(rI,rM)}</td><td style="color:#90EE90;">${sfmt(rS)}</td>
+  </tr>`;
+
+  const ccMDSel = `<select style="${SEL_STYLE}" onchange="_ccFilter1CCMD=this.value.toUpperCase();renderCCSummaryTables()">
+    <option value="">All CC MDs</option>
+    ${CC_MDS_ORDER.map(m=>`<option${_ccFilter1CCMD===m?' selected':''}>${m}</option>`).join('')}
+  </select>`;
+  const rmSel = `<select style="${SEL_STYLE}" onchange="_ccFilter2RM=this.value.toUpperCase();renderCCSummaryTables()">
+    <option value="">All RMs</option>
+    ${RM_CC_LIST.map(r=>`<option${_ccFilter2RM===r.toUpperCase()?' selected':''}>${r}</option>`).join('')}
+  </select>`;
+
+  el.innerHTML = `
+  <div style="margin-bottom:24px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+      <div style="font-size:12px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:1px;">CC MD Productivity</div>
+      ${ccMDSel}
     </div>
-    <div class="cc-ov-card green">
-      <div class="cc-ov-card-label">Clients Met</div><div class="cc-ov-card-value">${metAll.length}</div>
-      <span class="cc-ov-pct-badge ${meetingRateCls}">Meeting Rate: ${meetingRatePct}% (target 100%)</span>
-      <div class="cc-ov-breakdown">${metCCBreakdown}</div>
-      <div class="cc-ov-batch-row">
-        <span class="cc-ov-chip b1" onclick="event.stopPropagation();ccOpenDrawer('B1 Clients Met',window._cctOvData.metB1)">B1: ${metB1.length}</span>
-        <span class="cc-ov-chip b2" onclick="event.stopPropagation();ccOpenDrawer('B2 Clients Met',window._cctOvData.metB2)">B2: ${metB2.length}</span>
-      </div>
+    <div style="font-size:11px;color:var(--grey);margin-bottom:8px;">Acceptance target: <strong>75%</strong> &nbsp;|&nbsp; Meeting rate target: <strong>100%</strong> &nbsp;|&nbsp; <em>Click numbers to see company list</em></div>
+    <div class="admin-table-wrap"><table class="admin-table"><thead><tr>
+      <th>CC MD</th><th>Total</th><th>Accepted</th><th>Acceptance %</th><th>Met</th><th>Meeting %</th><th>Injected/Top Up</th><th>Sales (RM)</th>
+    </tr></thead><tbody>${ccRows}</tbody></table></div>
+  </div>
+  <div id="cc-lead-drawer" style="display:none;margin-bottom:16px;background:#FAFCFF;border:1.5px solid var(--border);border-radius:8px;padding:12px 16px;">
+    <div style="font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+      <span id="cc-lead-drawer-title"></span>
+      <button onclick="document.getElementById('cc-lead-drawer').style.display='none'" style="background:none;border:none;cursor:pointer;color:var(--grey);font-size:16px;">&#x2715;</button>
     </div>
-    <div class="cc-ov-card blue">
-      <div class="cc-ov-card-label">Leads Accepted</div><div class="cc-ov-card-value">${accAll.length}</div>
-      <span class="cc-ov-pct-badge ${accRateCls}">Acceptance Rate: ${accRatePct}% (target 75%)</span>
-      <div class="cc-ov-breakdown">${accCCBreakdown}</div>
-      <div class="cc-ov-batch-row">
-        <span class="cc-ov-chip b1" onclick="event.stopPropagation();ccOpenDrawer('B1 Leads Accepted',window._cctOvData.accB1)">B1: ${accB1.length}</span>
-        <span class="cc-ov-chip b2" onclick="event.stopPropagation();ccOpenDrawer('B2 Leads Accepted',window._cctOvData.accB2)">B2: ${accB2.length}</span>
-      </div>
+    <div id="cc-lead-drawer-body"></div>
+  </div>
+  <div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+      <div style="font-size:12px;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:1px;">MAMG RM Productivity</div>
+      ${rmSel}
     </div>
-    <div class="cc-ov-card red" onclick="ccOpenDrawer('Action Required (${actAll.length})',window._cctOvData.actAll)">
-      <div class="cc-ov-card-label">Action Required</div><div class="cc-ov-card-value">${actAll.length}</div>
-      <div class="cc-ov-sub">Pending: ${pendAll} &middot; Rejected: ${rejAll}</div>
-      <div class="cc-ov-breakdown" style="margin-top:10px">${actCCBreakdown}</div>
-      <div class="cc-ov-batch-row">
-        <span class="cc-ov-chip b1" onclick="event.stopPropagation();ccOpenDrawer('B1 Action Required',window._cctOvData.actB1)">B1: ${actB1.length}</span>
-        <span class="cc-ov-chip b2" onclick="event.stopPropagation();ccOpenDrawer('B2 Action Required',window._cctOvData.actB2)">B2: ${actB2.length}</span>
-      </div>
-    </div>`;
-  ccRenderTimeline(b1,b2);
+    <div style="font-size:11px;color:var(--grey);margin-bottom:8px;"><em>Click numbers to see company list</em></div>
+    <div class="admin-table-wrap"><table class="admin-table"><thead><tr>
+      <th>MAMG RM</th><th>Total</th><th>Accepted</th><th>Acceptance %</th><th>Met</th><th>Injected/Top Up</th><th>Conversion %</th><th>Sales (RM)</th>
+    </tr></thead><tbody>${rmRows}</tbody></table></div>
+  </div>`;
 }
 
-function ccRenderTimeline(b1,b2){
-  const b1Acc=b1.filter(d=>cctIsLeadAccepted(d.status)),b1Met=b1.filter(d=>cctIsMet(d.status)),b1Inj=b1.filter(d=>cctIsInjectedSt(d.status));
-  const b1AccRate=cctPct(b1Acc.length,b1.length);
-  const b2Acc=b2.filter(d=>cctIsLeadAccepted(d.status)),b2Met=b2.filter(d=>cctIsMet(d.status)),b2Inj=b2.filter(d=>cctIsInjectedSt(d.status));
-  const b2AccRate=cctPct(b2Acc.length,b2.length);
-  const b1AUM=CCT_INJECTIONS.reduce((s,i)=>s+i.amount,0);
-  const d1=cctDaysSince('2026-03-17'),d2=cctDaysSince('2026-05-06');
-  function tlCard(days,batchName,deployDate,accRate,metCount,injCount,aum,pct){
-    const fillCls=pct>=75?'cc-gauge-fill-green':pct>=50?'cc-gauge-fill-amber':'cc-gauge-fill-red';
-    return `<div class="cc-tl-card"><div><div class="cc-tl-days-num">${days}</div><div class="cc-tl-days-lbl">days ago</div></div>
-      <div class="cc-tl-right"><div class="cc-tl-batch-name">${batchName}</div><div class="cc-tl-deploy-date">Deployed: ${deployDate}</div>
-      <div class="cc-tl-mini-stats">
-        <div class="cc-tl-mini-stat"><div class="cc-tl-mini-stat-val">${accRate}%</div><div class="cc-tl-mini-stat-lbl">Acceptance Rate</div></div>
-        <div class="cc-tl-mini-stat"><div class="cc-tl-mini-stat-val">${metCount}</div><div class="cc-tl-mini-stat-lbl">Meetings Attended</div></div>
-        <div class="cc-tl-mini-stat"><div class="cc-tl-mini-stat-val">${injCount}</div><div class="cc-tl-mini-stat-lbl">Converted</div></div>
-        <div class="cc-tl-mini-stat"><div class="cc-tl-mini-stat-val" style="font-size:13px">${cctFmtAmt(aum)}</div><div class="cc-tl-mini-stat-lbl">AUM</div></div>
-      </div>
-      <div style="font-size:10px;color:#94a3b8;margin-bottom:4px">Acceptance Rate Progress (75% target)</div>
-      <div class="cc-tl-progress-wrap">
-        <div class="cc-tl-progress-fill" style="width:${Math.min(pct,100)}%"></div>
-        <div class="cc-tl-progress-marker" style="left:75%"><div class="cc-tl-progress-marker-lbl">75%</div></div>
-      </div></div></div>`;
-  }
-  document.getElementById('cc-tl-grid').innerHTML=
-    tlCard(d1,'Batch 1','17 Mar 2026',b1AccRate,b1Met.length,b1Inj.length,b1AUM,b1AccRate)+
-    tlCard(d2,'Batch 2','6 May 2026',b2AccRate,b2Met.length,b2Inj.length,0,b2AccRate);
-}
-
-// ─── CCT SUB-TAB SWITCHING ────────────────────────────────────────
-function ccSwitchTab(tab,idx){
-  document.querySelectorAll('.cc-tab-content').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.cc-tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('cct-'+tab).classList.add('active');
-  document.querySelectorAll('#panel-cc .cc-tab-btn')[idx].classList.add('active');
-}
-
-// ─── CCT CC PRODUCTIVITY ──────────────────────────────────────────
-let _cctCCBatch='all';
-function setCCBatch2(batch,btn){
-  _cctCCBatch=batch;
-  document.querySelectorAll('#cct-cc-batch-toggle .cc-batch-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  ccRenderCCTab(batch);
-}
-function ccRenderCCTab(batch){
-  const b1=CCT_BATCH1.map(d=>({...d,batch:'B1'})),b2=CCT_BATCH2.map(d=>({...d,batch:'B2'}));
-  const data=batch==='b1'?b1:batch==='b2'?b2:[...b1,...b2];
-  window._cctCCData={};
-  CCT_CCMD_ORDER.forEach(cc=>{
-    const rows=data.filter(d=>d.cc_md===cc),targeted=rows.length;
-    const accItems=rows.filter(d=>cctIsLeadAccepted(d.status)),metItems=rows.filter(d=>cctIsMet(d.status));
-    window._cctCCData[cc]={rows,targeted,accItems,metItems,accRate:cctPct(accItems.length,targeted),meetRate:cctPct(metItems.length,accItems.length)};
-  });
-  const totT=data.length,totA=data.filter(d=>cctIsLeadAccepted(d.status)).length,totM=data.filter(d=>cctIsMet(d.status)).length;
-  const oAcc=cctPct(totA,totT),oMeet=cctPct(totM,totA);
-  function gfc(v,t){return v>=t?'cc-gauge-fill-green':v>=t*0.667?'cc-gauge-fill-amber':'cc-gauge-fill-red';}
-  document.getElementById('cct-cc-gauges').innerHTML=`
-    <div class="cc-kpi-gauge-card"><div class="cc-kpi-gauge-label">Overall Acceptance Rate</div><div class="cc-kpi-gauge-num">${oAcc}%</div>
-      <div class="cc-kpi-gauge-sub">Leads Accepted / Targeted &nbsp;&nbsp; ${totA} / ${totT}</div>
-      <div class="cc-kpi-gauge-track"><div class="cc-kpi-gauge-fill ${gfc(oAcc,75)}" style="width:${Math.min(oAcc,100)}%"></div>
-        <div class="cc-kpi-gauge-marker" style="left:75%"><div class="cc-kpi-gauge-marker-lbl">75%</div></div></div></div>
-    <div class="cc-kpi-gauge-card"><div class="cc-kpi-gauge-label">Overall Meeting Rate</div><div class="cc-kpi-gauge-num">${oMeet}%</div>
-      <div class="cc-kpi-gauge-sub">Meetings Attended / Leads Accepted &nbsp;&nbsp; ${totM} / ${totA}</div>
-      <div class="cc-kpi-gauge-track"><div class="cc-kpi-gauge-fill ${gfc(oMeet,100)}" style="width:${Math.min(oMeet,100)}%"></div>
-        <div class="cc-kpi-gauge-marker" style="left:100%;transform:translateX(-100%)"><div class="cc-kpi-gauge-marker-lbl" style="transform:translateX(50%)">100%</div></div></div></div>`;
-  function pcc(v,t){return v>=t?'cc-pct-green':v>=t*0.667?'cc-pct-amber':'cc-pct-red';}
-  function pill(aR,mR){if(aR>=75&&mR>=100)return{cls:'cc-pill-green',label:'On Track'};if(aR>=37.5&&mR>=50)return{cls:'cc-pill-amber',label:'Approaching'};return{cls:'cc-pill-red',label:'At Risk'};}
-  let rows='',tfT=0,tfA=0,tfM=0;
-  CCT_CCMD_ORDER.forEach(cc=>{
-    const m=window._cctCCData[cc];if(!m||m.targeted===0)return;
-    tfT+=m.targeted;tfA+=m.accItems.length;tfM+=m.metItems.length;
-    const p=pill(m.accRate,m.meetRate),e=cctEscHtml(cc);
-    rows+=`<tr><td style="font-weight:700">${e}</td>
-      <td class="clickable-cell" onclick="ccOpenDrawer('${e} — All Targeted',window._cctCCData['${e}'].rows)">${m.targeted}</td>
-      <td class="clickable-cell" onclick="ccOpenDrawer('${e} — Leads Accepted',window._cctCCData['${e}'].accItems)">${m.accItems.length}</td>
-      <td><span class="cc-ov-pct-badge ${pcc(m.accRate,75)}">${m.accRate}%</span></td>
-      <td class="clickable-cell" onclick="ccOpenDrawer('${e} — Meetings Attended',window._cctCCData['${e}'].metItems)">${m.metItems.length}</td>
-      <td><span class="cc-ov-pct-badge ${pcc(m.meetRate,100)}">${m.meetRate}%</span></td>
-      <td><span class="cc-status-pill ${p.cls}">${p.label}</span></td></tr>`;
-  });
-  const tfAR=cctPct(tfA,tfT),tfMR=cctPct(tfM,tfA);
-  document.getElementById('cct-cc-tbody').innerHTML=rows||'<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">No data.</td></tr>';
-  document.getElementById('cct-cc-tfoot').innerHTML=`<tr><td>Total</td><td>${tfT}</td><td>${tfA}</td>
-    <td><span class="cc-ov-pct-badge ${pcc(tfAR,75)}">${tfAR}%</span></td>
-    <td>${tfM}</td><td><span class="cc-ov-pct-badge ${pcc(tfMR,100)}">${tfMR}%</span></td><td></td></tr>`;
-}
-
-// ─── CCT RM PRODUCTIVITY ──────────────────────────────────────────
-let _cctRMBatch='all';
-function setRMBatch2(batch,btn){
-  _cctRMBatch=batch;
-  document.querySelectorAll('#cct-rm-batch-toggle .cc-batch-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  ccRenderRMTab(batch);
-}
-function ccRenderRMTab(batch){
-  const b1=CCT_BATCH1.map(d=>({...d,batch:'B1'})),b2=CCT_BATCH2.map(d=>({...d,batch:'B2'}));
-  const data=batch==='b1'?b1:batch==='b2'?b2:[...b1,...b2];
-  const {byRM}=cctBuildInjectionsByCC();
-  window._cctRMData={};
-  CCT_RM_ORDER.forEach(rm=>{
-    const rows=data.filter(d=>d.rm===rm);
-    const metItems=rows.filter(d=>cctIsMet(d.status)),injItems=rows.filter(d=>cctIsInjectedSt(d.status));
-    window._cctRMData[rm]={rows,metItems,injItems,convRate:cctPct(injItems.length,metItems.length),aum:(byRM[rm]||{}).amount||0};
-  });
-  const totM=data.filter(d=>cctIsMet(d.status)).length,totI=data.filter(d=>cctIsInjectedSt(d.status)).length;
-  const oConv=cctPct(totI,totM);
-  function gfc(v,t){return v>=t?'cc-gauge-fill-green':v>=t*0.667?'cc-gauge-fill-amber':'cc-gauge-fill-red';}
-  document.getElementById('cct-rm-gauges').innerHTML=`
-    <div class="cc-kpi-gauge-card"><div class="cc-kpi-gauge-label">Overall Conversion Rate</div><div class="cc-kpi-gauge-num">${oConv}%</div>
-      <div class="cc-kpi-gauge-sub">Injected / Meetings Attended &nbsp;&nbsp; ${totI} / ${totM}</div>
-      <div class="cc-kpi-gauge-track"><div class="cc-kpi-gauge-fill ${gfc(oConv,75)}" style="width:${Math.min(oConv,100)}%"></div>
-        <div class="cc-kpi-gauge-marker" style="left:75%"><div class="cc-kpi-gauge-marker-lbl">75%</div></div></div></div>`;
-  function pcc(v,t){return v>=t?'cc-pct-green':v>=t*0.667?'cc-pct-amber':'cc-pct-red';}
-  function pill(v){if(v>=75)return{cls:'cc-pill-green',label:'On Track'};if(v>=50)return{cls:'cc-pill-amber',label:'Approaching'};return{cls:'cc-pill-red',label:'At Risk'};}
-  let rows='',tfM2=0,tfI=0,tfAUM=0;
-  CCT_RM_ORDER.forEach(rm=>{
-    const m=window._cctRMData[rm];if(!m)return;
-    tfM2+=m.metItems.length;tfI+=m.injItems.length;tfAUM+=m.aum;
-    const p=pill(m.convRate),e=cctEscHtml(rm);
-    rows+=`<tr><td style="font-weight:700">${e}</td>
-      <td class="clickable-cell" onclick="ccOpenDrawer('${e} — Meetings Attended',window._cctRMData['${e}'].metItems)">${m.metItems.length}</td>
-      <td class="clickable-cell" onclick="ccOpenDrawer('${e} — Converted',window._cctRMData['${e}'].injItems)">${m.injItems.length}</td>
-      <td><span class="cc-ov-pct-badge ${pcc(m.convRate,75)}">${m.convRate}%</span></td>
-      <td style="font-weight:600">${m.aum?cctFmtAmt(m.aum):'—'}</td>
-      <td><span class="cc-status-pill ${p.cls}">${p.label}</span></td></tr>`;
-  });
-  const tfConv=cctPct(tfI,tfM2);
-  document.getElementById('cct-rm-tbody').innerHTML=rows||'<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px;">No data.</td></tr>';
-  document.getElementById('cct-rm-tfoot').innerHTML=`<tr><td>Total</td><td>${tfM2}</td><td>${tfI}</td>
-    <td><span class="cc-ov-pct-badge ${pcc(tfConv,75)}">${tfConv}%</span></td>
-    <td>${cctFmtAmt(tfAUM)}</td><td></td></tr>`;
-}
-
-// ─── CCT INIT ─────────────────────────────────────────────────────
-let _cctInited=false;
-function ccInitTracker(){
-  if(_cctInited)return;
-  ccRenderOverview();
-  ccRenderCCTab('all');
-  ccRenderRMTab('all');
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')ccCloseDrawer();});
-  _cctInited=true;
+function showCCLeadDrawer(filterType, filterVal, statusGroup) {
+  let leads = buildCCLeadsWithLiveData();
+  if (_ccSumBatch === 'b1') leads = leads.filter(d => d.batch === 1);
+  if (_ccSumBatch === 'b2') leads = leads.filter(d => d.batch === 2);
+  if (filterType === 'ccmd') leads = leads.filter(d => d.cc_md === filterVal);
+  if (filterType === 'rm')   leads = leads.filter(d => d.rm.toUpperCase() === filterVal.toUpperCase());
+  const isAccepted = s => ['ACCEPTED','MET','MET SUBSIDIARY','EXISTING CLIENT','INJECTED','TOP UP'].includes(s);
+  const isMet      = s => ['MET','MET SUBSIDIARY','INJECTED','TOP UP'].includes(s);
+  const isInjected = s => ['INJECTED','TOP UP'].includes(s);
+  if (statusGroup === 'accepted') leads = leads.filter(d => isAccepted(d.status));
+  if (statusGroup === 'met')      leads = leads.filter(d => isMet(d.status));
+  if (statusGroup === 'injected') leads = leads.filter(d => isInjected(d.status));
+  const CC_STATUS_MAP = {'PENDING':'s-pending','ACCEPTED':'s-decision','MET':'s-onboarding','MET SUBSIDIARY':'s-onboarding','EXISTING CLIENT':'s-topup','INJECTED':'s-injected','TOP UP':'s-topup','REJECTED':'s-rejected'};
+  const trs = leads.map(d => `<tr>
+    <td style="font-weight:600;font-size:12px;">${d.company}</td>
+    <td style="font-size:11px;color:var(--grey);">${d.cc_md}</td>
+    <td style="font-size:11px;color:var(--grey);">${d.rm}</td>
+    <td><span class="status-pill ${CC_STATUS_MAP[d.status]||'s-default'}" style="font-size:10px;">${d.status}</span></td>
+    <td style="font-size:11px;color:var(--success);font-weight:600;">${d.sales?'RM '+(d.sales/1e6).toFixed(2)+'M':'—'}</td>
+  </tr>`).join('');
+  const label = filterType==='ccmd' ? `CC MD: ${filterVal}` : `RM: ${filterVal}`;
+  const stLbl = {all:'All',accepted:'Accepted',met:'Met',injected:'Injected/Top Up'}[statusGroup]||statusGroup;
+  document.getElementById('cc-lead-drawer-title').textContent = `${label} — ${stLbl} (${leads.length} companies)`;
+  document.getElementById('cc-lead-drawer-body').innerHTML = leads.length
+    ? `<div class="admin-table-wrap" style="max-height:280px;overflow-y:auto;"><table class="admin-table"><thead><tr><th>Company</th><th>CC MD</th><th>MAMG RM</th><th>Status</th><th>Sales</th></tr></thead><tbody>${trs}</tbody></table></div>`
+    : '<div style="color:var(--grey);font-size:13px;padding:8px 0;">No companies in this group.</div>';
+  document.getElementById('cc-lead-drawer').style.display = 'block';
+  document.getElementById('cc-lead-drawer').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 </script>
