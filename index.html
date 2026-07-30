@@ -6,6 +6,7 @@
   <title>MAMG | Client Meeting Log</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
@@ -576,7 +577,7 @@
         <select id="injHistRM">
           <option value="">— Select RM —</option>
           <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-          <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
+          <option>Lei Khim</option><option>Harris</option><option>Filzah</option><option>Colin</option><option>Others</option>
         </select>
       </div>
       <div class="field" style="flex:1;"></div>
@@ -593,6 +594,39 @@
   </div>
 </div>
 
+<div class="modal-overlay hidden" id="pipelineModal">
+  <div class="injection-modal" style="max-width:480px;width:95%;">
+    <h2 id="pipelineModalTitle">Record Pipeline Injection</h2>
+    <div class="company-tag" id="pipelineCompanyTag"></div>
+    <div class="inj-modal-row">
+      <div class="field" style="flex:1;">
+        <label id="pipelineAmtLabel">Potential Amount (RM Mn)</label>
+        <input type="number" id="pipelineAmt" placeholder="e.g. 50" min="0" step="0.1" />
+      </div>
+      <div class="field" style="flex:1;">
+        <label>Expected Month</label>
+        <select id="pipelineMonth">
+          <option value="">— Select month —</option>
+          <option>January</option><option>February</option><option>March</option>
+          <option>April</option><option>May</option><option>June</option>
+          <option>July</option><option>August</option><option>September</option>
+          <option>October</option><option>November</option><option>December</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>Notes</label><textarea id="pipelineNotes" placeholder="Optional notes..." style="min-height:60px;"></textarea></div>
+    <input type="hidden" id="pipelineLogId" />
+    <input type="hidden" id="pipelineClientName" />
+    <div class="inj-modal-btns">
+      <button class="btn-inj-confirm" onclick="savePipelineAmount()">
+        <span id="pipelineBtnText">Save</span>
+        <div class="spinner" id="pipelineSpinner" style="display:none;"></div>
+      </button>
+      <button class="btn-inj-cancel" onclick="document.getElementById('pipelineModal').classList.add('hidden')">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay hidden" id="editLogModal">
   <div class="injection-modal">
     <h2>Edit Meeting Log</h2>
@@ -602,7 +636,7 @@
         <label>RM</label>
         <select id="editLogRM">
           <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-          <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option><option>Others</option>
+          <option>Lei Khim</option><option>Harris</option><option>Filzah</option><option>Colin</option><option>Others</option><option>Others</option>
         </select>
       </div>
       <div class="field" style="flex:1;">
@@ -664,11 +698,25 @@
       <select id="editLogStatus" onchange="toggleEditInjectedFields()">
         <option value="Not Met">Not Met</option>
         <option value="Pending Decision">Pending Decision</option>
-        <option value="Pending Board Approval">Pending Board Approval</option>
-        <option value="Pending Onboarding">Pending Onboarding</option>
-        <option value="Pending Injection">Pending Injection</option>
+        <option value="PENDING ONBOARDING DOCS">Pending Onboarding Docs</option>
         <option value="Successful">Successful</option>
         <option value="Rejected">Rejected</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Status 2</label>
+      <select id="editLogStatus2">
+        <option value="">&#8212; Select status 2 &#8212;</option>
+        <option value="ACCEPTED">ACCEPTED</option>
+        <option value="EXISTING CLIENT">EXISTING CLIENT</option>
+        <option value="INJECTED">INJECTED</option>
+        <option value="MAMG MET DROP">MAMG MET DROP</option>
+        <option value="MET">MET</option>
+        <option value="MET SUBSIDIARY">MET SUBSIDIARY</option>
+        <option value="PENDING">PENDING</option>
+        <option value="REJECTED">REJECTED</option>
+        <option value="REVISIT">REVISIT</option>
+        <option value="TOP UP">TOP UP</option>
       </select>
     </div>
     <div class="field" style="margin-top:4px;">
@@ -752,7 +800,7 @@
             <select id="rmName" onchange="clearError('rm')">
               <option value="">&#8212; Select your name &#8212;</option>
               <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-              <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
+              <option>Lei Khim</option><option>Harris</option><option>Filzah</option><option>Colin</option><option>Others</option>
             </select>
             <span class="err-msg">Please select your name.</span>
           </div>
@@ -865,13 +913,28 @@
             <select id="statusSelect" onchange="clearError('status')">
               <option value="">&#8212; Select status &#8212;</option>
               <option value="Pending Decision">Pending Decision</option>
-              <option value="Pending Board Approval">Pending Board Approval</option>
-              <option value="Pending Onboarding">Pending Onboarding</option>
-              <option value="Pending Injection">Pending Injection</option>
+              <option value="PENDING ONBOARDING DOCS">Pending Onboarding Docs</option>
               <option value="Successful">Successful</option>
               <option value="Rejected">Rejected</option>
+              <option value="Not Met">Not Met</option>
             </select>
             <span class="err-msg">Please select a status.</span>
+          </div>
+          <div class="field" id="fld-status2">
+            <label>Status 2</label>
+            <select id="status2Select">
+              <option value="">&#8212; Select status 2 &#8212;</option>
+              <option value="ACCEPTED">ACCEPTED</option>
+              <option value="EXISTING CLIENT">EXISTING CLIENT</option>
+              <option value="INJECTED">INJECTED</option>
+              <option value="MAMG MET DROP">MAMG MET DROP</option>
+              <option value="MET">MET</option>
+              <option value="MET SUBSIDIARY">MET SUBSIDIARY</option>
+              <option value="PENDING">PENDING</option>
+              <option value="REJECTED">REJECTED</option>
+              <option value="REVISIT">REVISIT</option>
+              <option value="TOP UP">TOP UP</option>
+            </select>
           </div>
           <div class="field" id="fld-interest">
             <label>Client Interest <span class="req">*</span></label>
@@ -937,7 +1000,7 @@
           <select id="upcomingRM">
             <option value="">&#8212; Select RM &#8212;</option>
             <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-            <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
+            <option>Lei Khim</option><option>Harris</option><option>Filzah</option><option>Colin</option><option>Others</option>
           </select>
         </div>
         <div class="field" id="ufld-client">
@@ -1018,7 +1081,7 @@
           <select class="cl-filter" id="upcomingFilterRM" onchange="renderUpcomingTable()">
             <option value="">All RMs</option>
             <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-            <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
+            <option>Lei Khim</option><option>Harris</option><option>Filzah</option><option>Colin</option><option>Others</option>
           </select>
           <select class="cl-filter" id="upcomingFilterMonth" onchange="renderUpcomingTable()">
             <option value="">All Months</option>
@@ -1055,16 +1118,14 @@
         <option value="">All Statuses</option>
         <option value="Successful">Successful</option>
         <option value="Pending Decision">Pending Decision</option>
-        <option value="Pending Board Approval">Pending Board Approval</option>
-        <option value="Pending Onboarding">Pending Onboarding</option>
-        <option value="Pending Injection">Pending Injection</option>
+        <option value="PENDING ONBOARDING DOCS">Pending Onboarding Docs</option>
         <option value="Rejected">Rejected</option>
         <option value="Not Met">Not Met</option>
       </select>
       <select class="cl-filter" id="clFilterRM" onchange="renderClientTable()">
         <option value="">All RMs</option>
         <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-        <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
+        <option>Lei Khim</option><option>Harris</option><option>Filzah</option><option>Colin</option><option>Others</option>
       </select>
       <select class="cl-filter" id="clFilterMSII" onchange="renderClientTable()">
         <option value="">All Clients</option>
@@ -1111,7 +1172,8 @@
         <button class="admin-subtab-btn active" id="asubtab-pipeline" onclick="switchAdminSubtab('pipeline')">Pipeline Summary</button>
         <button class="admin-subtab-btn" id="asubtab-overview" onclick="switchAdminSubtab('overview')">RM Overview</button>
         <button class="admin-subtab-btn" id="asubtab-drilldown" onclick="switchAdminSubtab('drilldown')">RM Pipeline</button>
-        <button class="admin-subtab-btn" id="asubtab-calendar" onclick="switchAdminSubtab('calendar')">Calendar View</button>
+        <button class="admin-subtab-btn" id="asubtab-cc-pipeline" onclick="switchAdminSubtab('cc-pipeline');setTimeout(renderCCPipeline,50)">CC Pipeline</button>
+        <button class="admin-subtab-btn" id="asubtab-cc-injection" onclick="switchAdminSubtab('cc-injection')">CC Injection Upload</button>
       </div>
       <div class="admin-subpanel active" id="subpanel-pipeline">
         <div class="admin-sub">
@@ -1122,7 +1184,7 @@
               <select id="injRunRateRMFilter" onchange="renderInjectionRunRate()" style="padding:6px 28px 6px 10px;border:1.5px solid var(--border);border-radius:7px;font-family:'Poppins',sans-serif;font-size:13px;background:var(--white) url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2214%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B6B6B%22 stroke-width=%222.5%22%3E%3Cpolyline points=%226 9 12 15 18 9%22%3E%3C/polyline%3E%3C/svg%3E') no-repeat right 8px center;appearance:none;cursor:pointer;min-height:36px;">
                 <option value="all">All RMs</option>
                 <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-                <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
+                <option>Lei Khim</option><option>Harris</option><option>Filzah</option><option>Colin</option><option>Others</option>
               </select>
             </div>
           </div>
@@ -1147,7 +1209,7 @@
                 <select id="injProgressRMFilter" onchange="renderInjectionProgress()" style="padding:6px 28px 6px 10px;border:1.5px solid var(--border);border-radius:7px;font-family:'Poppins',sans-serif;font-size:13px;background:var(--white) url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2214%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B6B6B%22 stroke-width=%222.5%22%3E%3Cpolyline points=%226 9 12 15 18 9%22%3E%3C/polyline%3E%3C/svg%3E') no-repeat right 8px center;appearance:none;cursor:pointer;min-height:36px;">
                   <option value="all">All RMs</option>
                   <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-                  <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
+                  <option>Lei Khim</option><option>Harris</option><option>Filzah</option><option>Colin</option><option>Others</option>
                 </select>
               </div>
             </div>
@@ -1155,7 +1217,29 @@
           <div id="injProgressContainer"><div class="loading-row">Loading...</div></div>
         </div>
         <div class="admin-sub">
-          <div class="admin-sub-title">Pipeline Summary &mdash; Clients by Stage</div>
+          <div class="admin-sub-title" style="display:flex;justify-content:space-between;align-items:center;">
+            <span>Pipeline Summary &mdash; Clients by Stage</span>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <label style="font-size:12px;font-weight:600;color:var(--navy);">Month:</label>
+                <select id="pipelineMonthFilter" onchange="renderPipelineCards()" style="padding:6px 28px 6px 10px;border:1.5px solid var(--border);border-radius:7px;font-family:'Poppins',sans-serif;font-size:13px;background:var(--white) url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2214%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B6B6B%22 stroke-width=%222.5%22%3E%3Cpolyline points=%226 9 12 15 18 9%22%3E%3C/polyline%3E%3C/svg%3E') no-repeat right 8px center;appearance:none;cursor:pointer;min-height:36px;">
+                  <option value="overall">Overall</option>
+                  <option>January</option><option>February</option><option>March</option>
+                  <option>April</option><option>May</option><option>June</option>
+                  <option>July</option><option>August</option><option>September</option>
+                  <option>October</option><option>November</option><option>December</option>
+                </select>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <label style="font-size:12px;font-weight:600;color:var(--navy);">RM:</label>
+                <select id="pipelineRMFilter" onchange="renderPipelineCards()" style="padding:6px 28px 6px 10px;border:1.5px solid var(--border);border-radius:7px;font-family:'Poppins',sans-serif;font-size:13px;background:var(--white) url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2214%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B6B6B%22 stroke-width=%222.5%22%3E%3Cpolyline points=%226 9 12 15 18 9%22%3E%3C/polyline%3E%3C/svg%3E') no-repeat right 8px center;appearance:none;cursor:pointer;min-height:36px;">
+                  <option value="all">All RMs</option>
+                  <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
+                  <option>Lei Khim</option><option>Harris</option><option>Filzah</option><option>Colin</option><option>Others</option>
+                </select>
+              </div>
+            </div>
+          </div>
           <div id="pipelineContainer"><div class="loading-row">Loading...</div></div>
         </div>
         <div class="admin-sub" id="cc-summary-section">
@@ -1168,12 +1252,6 @@
             </div>
           </div>
           <div id="cc-productivity-tables"><div class="loading-row">Loading CC data...</div></div>
-        </div>
-        <div class="admin-sub">
-          <div class="admin-sub-title">Conversion Summary &mdash; CC, CBD &amp; MSII Command Council
-            <button class="btn-export-pdf" onclick="exportConversionPDF(this)" style="margin-left:12px;background:var(--navy);border:none;color:var(--white);">Export PDF</button>
-          </div>
-          <div id="chairmanContainer"><div class="loading-row">Loading...</div></div>
         </div>
       </div>
       <div class="admin-subpanel" id="subpanel-overview">
@@ -1198,7 +1276,7 @@
             <select id="rmDrilldownSelect" onchange="renderRMDrilldown(this.value)">
               <option value="all">All RMs</option>
               <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-              <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
+              <option>Lei Khim</option><option>Harris</option><option>Filzah</option><option>Colin</option><option>Others</option>
             </select>
           </div>
           <div id="rmDrilldownContainer"><div class="loading-row">Loading...</div></div>
@@ -1208,12 +1286,93 @@
           <div id="upcomingDrilldownContainer"><div class="loading-row">Loading...</div></div>
         </div>
       </div>
-      <div class="admin-subpanel" id="subpanel-calendar">
+      <!-- CC PIPELINE SUBTAB -->
+      <div class="admin-subpanel" id="subpanel-cc-pipeline">
         <div class="admin-sub">
-          <div class="admin-sub-title">Monthly Calendar &mdash; Appointments Overview</div>
-          <div id="calendarContainer"><div class="loading-row">Loading...</div></div>
+          <div class="admin-sub-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <span>MSII CC Pipeline &mdash; Decision Tree</span>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <select id="ccPipeBatch" onchange="renderCCPipeline()" style="padding:5px 24px 5px 8px;border:1.5px solid var(--border);border-radius:7px;font-family:Poppins,sans-serif;font-size:12px;background:var(--white);appearance:none;min-height:32px;">
+                <option value="">All Batches</option>
+                <option value="1">Batch 1</option>
+                <option value="2">Batch 2</option>
+              </select>
+              <select id="ccPipeCCMD" onchange="renderCCPipeline()" style="padding:5px 24px 5px 8px;border:1.5px solid var(--border);border-radius:7px;font-family:Poppins,sans-serif;font-size:12px;background:var(--white);appearance:none;min-height:32px;">
+                <option value="">All CC MDs</option>
+              </select>
+              <select id="ccPipeRM" onchange="renderCCPipeline()" style="padding:5px 24px 5px 8px;border:1.5px solid var(--border);border-radius:7px;font-family:Poppins,sans-serif;font-size:12px;background:var(--white);appearance:none;min-height:32px;">
+                <option value="">All RMs</option>
+                <option>AZMI</option><option>ISKANDAR</option><option>NASYA</option>
+                <option>LEI KHIM</option><option>FILZAH</option>
+              </select>
+            </div>
+          </div>
+          <div id="ccPipelineTree" style="margin-bottom:24px;"></div>
+        </div>
+        <div class="admin-sub">
+          <div class="admin-sub-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <span>LMS Injection Detail</span>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <div style="display:flex;gap:3px;background:#F0F0F0;border-radius:8px;padding:3px;">
+                <button id="lmsPillAll2" onclick="setLmsCtype2('')" style="padding:4px 10px;border:none;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;background:var(--navy);color:#fff;">All</button>
+                <button id="lmsPillNew2" onclick="setLmsCtype2('NEW TO MAMG')" style="padding:4px 10px;border:none;border-radius:5px;font-size:12px;font-weight:500;cursor:pointer;background:transparent;color:var(--grey);">New to MAMG</button>
+                <button id="lmsPillExist2" onclick="setLmsCtype2('EXISTING CLIENT')" style="padding:4px 10px;border:none;border-radius:5px;font-size:12px;font-weight:500;cursor:pointer;background:transparent;color:var(--grey);">Existing Client</button>
+              </div>
+            </div>
+          </div>
+          <div class="admin-table-wrap"><table class="admin-table" id="lmsInjTable">
+            <thead><tr>
+              <th style="text-align:left;">Company</th>
+              <th style="text-align:left;">Client Type</th>
+              <th style="text-align:left;">Segment</th>
+              <th style="text-align:left;">RM</th>
+              <th>Status</th>
+              <th>Gross Sales (MYR)</th>
+              <th>Redemption (MYR)</th>
+              <th>Net Sales (MYR)</th>
+            </tr></thead>
+            <tbody id="lmsInjBody"></tbody>
+          </table></div>
         </div>
       </div>
+
+      <!-- CC INJECTION UPLOAD SUBTAB -->
+      <div class="admin-subpanel" id="subpanel-cc-injection">
+        <div class="admin-sub">
+          <div class="admin-sub-title">CC Injection Excel Upload</div>
+          <p style="font-size:13px;color:var(--grey);margin-bottom:16px;">
+            Upload your full <strong>ALL</strong> sheet Excel file. The system automatically identifies CC clients from the 281-lead master list and ignores non-CC rows — no separate MSII CC sheet needed.
+            <br><strong style="color:var(--navy);">Only amounts from Excel are authoritative — meeting logs do not override injection figures.</strong>
+          </p>
+          <div id="ccInjDropzone" ondragover="event.preventDefault();this.style.borderColor='var(--yellow)'" ondragleave="this.style.borderColor='var(--border)'" ondrop="handleCCInjDrop(event)"
+            style="border:2px dashed var(--border);border-radius:12px;padding:40px 24px;text-align:center;cursor:pointer;transition:border-color 0.2s;background:#FAFAFA;"
+            onclick="document.getElementById('ccInjFileInput').click()">
+            <div style="font-size:32px;margin-bottom:8px;">📂</div>
+            <div style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:4px;">Drop Excel file here or click to browse</div>
+            <div style="font-size:12px;color:var(--grey);">Accepts .xlsx files — MSII CC Injected format</div>
+          </div>
+          <input type="file" id="ccInjFileInput" accept=".xlsx,.xls" style="display:none;" onchange="handleCCInjFile(this.files[0])"/>
+          <div id="ccInjStatus" style="margin-top:16px;display:none;"></div>
+          <div id="ccInjPreview" style="margin-top:16px;display:none;">
+            <div class="admin-sub-title" style="margin-bottom:8px;">Preview — Changes to Apply</div>
+            <div class="admin-table-wrap"><table class="admin-table" id="ccInjPreviewTable">
+              <thead><tr>
+                <th style="text-align:left;">CC Group</th>
+                <th>Gross Sales (MYR)</th>
+                <th>Redemption (MYR)</th>
+                <th>Net Sales (MYR)</th>
+                <th>New Status</th>
+              </tr></thead>
+              <tbody id="ccInjPreviewBody"></tbody>
+            </table></div>
+            <div style="margin-top:16px;display:flex;gap:10px;">
+              <button onclick="applyCCInjection()" style="padding:12px 24px;background:var(--success);color:#fff;border:none;border-radius:8px;font-family:Poppins,sans-serif;font-size:14px;font-weight:700;cursor:pointer;">Apply to Dashboard</button>
+              <button onclick="document.getElementById('ccInjPreview').style.display='none';document.getElementById('ccInjStatus').style.display='none';" style="padding:12px 20px;background:var(--grey-lt);color:var(--grey);border:none;border-radius:8px;font-family:Poppins,sans-serif;font-size:14px;cursor:pointer;">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1230,7 +1389,7 @@
       <select id="ownerModalRM" style="width:100%;padding:11px 36px 11px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'Poppins',sans-serif;font-size:14px;color:var(--black);background:var(--white) url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E&quot;) no-repeat right 12px center;appearance:none;">
         <option value="">&#8212; Select RM &#8212;</option>
         <option>Azmi</option><option>Iskandar</option><option>Nasya</option>
-        <option>Lei Khim</option><option>Izzati</option><option>Filzah</option><option>Colin</option><option>Others</option>
+        <option>Lei Khim</option><option>Harris</option><option>Filzah</option><option>Colin</option><option>Others</option>
       </select>
     </div>
     <input type="hidden" id="ownerModalClientName" />
@@ -1300,7 +1459,7 @@ async function loadCCTrackerUpdates() {
 }
 
 function getCCLead(companyName) {
-  return CC_LEADS.find(d => d.company.toUpperCase() === (companyName||'').toUpperCase()) || null;
+  return MSIICC_LEADS.find(d => d.company.toUpperCase() === (companyName||'').toUpperCase()) || null;
 }
 
 function getCCStatus(companyName) {
@@ -1311,7 +1470,7 @@ function getCCStatus(companyName) {
   return null;
 }
 
-// Smarter status resolver — checks cc_tracker_updates → meeting_logs → CC_LEADS → default
+// Smarter status resolver — checks cc_tracker_updates → meeting_logs → MSIICC_LEADS → default
 function resolveCCStatus(c) {
   // Priority 1: manual override saved in cc_tracker_updates Supabase table
   const override = ccStatusMap[(c.name||'').toUpperCase()];
@@ -1322,24 +1481,24 @@ function resolveCCStatus(c) {
     const inj = c.latestLog.injected_amount;
     const rem = c.latestLog.remarks || '';
     const hasSub = !!(c.latestLog.subsidiary_company);
-    if (ls === 'Successful') {
-      return inj != null
-        ? { status: 'INJECTED', sales_amount: parseFloat(inj) * 1e6, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' }
-        : { status: 'TOP UP', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
-    }
-    if (['Pending Decision', 'Pending Board Approval'].includes(ls))
-      return { status: 'MET', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
-    if (['Pending Onboarding', 'Pending Injection'].includes(ls))
-      return { status: 'ACCEPTED', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
+    // Forward-only: Successful → PENDING ONBOARDING DOCS (INJECTED/TOP UP only from Excel upload)
+    if (ls === 'Successful' || ls === 'PENDING ONBOARDING DOCS')
+      return { status: 'PENDING ONBOARDING DOCS', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
+    if (['Pending Decision', 'PENDING DECISION'].includes(ls))
+      return { status: 'PENDING DECISION', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
+    if (['Pending Board Approval', 'Pending Onboarding', 'Pending Injection'].includes(ls))
+      return { status: 'PENDING ONBOARDING DOCS', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
     if (ls === 'Rejected')
       return { status: 'REJECTED', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
-    // If subsidiary was logged, at minimum count as MET even if status is Not Met
-    if (hasSub)
-      return { status: 'MET', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
+    // Any meeting logged → at minimum MET (direct meeting or subsidiary)
+    if (hasSub || ls === 'Not Met')
+      return null; // Don't auto-set if only "Not Met" or subsidiary without clear status
+    // Any meeting = at minimum MET
+    return { status: 'MET', sales_amount: null, remarks: rem, updated_at: c.latestLog.meeting_datetime, updated_by: c.latestLog.rm_name, source: 'log' };
     if (ls === 'Not Met')
       return { status: 'PENDING', sales_amount: null, remarks: rem, updated_at: null, updated_by: c.latestLog.rm_name, source: 'log' };
   }
-  // Priority 3: CC_LEADS Excel default
+  // Priority 3: MSIICC_LEADS Excel default
   const lead = getCCLead(c.name);
   if (lead) return { status: lead.status, sales_amount: lead.sales, remarks: lead.remarks, updated_at: null, updated_by: null, source: 'excel' };
   // No data — show PENDING for any MSII-flagged client
@@ -1359,9 +1518,9 @@ async function loadPotentialClients() {
       .select('client_name, segment, gb_cbd, msii_command_council, source').order('client_name');
     if (error) throw error;
     potentialClientsData = data || [];
-    // Supplement with CC_LEADS companies not already in the Supabase list
+    // Supplement with MSIICC_LEADS companies not already in the Supabase list
     const existingNames = new Set(potentialClientsData.map(c => c.client_name.toUpperCase()));
-    CC_LEADS.forEach(d => {
+    MSIICC_LEADS.forEach(d => {
       if (!existingNames.has(d.company.toUpperCase())) {
         potentialClientsData.push({client_name: d.company, segment: d.cc_team||'', gb_cbd: 'MSII CC', msii_command_council: true, cc_md: d.cc_md, cc_team: d.cc_team, cc_rm: d.rm, cc_batch: d.batch});
         existingNames.add(d.company.toUpperCase());
@@ -1384,9 +1543,32 @@ function filterCompanies() {
   document.getElementById('isNewCompany').value = 'false';
   unlockSegment();
   document.getElementById('msiiBadge').classList.remove('visible');
-  const filtered = q.length === 0 ? potentialClientsData.slice(0,50) : potentialClientsData.filter(c => c.client_name.toLowerCase().includes(q));
+  const rawFiltered = q.length === 0 ? potentialClientsData.slice(0,50) : potentialClientsData.filter(c => c.client_name.toLowerCase().includes(q));
+  // Redirect MSII subsidiaries to their parent company so RMs always select the parent
+  const seenParents = new Set();
+  const redirectItems = [];
+  const normalItems = [];
+  rawFiltered.forEach(c => {
+    const parentName = CC_PARENT_MAP[(c.client_name||'').toUpperCase()];
+    if (parentName) {
+      if (!seenParents.has(parentName.toUpperCase())) {
+        seenParents.add(parentName.toUpperCase());
+        redirectItems.push({ parentName, subsidiaryName: c.client_name });
+      }
+    } else {
+      normalItems.push(c);
+    }
+  });
+  // Remove parent entries already covered by a subsidiary redirect (avoids duplicates)
+  const finalItems = normalItems.filter(c => !seenParents.has((c.client_name||'').toUpperCase()));
   let html = '';
-  filtered.forEach(c => {
+  redirectItems.forEach(({ parentName, subsidiaryName }) => {
+    html += `<div class="dropdown-item" onmousedown="selectClientViaSubsidiary('${esc(parentName)}','${esc(subsidiaryName)}')">
+      <span style="flex:1;">${parentName} <span style="font-size:10px;color:var(--grey);">via ${highlight(subsidiaryName,q)}</span></span>
+      <span class="badge-existing" style="background:#EEF2FF;color:var(--navy);">MSII CC</span>
+    </div>`;
+  });
+  finalItems.forEach(c => {
     const badge = c.gb_cbd === 'GB' ? `<span class="badge-new">GB</span>` : c.gb_cbd === 'MSII' ? `<span class="badge-existing" style="background:#EEF2FF;color:var(--navy);">MSII B2</span>` : `<span class="badge-existing">CBD</span>`;
     const seg = c.segment ? `<span style="font-size:10px;color:var(--grey);">${c.segment}</span>` : '';
     html += `<div class="dropdown-item" onmousedown="selectClient('${esc(c.client_name)}','${esc(c.segment||'')}',${c.msii_command_council?'true':'false'})">
@@ -1444,6 +1626,17 @@ function selectClient(name, segment, msii) {
     document.getElementById('segmentAutoFill').classList.add('visible');
     clearError('segment');
   }
+}
+function selectClientViaSubsidiary(parentName, subsidiaryTyped) {
+  // Selects the parent MSII CC company and auto-fills the subsidiary field
+  const parentEntry = potentialClientsData.find(c => (c.client_name||'').toUpperCase() === parentName.toUpperCase());
+  selectClient(parentName, parentEntry?.segment || '', true);
+  const subCheck = document.getElementById('subsidiaryCheck');
+  const subInput = document.getElementById('subsidiaryName');
+  const subWrap  = document.getElementById('subsidiaryInputWrap');
+  if (subCheck) subCheck.checked = true;
+  if (subWrap)  subWrap.style.display = 'block';
+  if (subInput) subInput.value = subsidiaryTyped;
 }
 function unlockSegment() {
   const sel = document.getElementById('segmentSelect');
@@ -1541,6 +1734,7 @@ async function submitForm() {
     referral: document.getElementById('referralSelect').value,
     product_fund: document.getElementById('productSelect').value,
     status: document.getElementById('statusSelect').value,
+    status2: document.getElementById('status2Select').value || null,
     meeting_type: document.getElementById('meetingTypeSelect').value,
     client_interest: document.getElementById('interestSelect').value,
     potential_size_rm_mn: parseFloat(document.getElementById('potentialSize').value),
@@ -1576,7 +1770,7 @@ function setLoading(s) {
   document.getElementById('submitSpinner').style.display = s ? 'block' : 'none';
 }
 function resetForm() {
-  ['rmName','meetingDatetime','clientTypeSelect','segmentSelect','referralSelect','productSelect','statusSelect','meetingTypeSelect','interestSelect','potentialSize','injMonthSelect','remarks'].forEach(id => {
+  ['rmName','meetingDatetime','clientTypeSelect','segmentSelect','referralSelect','productSelect','statusSelect','status2Select','meetingTypeSelect','interestSelect','potentialSize','injMonthSelect','remarks'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
   document.getElementById('companySearch').value = '';
@@ -1647,9 +1841,6 @@ function switchAdminSubtab(name) {
   document.querySelectorAll('.admin-subpanel').forEach(p => p.classList.remove('active'));
   document.getElementById('asubtab-'+name).classList.add('active');
   document.getElementById('subpanel-'+name).classList.add('active');
-  if (name === 'calendar' && (adminAllLogs.length > 0 || upcomingMeetingsData.length > 0)) {
-    renderAdminCalendar(calCurrentYear, calCurrentMonth);
-  }
 }
 
 // ─── CLIENT STATUS ───────────────────────────────────────────────
@@ -1658,44 +1849,93 @@ async function loadClientStatuses() {
   const tbody = document.getElementById('clTableBody');
   tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><div class="empty-icon"></div><p>Loading...</p></div></td></tr>';
   if (demoMode || !_sb) {
-    const statuses = ['Pending Decision','Pending Board Approval','Pending Onboarding','Pending Injection','Successful','Rejected','Not Met'];
-    clientStatusData = potentialClientsData.map((c,i) => ({
+    const statuses = ['Pending Decision','PENDING ONBOARDING DOCS','Successful','Rejected','Not Met'];
+    clientStatusData = potentialClientsData.filter(c => !c.msii_command_council).map((c,i) => ({
       id:'demo-'+i, name:c.client_name, gb_cbd:c.gb_cbd, segment:c.segment,
-      msii_command_council:c.msii_command_council||false,
-      latestLog: i<20 ? {rm_name:['Azmi','Iskandar','Nasya','Lei Khim','Izzati','Filzah','Colin'][i%7], product_fund:['LMS','Private Mandate','Unit Trust','Sukuk'][i%4], potential_size_rm_mn:(Math.random()*200).toFixed(1), status:statuses[i%statuses.length], meeting_datetime:new Date(Date.now()-i*86400000*3).toISOString(), injected_amount:null, remarks:'Demo remarks for client '+i} : null,
-      allRMs: i<20 ? [['Azmi','Iskandar','Nasya','Lei Khim','Izzati','Filzah','Colin'][i%7]] : [],
+      msii_command_council:false,
+      latestLog: i<15 ? {rm_name:['Azmi','Iskandar','Nasya','Lei Khim','Harris','Filzah','Colin'][i%7], product_fund:['LMS','Private Mandate','Unit Trust','Sukuk'][i%4], potential_size_rm_mn:(Math.random()*200).toFixed(1), status:statuses[i%statuses.length], meeting_datetime:new Date(Date.now()-i*86400000*3).toISOString(), injected_amount:null, remarks:'Demo remarks for client '+i} : null,
+      allRMs: i<15 ? [['Azmi','Iskandar','Nasya','Lei Khim','Harris','Filzah','Colin'][i%7]] : [],
     }));
+    MSIICC_LEADS.forEach((d,i) => {
+      clientStatusData.push({id:null, name:d.company, gb_cbd:'', segment:d.segment||'', msii_command_council:true, latestLog:null, allRMs:[d.rm].filter(Boolean), ccLead:d});
+    });
     await loadCCTrackerUpdates();
     updateClientStats(); renderClientTable(); return;
   }
   try {
-    const {data:clients, error:cErr} = await _sb.from('potential_clients').select('id, client_name, gb_cbd, segment, msii_command_council').order('client_name');
+    // Load ONLY non-CC clients from potential_clients
+    const {data:clients, error:cErr} = await _sb.from('potential_clients')
+      .select('id, client_name, gb_cbd, segment, msii_command_council')
+      .not('msii_command_council', 'is', true)
+      .order('client_name');
     if (cErr) throw cErr;
-    const {data:logs, error:lErr} = await _sb.from('meeting_logs').select('id, client_name_manual, rm_name, meeting_type, product_fund, potential_size_rm_mn, client_type, potential_injection_month, status, meeting_datetime, updated_at, injected_amount, injection_date, injection_remarks, remarks').not('no_meeting_today', 'is', true).order('meeting_datetime', {ascending:false});
+    const {data:logs, error:lErr} = await _sb.from('meeting_logs')
+      .select('id, client_name_manual, rm_name, meeting_type, product_fund, potential_size_rm_mn, client_type, potential_injection_month, status, status2, meeting_datetime, updated_at, injected_amount, injection_date, injection_remarks, remarks, msii_command_council')
+      .not('no_meeting_today', 'is', true)
+      .order('meeting_datetime', {ascending:false});
     if (lErr) throw lErr;
+
+    // Build log lookup maps (by company name key)
     const logMap = {};
     const allRMsMap = {};
     logs.forEach(log => {
-      const key=(log.client_name_manual||'').toUpperCase();
+      const key = (log.client_name_manual||'').toUpperCase().trim();
       if (!key) return;
-      if (!logMap[key]) logMap[key]=log;
-      if (!allRMsMap[key]) allRMsMap[key]=new Set();
+      if (!logMap[key]) logMap[key] = log;
+      if (!allRMsMap[key]) allRMsMap[key] = new Set();
       if (log.rm_name) allRMsMap[key].add(log.rm_name);
     });
-    // Build clientStatusData from potential_clients, deduplicating by name (handles duplicate rows in DB)
+
+    // Precompute reverse CC_PARENT_MAP: parent → [subsidiary keys]
+    const reverseParentMap = {};
+    Object.entries(CC_PARENT_MAP).forEach(([sub, parent]) => {
+      const pk = parent.toUpperCase();
+      if (!reverseParentMap[pk]) reverseParentMap[pk] = [];
+      reverseParentMap[pk].push(sub.toUpperCase());
+    });
+
     const knownNames = new Set();
     clientStatusData = [];
+
+    // Step 1: Add non-CC clients from potential_clients
     clients.forEach(c => {
       const key = (c.client_name||'').toUpperCase().trim();
       if (!key || knownNames.has(key)) return;
       knownNames.add(key);
-      clientStatusData.push({id:c.id, name:c.client_name, gb_cbd:c.gb_cbd, segment:c.segment, msii_command_council:c.msii_command_council, latestLog:logMap[key]||null, allRMs:[...(allRMsMap[key]||[])]});
+      clientStatusData.push({id:c.id, name:c.client_name, gb_cbd:c.gb_cbd, segment:c.segment, msii_command_council:false, latestLog:logMap[key]||null, allRMs:[...(allRMsMap[key]||[])]});
     });
-    // Add any clients from meeting_logs not already in potential_clients
+
+    // Step 2: Add CC group entries from MSIICC_LEADS — each is one row
+    MSIICC_LEADS.forEach(d => {
+      const parentKey = (d.company||'').toUpperCase().trim();
+      if (knownNames.has(parentKey)) return;
+      knownNames.add(parentKey);
+
+      // Find best log: direct match + all subsidiary matches via CC_PARENT_MAP + CC_SUBSIDIARY_MAP
+      const subKeys = [...(reverseParentMap[parentKey]||[])];
+      const knownSubKey = CC_SUBSIDIARY_MAP[parentKey] ? CC_SUBSIDIARY_MAP[parentKey].toUpperCase() : null;
+      if (knownSubKey && !subKeys.includes(knownSubKey)) subKeys.push(knownSubKey);
+
+      const allSubLogs = [logMap[parentKey], ...subKeys.map(k => logMap[k])].filter(Boolean);
+      allSubLogs.sort((a,b) => new Date(b.meeting_datetime)-new Date(a.meeting_datetime));
+      const bestLog = allSubLogs[0]||null;
+
+      // Collect all RMs from parent + subsidiaries
+      const rmSet = new Set([parentKey, ...subKeys].flatMap(k => [...(allRMsMap[k]||[])]));
+      if (d.rm) rmSet.add(d.rm);
+
+      clientStatusData.push({id:null, name:d.company, gb_cbd:'', segment:d.segment||'', msii_command_council:true, latestLog:bestLog, allRMs:[...rmSet], ccLead:d});
+    });
+
+    // Step 3: Add orphan meeting_log clients — skip if mapped to a CC parent
     logs.forEach(log => {
-      const key=(log.client_name_manual||'').toUpperCase().trim();
-      if (key && !knownNames.has(key)) { knownNames.add(key); clientStatusData.push({id:null, name:log.client_name_manual, gb_cbd:'', segment:'', msii_command_council:false, latestLog:log, allRMs:[...(allRMsMap[key]||[])]}); }
+      const key = (log.client_name_manual||'').toUpperCase().trim();
+      if (!key || knownNames.has(key)) return;
+      if (CC_PARENT_MAP[key]) return; // subsidiary of a CC group — absorbed above
+      knownNames.add(key);
+      clientStatusData.push({id:null, name:log.client_name_manual, gb_cbd:'', segment:'', msii_command_council:false, latestLog:log, allRMs:[...(allRMsMap[key]||[])]});
     });
+
     await Promise.all([loadCCTrackerUpdates(), loadInjections()]);
     updateClientStats(); renderClientTable();
     document.getElementById('tabClientCount').textContent = clientStatusData.length;
@@ -1705,8 +1945,14 @@ async function loadClientStatuses() {
 }
 function updateClientStats() {
   const total = clientStatusData.length;
-  const injected = clientStatusData.filter(c => c.latestLog && c.latestLog.status==='Successful' && c.latestLog.injected_amount!=null).length;
-  const pending = clientStatusData.filter(c => c.latestLog && ['Pending Decision','Pending Board Approval','Pending Onboarding','Pending Injection'].includes(c.latestLog.status)).length;
+  const injected = clientStatusData.filter(c => {
+    if (c.msii_command_council) { const s=resolveCCStatus(c)?.status; return s==='INJECTED'||s==='TOP UP'; }
+    return c.latestLog && c.latestLog.status==='Successful' && c.latestLog.injected_amount!=null;
+  }).length;
+  const pending = clientStatusData.filter(c => {
+    if (c.msii_command_council) { const s=resolveCCStatus(c)?.status; return ['PENDING ONBOARDING DOCS','PENDING DECISION','PENDING'].includes(s); }
+    return c.latestLog && ['Pending Decision','PENDING DECISION','PENDING ONBOARDING DOCS','Pending Board Approval','Pending Onboarding','Pending Injection'].includes(c.latestLog.status);
+  }).length;
   const msii = clientStatusData.filter(c => c.msii_command_council===true).length;
   document.getElementById('statTotal').textContent = total;
   document.getElementById('statInjected').textContent = injected;
@@ -1722,58 +1968,38 @@ function renderClientTable() {
   const tbody = document.getElementById('clTableBody');
 
   let rows;
-  if (fMSII === 'msii') {
-    // ── MSII CC mode: use CC_LEADS 282 as canonical, look up live Supabase data per entry
-    const clientByName = {};
-    clientStatusData.forEach(c => { clientByName[(c.name||'').toUpperCase().trim()] = c; });
+  // Both CC and non-CC are in clientStatusData — filter and sort unified
+  rows = clientStatusData.filter(c => {
+    const matchQ = !q || c.name.toLowerCase().includes(q) ||
+      (c.ccLead && (c.ccLead.cc_md||'').toLowerCase().includes(q));
+    const matchRM = !fRM || c.allRMs.some(r => r===fRM) || (c.ccLead?.rm?.toUpperCase()===fRM.toUpperCase());
+    const matchMSII = fMSII===''
+      ? true
+      : fMSII==='msii' ? c.msii_command_council===true
+      : fMSII==='non-msii' ? c.msii_command_council!==true
+      : true;
+    // Status filter: for CC use resolveCCStatus, for non-CC use latestLog
+    const st = c.msii_command_council
+      ? (resolveCCStatus(c)?.status||'PENDING')
+      : (c.latestLog ? c.latestLog.status : 'Not Met');
+    const matchS = !fStatus || st===fStatus;
+    return matchQ && matchRM && matchMSII && matchS;
+  });
 
-    rows = CC_LEADS.map(d => {
-      const parentKey = d.company.toUpperCase().trim();
-      const directMatch = clientByName[parentKey];
-      const subMatches = clientStatusData.filter(c =>
-        (CC_PARENT_MAP[(c.name||'').toUpperCase().trim()] || '').toUpperCase() === parentKey
-      );
-      const knownSubName = CC_SUBSIDIARY_MAP[parentKey];
-      const knownSubMatch = knownSubName ? clientByName[knownSubName.toUpperCase().trim()] : null;
-      const allLogs = [directMatch?.latestLog, ...subMatches.map(c => c.latestLog), knownSubMatch?.latestLog].filter(Boolean);
-      const bestLog = [...allLogs].sort((a, b) => new Date(b.meeting_datetime) - new Date(a.meeting_datetime))[0] || null;
-      const allRMs = [...new Set(allLogs.map(l => l.rm_name).filter(Boolean))];
-      const subNamesSet = new Set();
-      subMatches.forEach(c => { if (c.name.toUpperCase().trim() !== parentKey) subNamesSet.add(c.name); });
-      if (knownSubMatch && knownSubMatch.name.toUpperCase().trim() !== parentKey) subNamesSet.add(knownSubMatch.name);
-      if (bestLog?.subsidiary_company) subNamesSet.add(bestLog.subsidiary_company);
-      return { id: directMatch?.id||null, name: d.company, msii_command_council: true, latestLog: bestLog, allRMs, ccLead: d, subNames: [...subNamesSet] };
-    });
-
-    rows = rows.filter(c => {
-      const matchQ = !q || c.name.toLowerCase().includes(q) || c.subNames.some(s => s.toLowerCase().includes(q));
-      const matchRM = !fRM || c.allRMs.some(r => r === fRM) || (c.ccLead?.rm?.toUpperCase() === fRM.toUpperCase());
-      return matchQ && matchRM;
-    });
-    const ccPriority = {'INJECTED':0,'TOP UP':0,'MET SUBSIDIARY':1,'MET':1,'ACCEPTED':2,'EXISTING CLIENT':2,'PENDING':3,'REJECTED':4};
-    rows.sort((a,b) => {
-      const as = resolveCCStatus(a)?.status||'PENDING', bs = resolveCCStatus(b)?.status||'PENDING';
-      const ap = ccPriority[as]??5, bp = ccPriority[bs]??5;
+  // Sort: CC leads first (within CC: by CC priority), then non-CC by meeting status
+  const ccPriority = {'INJECTED':0,'TOP UP':0,'PENDING ONBOARDING DOCS':1,'PENDING DECISION':2,'MET':3,'MET SUBSIDIARY':3,'ACCEPTED':4,'EXISTING CLIENT':4,'PENDING':5,'REJECTED':6,'MAMG DROP LEAD':7};
+  const logPriority = {'Successful':0,'Pending Decision':1,'PENDING DECISION':1,'PENDING ONBOARDING DOCS':1,'Pending Board Approval':1,'Pending Onboarding':1,'Pending Injection':1,'Rejected':2,'Not Met':3};
+  rows.sort((a,b) => {
+    if (a.msii_command_council && !b.msii_command_council) return -1;
+    if (!a.msii_command_council && b.msii_command_council) return 1;
+    if (a.msii_command_council && b.msii_command_council) {
+      const as=resolveCCStatus(a)?.status||'PENDING', bs=resolveCCStatus(b)?.status||'PENDING';
+      const ap=ccPriority[as]??8, bp=ccPriority[bs]??8;
       return ap!==bp ? ap-bp : a.name.localeCompare(b.name);
-    });
-  } else {
-    // ── Normal mode: filter from clientStatusData
-    rows = clientStatusData.filter(c => {
-      const matchQ = !q || c.name.toLowerCase().includes(q);
-      const st = c.latestLog ? c.latestLog.status : 'Not Met';
-      const matchS = !fStatus || st===fStatus;
-      const matchRM = !fRM || (c.latestLog?.rm_name === fRM) || (getCCLead(c.name)?.rm?.toUpperCase() === fRM.toUpperCase());
-      const matchMSII = !fMSII || c.msii_command_council!==true;
-      return matchQ && matchS && matchRM && matchMSII;
-    });
-    const priority = {'Successful':0,'Pending Decision':1,'Pending Board Approval':1,'Pending Onboarding':1,'Pending Injection':1,'Rejected':2,'Not Met':3};
-    rows.sort((a,b) => {
-      if (a.msii_command_council && !b.msii_command_council) return -1;
-      if (!a.msii_command_council && b.msii_command_council) return 1;
-      const ap=priority[a.latestLog?.status||'Not Met']??7; const bp=priority[b.latestLog?.status||'Not Met']??7;
-      return ap!==bp?ap-bp:a.name.localeCompare(b.name);
-    });
-  }
+    }
+    const ap=logPriority[a.latestLog?.status||'Not Met']??7; const bp=logPriority[b.latestLog?.status||'Not Met']??7;
+    return ap!==bp ? ap-bp : a.name.localeCompare(b.name);
+  });
   if (!rows.length) { tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><div class="empty-icon"></div><p>No clients match your filters.</p></div></td></tr>'; return; }
   tbody.innerHTML = rows.map((c,i) => {
     const log = c.latestLog;
@@ -1785,29 +2011,43 @@ function renderClientTable() {
     const injFromHistory = injHistory.reduce((sum,r) => sum+r.amount, 0);
     const injFromLog = (isInj && log?.injected_amount) ? parseFloat(log.injected_amount) : 0;
     const injTotal = injFromLog + injFromHistory; // first injection + all top-ups
-    const statusBadge = getStatusBadge(status, injTotal || log?.injected_amount);
     const injCount = injHistory.length;
     const hasAnyInj = isInj || injCount > 0;
     const injAmt = hasAnyInj
       ? `<br><small style="color:var(--success);font-weight:600;">Injected: RM ${injTotal.toFixed(1)} Mn${injCount > 0 ? ` (+${injCount} top-up${injCount>1?'s':''})` : ''}</small>`
       : '';
-    const potential = log?.potential_size_rm_mn!=null ? `RM ${parseFloat(log.potential_size_rm_mn).toFixed(1)} Mn` : '&#8212;';
+    const potentialMonth = log?.potential_injection_month ? `<br><span style="font-size:10px;color:var(--grey);">Expected: ${log.potential_injection_month}</span>` : '';
+    const potential = log?.potential_size_rm_mn!=null ? `RM ${parseFloat(log.potential_size_rm_mn).toFixed(1)} Mn${potentialMonth}` : '&#8212;';
     const lead = getCCLead(c.name);
     const subName = c.latestLog?.subsidiary_company || CC_SUBSIDIARY_MAP[(c.name||'').toUpperCase()] || null;
     const ccSubNames = c.subNames && c.subNames.length ? c.subNames : (subName ? [subName] : []);
     const displayName = ccSubNames.length
       ? `${c.name} <span style="color:var(--grey);font-size:11px;font-weight:400;">(${ccSubNames.join(' · ')})</span>`
       : c.name;
-    const ccData = c.msii_command_council ? resolveCCStatus(c) : null;
-    const CC_STATUS_PILL_MAP = {'PENDING':'s-pending','ACCEPTED':'s-decision','MET':'s-onboarding','MET SUBSIDIARY':'s-onboarding','EXISTING CLIENT':'s-topup','INJECTED':'s-injected','TOP UP':'s-topup','REJECTED':'s-rejected'};
-    const ccStatusPill = ccData ? `<br><span class="status-pill ${CC_STATUS_PILL_MAP[ccData.status]||'s-default'}" style="font-size:10px;margin-top:3px;">${ccData.status}</span>` : '';
+    // ONE status per row — CC entries show CC status, non-CC show log status
+    const CC_STATUS_PILL_MAP = {'PENDING':'s-pending','ACCEPTED':'s-decision','MET':'s-onboarding','PENDING DECISION':'s-decision','PENDING ONBOARDING DOCS':'s-onboarding','MET SUBSIDIARY':'s-onboarding','EXISTING CLIENT':'s-topup','INJECTED':'s-injected','TOP UP':'s-topup','REJECTED':'s-rejected','MAMG DROP LEAD':'s-rejected'};
+    let displayStatusHtml;
+    if (c.msii_command_council) {
+      const ccData = resolveCCStatus(c);
+      const ccSt = ccData?.status || 'PENDING';
+      displayStatusHtml = `<span class="status-pill ${CC_STATUS_PILL_MAP[ccSt]||'s-default'}">${ccSt}</span>`;
+    } else {
+      const logSt = log ? log.status : 'Not Met';
+      displayStatusHtml = getStatusBadge(logSt, null);
+    }
+    const S2_PILL_MAP = {'PENDING':'s-pending','ACCEPTED':'s-decision','MET':'s-onboarding','PENDING DECISION':'s-decision','PENDING ONBOARDING DOCS':'s-onboarding','MET SUBSIDIARY':'s-onboarding','EXISTING CLIENT':'s-topup','INJECTED':'s-injected','TOP UP':'s-topup','REJECTED':'s-rejected','MAMG DROP LEAD':'s-rejected','REVISIT':'s-pending','MAMG MET DROP':'s-rejected'};
+    const status2Val = !c.msii_command_council ? log?.status2 : null;
+    const status2Pill = status2Val ? `<br><span class="status-pill ${S2_PILL_MAP[status2Val]||'s-default'}" style="font-size:10px;margin-top:3px;opacity:0.85;" title="Status 2">${status2Val}</span>` : '';
     const subRemark = subName ? `<span style="font-size:10px;color:var(--navy);font-weight:600;">Via subsidiary: ${subName}</span><br>` : '';
     const remarksText = log?.remarks ? (log.remarks.length > 100 ? log.remarks.substring(0,100)+'…' : log.remarks) : '';
     const hasInjHistory = injHistory.length > 0;
+    const pipelineLabel = hasAnyInj ? 'Top-up Pipeline' : 'Pipeline';
+    const pipelineBtn = log ? `<button class="btn-edit-row" style="font-size:11px;background:#f0f4ff;color:#3b5bdb;border-color:#c5d0e6;" onclick="openPipelineModal('${log.id||''}','${escQ(c.name)}',${hasAnyInj})">&#128202; ${pipelineLabel}</button>` : '';
     const actionCell = `<div class="action-cell">
       ${isInj || hasInjHistory
         ? `<button class="btn-edit-row" style="font-size:11px;background:var(--success);color:#fff;border-color:var(--success);" onclick="openInjectionHistoryDrawer('${escQ(log?.client_name_manual || c.name)}')">+ Add Injection</button>`
         : `<button class="btn-edit-row" onclick="openInjectionModal('${c.id||''}','${escQ(c.name)}','${escQ(log?.rm_name||'')}')">Mark Injected</button>`}
+      ${pipelineBtn}
       <button class="btn-edit-row btn-icon" onclick="openEditModal('${c.id||''}','${escQ(c.name)}')" title="Edit log">&#x270F;</button>
     </div>`;
     return `<tr class="${isInj?'injected-row':''}" id="cl-row-${i}">
@@ -1825,7 +2065,7 @@ function renderClientTable() {
       </td>
       <td class="cl-col-product td-bold">${log?.product_fund||'&#8212;'}</td>
       <td class="cl-col-potential">${potential}</td>
-      <td>${statusBadge}${injAmt}${ccStatusPill}</td>
+      <td>${displayStatusHtml}${injAmt}${status2Pill}</td>
       <td style="max-width:200px;font-size:11px;color:var(--grey);text-align:left;white-space:normal;line-height:1.4;">${subRemark}${remarksText||'&#8212;'}</td>
       <td>${actionCell}</td>
     </tr>
@@ -1933,13 +2173,13 @@ async function toggleContactDrawer(clientName, i) {
 function escQ(s) { return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
 function esc(s) { return (s||'').replace(/'/g,"\\'"); }
 function getStatusBadge(status, injAmt) {
-  const map = {'Successful':'s-successful','Pending Decision':'s-decision','Pending Board Approval':'s-board','Pending Onboarding':'s-onboarding','Pending Injection':'s-pending','Rejected':'s-rejected','Not Met':'s-default'};
+  const map = {'Successful':'s-successful','Pending Decision':'s-decision','PENDING DECISION':'s-decision','PENDING ONBOARDING DOCS':'s-onboarding','Pending Board Approval':'s-onboarding','Pending Onboarding':'s-onboarding','Pending Injection':'s-onboarding','Rejected':'s-rejected','Not Met':'s-default'};
   const cls = map[status]||'s-default';
   const lbl = (status==='Successful'&&injAmt!=null) ? 'Successful (Injected)' : status;
   return `<span class="status-pill ${cls}">${lbl}</span>`;
 }
 function getStatusBadgeCls(status) {
-  const map = {'Successful':'s-successful','Pending Decision':'s-decision','Pending Board Approval':'s-board','Pending Onboarding':'s-onboarding','Pending Injection':'s-pending','Rejected':'s-rejected','Not Met':'s-default'};
+  const map = {'Successful':'s-successful','Pending Decision':'s-decision','PENDING DECISION':'s-decision','PENDING ONBOARDING DOCS':'s-onboarding','Pending Board Approval':'s-onboarding','Pending Onboarding':'s-onboarding','Pending Injection':'s-onboarding','Rejected':'s-rejected','Not Met':'s-default'};
   return map[status]||'s-default';
 }
 function toggleEditInjectedFields() {
@@ -1959,6 +2199,7 @@ function openEditModal(clientId, clientName) {
   document.getElementById('editLogClientType').value = log?.client_type || '';
   document.getElementById('editLogInjMonth').value = log?.potential_injection_month || '';
   document.getElementById('editLogStatus').value = log?.status || 'Not Met';
+  document.getElementById('editLogStatus2').value = log?.status2 || '';
   document.getElementById('editLogInjAmount').value = log?.injected_amount != null ? log.injected_amount : '';
   document.getElementById('editLogInjDate').value = log?.injection_date || '';
   document.getElementById('editLogInjRemarks').value = log?.injection_remarks || '';
@@ -1976,6 +2217,7 @@ async function confirmEditLog() {
   const clientType  = document.getElementById('editLogClientType').value;
   const injMonth    = document.getElementById('editLogInjMonth').value;
   const status      = document.getElementById('editLogStatus').value;
+  const status2     = document.getElementById('editLogStatus2').value || null;
   const injAmount   = document.getElementById('editLogInjAmount').value;
   const injDate     = document.getElementById('editLogInjDate').value;
   const injRemarks  = document.getElementById('editLogInjRemarks').value.trim();
@@ -1998,7 +2240,7 @@ async function confirmEditLog() {
       }
       if (logId) {
         const upd = {rm_name: rm, meeting_type: meetingType, product_fund: product || null,
-          potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status,
+          potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status, status2,
           client_type: clientType || null,
           potential_injection_month: injMonth || null,
           remarks: remarks || null,
@@ -2011,7 +2253,7 @@ async function confirmEditLog() {
       }
     }
     const updFields = {rm_name: rm, meeting_type: meetingType, product_fund: product || null,
-      potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status,
+      potential_size_rm_mn: potential !== '' ? parseFloat(potential) : null, status, status2,
       client_type: clientType || null,
       potential_injection_month: injMonth || null,
       remarks: remarks || null,
@@ -2053,6 +2295,74 @@ function openInjectionModal(clientId, clientName) {
   document.getElementById('injectionModal').classList.remove('hidden');
 }
 function closeInjectionModal() { document.getElementById('injectionModal').classList.add('hidden'); }
+
+function openPipelineModal(logId, clientName, isTopUp) {
+  const c = clientStatusData.find(cl => cl.name === clientName);
+  const log = c?.latestLog;
+  const title = isTopUp ? 'Record Potential Top-up' : 'Record Pipeline Injection';
+  const amtLabel = isTopUp ? 'Potential Top-up Amount (RM Mn)' : 'Potential Injection Amount (RM Mn)';
+  document.getElementById('pipelineModalTitle').textContent = title;
+  document.getElementById('pipelineAmtLabel').textContent = amtLabel;
+  document.getElementById('pipelineCompanyTag').textContent = clientName;
+  document.getElementById('pipelineLogId').value = logId || '';
+  document.getElementById('pipelineClientName').value = clientName;
+  document.getElementById('pipelineAmt').value = log?.potential_size_rm_mn != null ? log.potential_size_rm_mn : '';
+  document.getElementById('pipelineMonth').value = log?.potential_injection_month || '';
+  document.getElementById('pipelineNotes').value = '';
+  document.getElementById('pipelineBtnText').textContent = 'Save';
+  document.getElementById('pipelineSpinner').style.display = 'none';
+  document.getElementById('pipelineModal').classList.remove('hidden');
+}
+
+async function savePipelineAmount() {
+  const logId = document.getElementById('pipelineLogId').value;
+  const clientName = document.getElementById('pipelineClientName').value;
+  const amt = parseFloat(document.getElementById('pipelineAmt').value);
+  const month = document.getElementById('pipelineMonth').value;
+  if (!logId) { showToast('No meeting log found. Log a meeting first.', 'error'); return; }
+  if (isNaN(amt) || amt < 0) { showToast('Please enter a valid amount.', 'error'); return; }
+  document.getElementById('pipelineBtnText').textContent = 'Saving…';
+  document.getElementById('pipelineSpinner').style.display = 'inline-block';
+  if (demoMode || !_sb) {
+    const c = clientStatusData.find(cl => cl.name === clientName);
+    if (c?.latestLog) { c.latestLog.potential_size_rm_mn = amt; c.latestLog.potential_injection_month = month || null; }
+    document.getElementById('pipelineModal').classList.add('hidden');
+    renderClientTable();
+    showToast('Pipeline amount saved (demo).', 'info'); return;
+  }
+  try {
+    const {error} = await _sb.from('meeting_logs')
+      .update({potential_size_rm_mn: amt, potential_injection_month: month || null})
+      .eq('id', parseInt(logId));
+    if (error) throw error;
+    // Sync clientStatusData in-memory
+    const c = clientStatusData.find(cl => cl.name === clientName);
+    if (c?.latestLog) { c.latestLog.potential_size_rm_mn = amt; c.latestLog.potential_injection_month = month || null; }
+    // Sync adminAllLogs + adminLatestPerClient so Admin pipeline reflects change immediately
+    const numId = parseInt(logId);
+    const adminLog = adminAllLogs.find(l => l.id === numId);
+    if (adminLog) { adminLog.potential_size_rm_mn = amt; adminLog.potential_injection_month = month || null; }
+    const adminKey = (clientName||'').toUpperCase().trim();
+    if (adminLatestPerClient[adminKey]?.id === numId) {
+      adminLatestPerClient[adminKey].potential_size_rm_mn = amt;
+      adminLatestPerClient[adminKey].potential_injection_month = month || null;
+    }
+    // Re-render admin pipeline sections if admin tab is open
+    if (document.getElementById('subpanel-pipeline')?.classList.contains('active') ||
+        document.querySelector('.admin-tab')?.style.display !== 'none') {
+      renderPipelineCards?.();
+      renderInjectionProgress?.();
+      renderRMOverviewTable?.();
+    }
+    document.getElementById('pipelineModal').classList.add('hidden');
+    renderClientTable();
+    showToast(`Pipeline saved for ${clientName}.`, 'success');
+  } catch(err) {
+    showToast('Error: ' + err.message, 'error');
+    document.getElementById('pipelineBtnText').textContent = 'Save';
+    document.getElementById('pipelineSpinner').style.display = 'none';
+  }
+}
 
 function openInjectionHistoryDrawer(clientName) {
   document.getElementById('injHistCompanyTag').textContent = clientName;
@@ -2251,7 +2561,7 @@ async function loadAdminDashboard() {
   try {
     const [{data:logs, error}, {data:upcoming, error:upErr}] = await Promise.all([
       _sb.from('meeting_logs')
-        .select('id, rm_name, client_name_manual, msii_command_council, segment, referral, product_fund, status, potential_size_rm_mn, meeting_datetime, injected_amount, injection_date, meeting_type, no_meeting_today, updated_at, client_type, potential_injection_month, remarks')
+        .select('id, rm_name, client_name_manual, msii_command_council, segment, referral, product_fund, status, status2, potential_size_rm_mn, meeting_datetime, injected_amount, injection_date, meeting_type, no_meeting_today, updated_at, client_type, potential_injection_month, remarks')
         .not('no_meeting_today', 'is', true)
         .order('meeting_datetime', {ascending:false}),
       _sb.from('upcoming_meetings')
@@ -2272,18 +2582,19 @@ async function loadAdminDashboard() {
       const key = (log.client_name_manual||'').toUpperCase().trim();
       if (key && log.meeting_datetime) adminFirstDatePerClient[key] = log.meeting_datetime;
     });
+    await loadMSIICCLeads();
     await loadInjections();
     renderAllAdminSections();
   } catch(err) {
     showToast('Error loading admin data: '+err.message, 'error');
-    ['pipelineContainer','rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer','upcomingByRMContainer','upcomingDrilldownContainer'].forEach(id => {
+    ['pipelineContainer','rmOverviewContainer','rmDrilldownContainer','activityContainer','upcomingByRMContainer','upcomingDrilldownContainer'].forEach(id => {
       document.getElementById(id).innerHTML = `<p style="color:var(--error);padding:16px 0;">Error loading data: ${err.message}</p>`;
     });
   }
 }
 
 function setAdminLoading() {
-  ['pipelineContainer','rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer','upcomingByRMContainer','upcomingDrilldownContainer','calendarContainer'].forEach(id => {
+  ['pipelineContainer','rmOverviewContainer','rmDrilldownContainer','activityContainer','upcomingByRMContainer','upcomingDrilldownContainer'].forEach(id => {
     const el = document.getElementById(id); if (el) el.innerHTML = '<div class="loading-row">Loading...</div>';
   });
 }
@@ -2294,23 +2605,20 @@ function renderAllAdminSections() {
   renderRMOverviewTable();
   renderRMDrilldown(document.getElementById('rmDrilldownSelect')?.value || 'all');
   renderActivityTracker();
-  renderChairmanSection();
   renderUpcomingByRM();
   renderUpcomingForDrilldown(document.getElementById('rmDrilldownSelect')?.value || 'all');
-  const _calNow = new Date();
-  renderAdminCalendar(_calNow.getFullYear(), _calNow.getMonth());
   renderCCSummaryTables();
 }
 function renderAdminDemo() {
   document.getElementById('pipelineContainer').innerHTML = '<div class="admin-note">Connect to Supabase to load live dashboard data. Showing placeholder in demo mode.</div>';
-  ['rmOverviewContainer','rmDrilldownContainer','activityContainer','chairmanContainer','upcomingByRMContainer','upcomingDrilldownContainer','calendarContainer'].forEach(id => {
+  ['rmOverviewContainer','rmDrilldownContainer','activityContainer','upcomingByRMContainer','upcomingDrilldownContainer'].forEach(id => {
     const el = document.getElementById(id); if (el) el.innerHTML = '<div class="admin-note">Live data unavailable in demo mode.</div>';
   });
 }
 
 // ─── STALE HELPERS ────────────────────────────────────────────────
 function getAgingThreshold(status) {
-  const thresholds = {'Pending Decision':60,'Pending Board Approval':90,'Pending Onboarding':60};
+  const thresholds = {'Pending Decision':60,'PENDING DECISION':60,'PENDING ONBOARDING DOCS':90,'Pending Board Approval':90,'Pending Onboarding':60};
   return thresholds[status] ?? null;
 }
 function isStaleClient(log) {
@@ -2343,24 +2651,31 @@ function renderInjectionRunRate() {
   if (selectedRM !== 'all') clients = clients.filter(l => l.rm_name === selectedRM);
 
   // Only include active pending statuses — excludes Successful, Rejected, and Stale
-  const IRR_ACTIVE = ['Pending Decision','Pending Board Approval','Pending Onboarding','Pending Injection'];
+  const IRR_ACTIVE = ['Pending Decision','PENDING DECISION','PENDING ONBOARDING DOCS','Pending Board Approval','Pending Onboarding','Pending Injection'];
   const pipeline = clients.filter(l => IRR_ACTIVE.includes(l.status) && !isStaleClient(l));
 
-  // Split by client type
+  // Top-up pipeline: already-injected clients with a potential top-up amount recorded
+  const topUpPipeline = clients.filter(l => l.status === 'Successful' && parseFloat(l.potential_size_rm_mn) > 0);
+
+  // Combined: pending pipeline + top-up pipeline — used for ALL month bucketing
+  const allPipelineClients = [...pipeline, ...topUpPipeline];
+
+  // Split by client type (pending only)
   const newClients      = pipeline.filter(l => l.client_type === 'New');
   const existingClients = pipeline.filter(l => l.client_type === 'Existing');
 
-  // Bucket by potential_injection_month
-  const currMonthClients = pipeline.filter(l => l.potential_injection_month === currMonthName);
-  const nextMonthClients = pipeline.filter(l => l.potential_injection_month === nextMonthName);
-  const remainClients    = pipeline.filter(l => l.potential_injection_month && l.potential_injection_month !== currMonthName && l.potential_injection_month !== nextMonthName);
-  // No month assigned — also bucket into remaining for total reconciliation
-  const noMonthClients   = pipeline.filter(l => !l.potential_injection_month);
+  // Bucket by potential_injection_month — includes both pending and top-up
+  const currMonthClients = allPipelineClients.filter(l => l.potential_injection_month === currMonthName);
+  const nextMonthClients = allPipelineClients.filter(l => l.potential_injection_month === nextMonthName);
+  const remainClients    = allPipelineClients.filter(l => l.potential_injection_month && l.potential_injection_month !== currMonthName && l.potential_injection_month !== nextMonthName);
+  // No month assigned
+  const noMonthClients   = allPipelineClients.filter(l => !l.potential_injection_month);
   const allRemainClients = [...remainClients, ...noMonthClients];
 
   const sumPot = arr => arr.reduce((s, l) => s + (parseFloat(l.potential_size_rm_mn) || 0), 0);
 
-  const totPot       = sumPot(pipeline);
+  const totTopUp     = sumPot(topUpPipeline);
+  const totPot       = sumPot(allPipelineClients);
   const currPot      = sumPot(currMonthClients);
   const nextPot      = sumPot(nextMonthClients);
   const remainPot    = sumPot(allRemainClients);
@@ -2425,11 +2740,11 @@ function renderInjectionRunRate() {
   const currMonthNewClients   = currMonthClients.filter(l => l.client_type === 'New');
   const currMonthExistClients = currMonthClients.filter(l => l.client_type === 'Existing');
 
-  // Future months: next month → December, individual buckets
+  // Future months: next month → December, individual buckets (includes top-up pipeline)
   const futureMonths = [];
   for (let m = now.getMonth() + 1; m <= 11; m++) {
     const mn = FULL_MONTHS[m];
-    const mc = pipeline.filter(l => l.potential_injection_month === mn);
+    const mc = allPipelineClients.filter(l => l.potential_injection_month === mn);
     futureMonths.push({ name: mn, key: 'month-' + mn, clients: mc, pot: sumPot(mc) });
   }
   const futureTotal        = futureMonths.reduce((s, fm) => s + fm.pot, 0) + sumPot(noMonthClients);
@@ -2456,12 +2771,13 @@ function renderInjectionRunRate() {
   let html = `
   <div style="background:var(--navy);color:var(--white);border-radius:10px;padding:16px 22px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
     <div>
-      <div style="font-size:10px;font-weight:700;opacity:0.65;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Total Potential Injection — Active Pipeline</div>
+      <div style="font-size:10px;font-weight:700;opacity:0.65;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Total Potential Injection — Active Pipeline + Top-up</div>
       <div style="font-size:30px;font-weight:700;line-height:1;">${fmtMn(totPot)}</div>
+      ${totTopUp > 0 ? `<div style="font-size:11px;opacity:0.75;margin-top:4px;">incl. ${fmtMn(totTopUp)} top-up pipeline (${topUpPipeline.length} client${topUpPipeline.length!==1?'s':''})</div>` : ''}
     </div>
     <div style="text-align:right;font-size:12px;opacity:0.8;line-height:1.6;">
-      <div>${pipeline.length} client${pipeline.length!==1?'s':''} in pipeline</div>
-      <div style="font-size:10px;opacity:0.65;">Excludes Successful, Rejected &amp; Stale</div>
+      <div>${pipeline.length} pending · ${topUpPipeline.length} top-up</div>
+      <div style="font-size:10px;opacity:0.65;">${allPipelineClients.length} total · Excludes Rejected &amp; Stale</div>
     </div>
   </div>
 
@@ -2516,7 +2832,18 @@ function renderInjectionRunRate() {
   ${drawerHTML('curr-new',   currMonthName + ' — New Clients',     currMonthNewClients)}
   ${drawerHTML('curr-exist', currMonthName + ' — Existing Clients',currMonthExistClients)}
   ${futureMonthDrawers}
-  ${noMonthDrawer}`;
+  ${noMonthDrawer}
+  ${topUpPipeline.length > 0 ? `
+  <div style="background:var(--white);border:1.5px solid #4A2C8E;border-radius:10px;padding:14px 18px;margin-top:12px;" id="irr-card-topup" onclick="toggleIRRDrawer('topup')" style="cursor:pointer;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#4A2C8E;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:3px;">Top-up Pipeline</div>
+        <div style="font-size:22px;font-weight:700;color:var(--navy);">${fmtMn(totTopUp)}</div>
+        <div style="font-size:11px;color:var(--grey);margin-top:2px;">${topUpPipeline.length} already-injected client${topUpPipeline.length!==1?'s':''} with potential top-up</div>
+      </div>
+    </div>
+  </div>
+  ${drawerHTML('topup', 'Top-up Pipeline', topUpPipeline)}` : ''}`;
 
   container.innerHTML = html;
   container._irrActiveDrawer = null;
@@ -2580,7 +2907,7 @@ function renderInjectionProgress() {
   if (!container) return;
   const selectedRM    = document.getElementById('injProgressRMFilter')?.value || 'all';
   const selectedMonth = document.getElementById('injProgressMonthFilter')?.value || 'overall';
-  const ACTIVE_STATUSES = ['Pending Decision','Pending Board Approval','Pending Onboarding','Pending Injection'];
+  const ACTIVE_STATUSES = ['Pending Decision','PENDING DECISION','PENDING ONBOARDING DOCS','Pending Board Approval','Pending Onboarding','Pending Injection'];
   const FULL_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
   // Use ALL logs for successful so top-ups are included, not just latest-per-client
@@ -2746,23 +3073,41 @@ function toggleInjProgList(bid, type) {
 }
 
 function renderPipelineCards() {
-  const clients = Object.values(adminLatestPerClient);
+  const selectedRM    = document.getElementById('pipelineRMFilter')?.value    || 'all';
+  const selectedMonth = document.getElementById('pipelineMonthFilter')?.value || 'overall';
+  const FULL_MONTHS   = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  let clients = Object.values(adminLatestPerClient);
+
+  // Apply RM filter
+  if (selectedRM !== 'all') {
+    const knownRMs = ['Azmi','Iskandar','Nasya','Lei Khim','Harris','Filzah','Colin'];
+    clients = selectedRM === 'Others'
+      ? clients.filter(log => !knownRMs.includes(log.rm_name))
+      : clients.filter(log => log.rm_name === selectedRM);
+  }
+
+  // Apply month filter (by the month the latest meeting was logged)
+  if (selectedMonth !== 'overall') {
+    const mIdx = FULL_MONTHS.indexOf(selectedMonth);
+    clients = clients.filter(log => log.meeting_datetime && new Date(log.meeting_datetime).getMonth() === mIdx);
+  }
 
   // Separate stale clients (pending statuses over threshold)
   const staleClients = clients.filter(log => isStaleClient(log));
   const nonStaleClients = clients.filter(log => !isStaleClient(log));
 
   const stages = [
-    {key:'Pending Decision',       cls:'pc-decision',   lbl:'Pending Decision',       barColor:'#4A2C8E'},
-    {key:'Pending Board Approval', cls:'pc-board',      lbl:'Pending Board Approval', barColor:'#7A3C0E'},
-    {key:'Pending Onboarding',     cls:'pc-onboarding', lbl:'Pending Onboarding',     barColor:'#1A4B8C'},
-    {key:'Pending Injection',      cls:'pc-injection',  lbl:'Pending Injection',      barColor:'#856404'},
-    {key:'Successful',             cls:'pc-successful', lbl:'Successful',             barColor:'#1A6B3A'},
-    {key:'Rejected',               cls:'pc-rejected',   lbl:'Rejected',               barColor:'#721C24'},
+    {key:'Pending Decision',        cls:'pc-decision',   lbl:'Pending Decision',        barColor:'#4A2C8E'},
+    {key:'PENDING ONBOARDING DOCS', cls:'pc-board',      lbl:'Pending Onboarding Docs', barColor:'#7A3C0E'},
+    {key:'Successful',              cls:'pc-successful', lbl:'Successful',              barColor:'#1A6B3A'},
+    {key:'Rejected',                cls:'pc-rejected',   lbl:'Rejected',                barColor:'#721C24'},
   ];
+  // Old status values that map into PENDING ONBOARDING DOCS
+  const ONBOARDING_ALIASES = new Set(['Pending Board Approval','Pending Onboarding','Pending Injection','PENDING ONBOARDING DOCS']);
+
   const counts = {};
   const clientsByStatus = {};
-  let pendingInjectionTotal = 0;
   stages.forEach(s => { counts[s.key] = 0; clientsByStatus[s.key] = []; });
 
   function _cumInj(log) {
@@ -2771,11 +3116,12 @@ function renderPipelineCards() {
     return (parseFloat(log.injected_amount)||0) + hist;
   }
 
-  // Only count non-stale clients in each stage
+  // Only count non-stale clients in each stage; remap old onboarding aliases
   nonStaleClients.forEach(log => {
-    if (counts.hasOwnProperty(log.status)) {
-      counts[log.status]++;
-      clientsByStatus[log.status].push({
+    const canonicalStatus = ONBOARDING_ALIASES.has(log.status) ? 'PENDING ONBOARDING DOCS' : log.status;
+    if (counts.hasOwnProperty(canonicalStatus)) {
+      counts[canonicalStatus]++;
+      clientsByStatus[canonicalStatus].push({
         name: log.client_name_manual || 'Unknown',
         rm: log.rm_name || '',
         potential: parseFloat(log.potential_size_rm_mn) || 0,
@@ -2783,7 +3129,6 @@ function renderPipelineCards() {
         product: log.product_fund || '',
         remarks: log.remarks || ''
       });
-      if (log.status === 'Pending Injection') pendingInjectionTotal += parseFloat(log.potential_size_rm_mn) || 0;
     }
   });
   stages.forEach(s => clientsByStatus[s.key].sort((a,b) => a.name.localeCompare(b.name)));
@@ -2799,12 +3144,16 @@ function renderPipelineCards() {
   })).sort((a,b) => a.name.localeCompare(b.name));
 
   // Active pipeline = non-stale, excluding Successful and Rejected
-  const ACTIVE_STATUSES = ['Pending Decision','Pending Board Approval','Pending Onboarding','Pending Injection'];
+  const ACTIVE_STATUSES = ['Pending Decision','PENDING DECISION','PENDING ONBOARDING DOCS','Pending Board Approval','Pending Onboarding','Pending Injection'];
   const activePipelineClients = nonStaleClients.filter(l => ACTIVE_STATUSES.includes(l.status));
+  // Top-up pipeline: already-injected clients with a potential top-up amount set
+  const topUpClients = nonStaleClients.filter(l => l.status === 'Successful' && parseFloat(l.potential_size_rm_mn) > 0);
   const activePipelineCount = activePipelineClients.length;
   const activePipelinePot = activePipelineClients.reduce((s, l) => s + (parseFloat(l.potential_size_rm_mn) || 0), 0);
+  const topUpPot = topUpClients.reduce((s, l) => s + (parseFloat(l.potential_size_rm_mn) || 0), 0);
+  const grandTotalPot = activePipelinePot + topUpPot;
 
-  let html = `<div class="admin-headline"><strong>${activePipelineCount}</strong> clients in active pipeline &nbsp;&middot;&nbsp; <strong>${fmtMn(activePipelinePot)}</strong> total potential injection</div>
+  let html = `<div class="admin-headline"><strong>${activePipelineCount}</strong> clients in active pipeline &nbsp;&middot;&nbsp; <strong>${fmtMn(grandTotalPot)}</strong> total potential injection${topUpPot > 0 ? ` <span style="font-size:11px;color:#4A2C8E;font-weight:400;">(incl. ${fmtMn(topUpPot)} top-up)</span>` : ''}</div>
   <div class="pipeline-grid">`;
   stages.forEach(s => {
     const sk = s.key.replace(/\s+/g, '_');
@@ -2996,7 +3345,7 @@ function closePipelineCardDrawer() {
 }
 
 // ─── ALL RMs OVERVIEW TABLE ───────────────────────────────────────
-const RM_LIST = ['Azmi','Iskandar','Nasya','Lei Khim','Izzati','Filzah','Colin','Others'];
+const RM_LIST = ['Azmi','Iskandar','Nasya','Lei Khim','Harris','Filzah','Colin','Others'];
 function renderRMOverviewTable() {
   const currentYear = new Date().getFullYear();
   const clients = Object.values(adminLatestPerClient);
@@ -3034,8 +3383,8 @@ function renderRMOverviewTable() {
   RM_LIST.forEach(rm => {
     const s = stats[rm];
     const rmId = rm.replace(/\s+/g,'_');
-    const ccCount = CC_LEADS.filter(d => d.rm.toUpperCase() === rm.toUpperCase()).length;
-    const ccInj = CC_LEADS.filter(d => d.rm.toUpperCase() === rm.toUpperCase() && (d.status==='INJECTED'||d.status==='TOP UP')).length +
+    const ccCount = MSIICC_LEADS.filter(d => d.rm.toUpperCase() === rm.toUpperCase()).length;
+    const ccInj = MSIICC_LEADS.filter(d => d.rm.toUpperCase() === rm.toUpperCase() && (d.status==='INJECTED'||d.status==='TOP UP')).length +
       Object.values(ccStatusMap).filter(u => { const l=getCCLead(u.company_name); return l && l.rm.toUpperCase()===rm.toUpperCase() && (u.status==='INJECTED'||u.status==='TOP UP') && !['INJECTED','TOP UP'].includes(getCCLead(u.company_name)?.status); }).length;
     const ccCell = ccCount > 0
       ? `<td class="td-click" onclick="toggleCCTargetsDrawer('${rmId}','${rm}')" title="View CC targets">${ccCount} <span style="font-size:10px;color:var(--success);font-weight:700;">(${ccInj} inj)</span></td>`
@@ -3131,7 +3480,7 @@ function toggleCCTargetsDrawer(rmId, rm) {
   document.querySelectorAll('[id^="ccpop-"][id$="-row"]').forEach(r => { if (r !== row) r.style.display = 'none'; });
   if (row.style.display !== 'none') { row.style.display = 'none'; return; }
   row.style.display = 'table-row';
-  const leads = CC_LEADS.filter(d => d.rm.toUpperCase() === rm.toUpperCase());
+  const leads = MSIICC_LEADS.filter(d => d.rm.toUpperCase() === rm.toUpperCase());
   const CC_STATUS_MAP = {'PENDING':'s-pending','ACCEPTED':'s-decision','MET':'s-onboarding','MET SUBSIDIARY':'s-onboarding','EXISTING CLIENT':'s-topup','INJECTED':'s-injected','TOP UP':'s-topup','REJECTED':'s-rejected'};
   const trs = leads.map(d => {
     const override = ccStatusMap[d.company.toUpperCase()];
@@ -3177,7 +3526,7 @@ function renderRMDrilldown(selectedRM) {
   });
   const newClientKeys = new Set(Object.keys(firstMeetingDateMap));
 
-  const priority = {'Successful':0,'Pending Decision':1,'Pending Board Approval':1,'Pending Onboarding':1,'Pending Injection':1,'Rejected':2};
+  const priority = {'Successful':0,'Pending Decision':1,'PENDING DECISION':1,'PENDING ONBOARDING DOCS':1,'Pending Board Approval':1,'Pending Onboarding':1,'Pending Injection':1,'Rejected':2};
   function sortRows(arr) {
     return [...arr].sort((a,b) => {
       const ap = priority[a.status] ?? 5, bp = priority[b.status] ?? 5;
@@ -3426,6 +3775,7 @@ function toggleFMPopList(rmId, slotKey, rmName, monthIdx) {
 
 // ─── CHAIRMAN SECTION ─────────────────────────────────────────────
 function renderChairmanSection() {
+  if (!document.getElementById('chairmanContainer')) return;
   const clients = Object.values(adminLatestPerClient);
   function funnel(ref) {
     const referred = clients.filter(l => l.referral===ref);
@@ -3770,7 +4120,7 @@ function renderUpcomingByRM() {
     const totCell = tot > 0
       ? `<td class="td-hl td-click" onclick="toggleUPPopList('${rmId}','total','${rm}',-1)">${tot}</td>`
       : `<td>${tot}</td>`;
-    const ccAccPend = CC_LEADS.filter(d => d.rm.toUpperCase() === rm.toUpperCase() && ['ACCEPTED','PENDING'].includes(d.status)).length;
+    const ccAccPend = MSIICC_LEADS.filter(d => d.rm.toUpperCase() === rm.toUpperCase() && ['ACCEPTED','PENDING'].includes(d.status)).length;
     const ccCell = `<td style="text-align:center;font-weight:700;color:var(--yellow-dk);">${ccAccPend > 0 ? ccAccPend : '—'}</td>`;
     html += `<tr><td class="td-rm">${rm}</td>${totCell}${ccCell}${monthCells}</tr>
     <tr id="uppop-${rmId}-row" style="display:none;"><td colspan="15" style="padding:0 8px 10px;"><div class="row-poplist" id="uppop-${rmId}-box"></div></td></tr>`;
@@ -4123,295 +4473,293 @@ function exportConversionPDF(btn) {
   exportSectionPDF('conversionSummarySection', `Conversion-Summary-${date}.pdf`, btn);
 }
 
-const CC_LEADS = [
-  {batch:2,company:'Glomac Berhad',cc_md:'AZZAHIR',cc_team:'GLC 4',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:2,company:'KPJ Healthcare Berhad',cc_md:'AZZAHIR',cc_team:'GLC 3',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'Malaysian Resources Corporation Berhad',cc_md:'AZZAHIR',cc_team:'GLC 3',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'Menang Corporation (M) Berhad',cc_md:'AZZAHIR',cc_team:'GLC 4',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:2,company:'MISC Berhad',cc_md:'AZZAHIR',cc_team:'GLC 1',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'S P Setia Berhad',cc_md:'AZZAHIR',cc_team:'GLC 2',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:2,company:'TH Plantations Berhad',cc_md:'AZZAHIR',cc_team:'GLC 3',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'TIME dotCom Berhad',cc_md:'AZZAHIR',cc_team:'GLC 1',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'Velesto Energy Berhad',cc_md:'AZZAHIR',cc_team:'GLC 2',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Alcom Group Berhad',cc_md:'CB',cc_team:'CB',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Bintai Kinden Corporation Berhad',cc_md:'CB',cc_team:'CB',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Engtex Group Berhad',cc_md:'CB',cc_team:'CB',rm:'LEI KHIM',status:'MET',sales:null},
-  {batch:2,company:'Eversendai Corporation Berhad',cc_md:'CB',cc_team:'CB',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'Hua Yang Berhad',cc_md:'CB',cc_team:'CB',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'Magna Prima Berhad',cc_md:'CB',cc_team:'CB',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'Minho (M) Berhad',cc_md:'CB',cc_team:'CB',rm:'FILZAH',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Protasco Berhad',cc_md:'CB',cc_team:'CB',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'Rapid Synergy Berhad',cc_md:'CB',cc_team:'CB',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'RGB International Bhd.',cc_md:'CB',cc_team:'CB',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Ajiya Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'FILZAH',status:'EXISTING CLIENT',sales:null},
-  {batch:2,company:'Bermaz Auto Berhad',cc_md:'CHING EAN',cc_team:'CC 3',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Capital A Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'Chin Hin Group Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'FILZAH',status:'EXISTING CLIENT',sales:null},
-  {batch:2,company:'D & O Green Technologies Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'ISKANDAR',status:'REJECTED',sales:null},
-  {batch:2,company:'Dialog Group Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'DXN Holdings Bhd.',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Eastern & Oriental Berhad',cc_md:'CHING EAN',cc_team:'CC 1',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Fiamma Holdings Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'FILZAH',status:'EXISTING CLIENT',sales:null},
-  {batch:2,company:'Frontken Corporation Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'MET',sales:null},
-  {batch:2,company:'GuocoLand (Malaysia) Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'FILZAH',status:'REJECTED',sales:null},
-  {batch:2,company:'IGB Berhad',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'IGB Real Estate Investment Trust',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Inari Amertron Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'Keck Seng (Malaysia) Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'ISKANDAR',status:'REJECTED',sales:null},
-  {batch:2,company:'KESM Industries Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:2,company:'Kossan Rubber Industries Bhd',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'MET',sales:null},
-  {batch:2,company:'Landmarks Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'AZMI',status:'PENDING',sales:null},
-  {batch:2,company:'Leong Hup International Berhad',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:2,company:'Lotte Chemical Titan Holding Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'ISKANDAR',status:'REJECTED',sales:null},
-  {batch:2,company:'Mah Sing Group Berhad',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Malakoff Corporation Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'Malaysia Smelting Corporation Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Malaysian Pacific Industries Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'Media Prima Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Mega First Corporation Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'ISKANDAR',status:'REJECTED',sales:null},
-  {batch:2,company:'MKH Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'FILZAH',status:'ACCEPTED',sales:null},
-  {batch:2,company:'MKH Oil Palm (East Kalimantan) Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'FILZAH',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Oriental Holdings Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'Padini Holdings Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'Panasonic Manufacturing Malaysia Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'ISKANDAR',status:'REJECTED',sales:null},
-  {batch:2,company:'Press Metal Aluminium Holdings Berhad',cc_md:'CHING EAN',cc_team:'CC 4',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
-  {batch:2,company:'REDtone Digital Berhad',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Supermax Corporation Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:2,company:'Taliworks Corporation Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'FILZAH',status:'ACCEPTED',sales:null},
-  {batch:2,company:'TASCO Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Teo Seng Capital Berhad',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:2,company:'TMC Life Sciences Berhad',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'PENDING',sales:null},
-  {batch:2,company:'V.S. Industry Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'ViTrox Corporation Berhad',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:2,company:'WCT Holdings Berhad',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'PENDING',sales:null},
-  {batch:2,company:'Y.S.P. Southeast Asia Holding Berhad',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:2,company:'YTL Power International Berhad',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Far East Holdings Berhad',cc_md:'JACK',cc_team:'STATE GOVT',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'Orkim Berhad',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:2,company:'Pasdec Holdings Berhad',cc_md:'JACK',cc_team:'STATE GOVT',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'PBA Holdings Bhd',cc_md:'JACK',cc_team:'STATE GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
-  {batch:2,company:'Suria Capital Holdings Berhad',cc_md:'JACK',cc_team:'SBH/SWK STATE',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'Alpha IVF Group Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Dufu Technology Corp. Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Efficient E-Solutions Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Eng Kah Corporation Berhad',cc_md:'JASON',cc_team:'CBD',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'Formosa Prosonic Industries Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'InNature Berhad',cc_md:'JASON',cc_team:'CBD',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'Khind Holdings Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Kobay Technology Bhd.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Muar Ban Lee Group Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
-  {batch:2,company:'QES Group Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Scicom (MSC) Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'SLP Resources Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'TT Vision Holdings Berhad',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Astino Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'AWC Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Bonia Corporation Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:2,company:'Can-One Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'CB Industrial Product Holding Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'Chin Well Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Choo Bee Metal Industries Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'PENDING',sales:null},
-  {batch:2,company:'Coastal Contracts Bhd',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'Dayang Enterprise Holdings Bhd',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'Econpile Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Eupe Corporation Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Favelle Favco Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'Gabungan AQRS Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'Gadang Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Globetronics Technology Bhd.',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:2,company:'Harn Len Corporation Bhd',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'HeiTech Padu Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:2,company:'Homeritz Corporation Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'PENDING',sales:null},
-  {batch:2,company:'Hup Seng Industries Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'Infomina Berhad',cc_md:'JESSIE',cc_team:'MC 4',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:2,company:'Iskandar Waterfront City Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:2,company:'Jaya Tiasa Holdings Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'JKG Land Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:2,company:'Johan Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'FILZAH',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Kim Hin Industry Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'Kim Loong Resources Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'KKB Engineering Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'Kotra Industries Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:2,company:'Kretam Holdings Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'KSL Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Land & General Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'LBS Bina Group Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'MET',sales:null},
-  {batch:2,company:'Lii Hen Industries Bhd',cc_md:'JESSIE',cc_team:'MC 1',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'LTKM Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'Luxchem Corporation Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'Magni-Tech Industries Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'PENDING',sales:null},
-  {batch:2,company:'MBM Resources Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'PENDING',sales:null},
-  {batch:2,company:'Media Chinese International Limited',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'Mi Technovation Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Mulpha International Bhd',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'N2N Connect Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:2,company:'Naim Holdings Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'NCT Alliance Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'OCK Group Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Oriental Interest Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'INJECTED',sales:20017828.84},
-  {batch:2,company:'P.I.E. Industrial Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Paramount Corporation Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'Pecca Group Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'Pekat Group Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'ISKANDAR',status:'PENDING',sales:null},
-  {batch:2,company:'Perdana Petroleum Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'Plenitude Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Poh Huat Resources Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Power Root Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:2,company:'PRG Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'RCE Capital Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'ISKANDAR',status:'REJECTED',sales:null},
-  {batch:2,company:'Sarawak Plantation Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'Selangor Dredging Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:2,company:'SHL Consolidated Bhd.',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:2,company:'SMRT Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'Southern Acids (M) Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'PENDING',sales:null},
-  {batch:2,company:'Sunsuria Berhad',cc_md:'JESSIE',cc_team:'MC 3',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'Ta Ann Holdings Berhad',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:2,company:'Tambun Indah Land Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
-  {batch:2,company:'Thong Guan Industries Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'PENDING',sales:null},
-  {batch:2,company:'Tong Herr Resources Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'TSH Resources Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'United Malacca Berhad',cc_md:'JESSIE',cc_team:'MC 1',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:2,company:'Wellcall Holdings Berhad',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:2,company:'ELK-Desa Resources Berhad',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'AIRWALLEX',cc_md:'ANNABELLE',cc_team:'CC INTERNATIONAL',rm:'AZMI',status:'MET',sales:null},
-  {batch:1,company:'MAHB',cc_md:'AZZAHIR',cc_team:'GLC 1',rm:'FILZAH',status:'MET',sales:null},
-  {batch:1,company:'BERJAYA',cc_md:'CHING EAN',cc_team:'CC 3',rm:'ISKANDAR',status:'INJECTED',sales:10069531.12},
-  {batch:1,company:'GAMUDA',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'MET',sales:null},
-  {batch:1,company:'GEK POH/HAP SENG',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'TOP UP',sales:25500090.01},
-  {batch:1,company:'GENTING',cc_md:'CHING EAN',cc_team:'CC 1',rm:'FILZAH',status:'MET',sales:null},
-  {batch:1,company:'KLK',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'TOP UP',sales:172500000.0},
-  {batch:1,company:'KUOK',cc_md:'CHING EAN',cc_team:'RC',rm:'LEI KHIM',status:'MET SUBSIDIARY',sales:null},
-  {batch:1,company:'OSK',cc_md:'CHING EAN',cc_team:'CC 4',rm:'NASYA',status:'MET',sales:null},
-  {batch:1,company:'SUNWAY',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'TOP UP',sales:372088719.41},
-  {batch:1,company:'TSS & FAMILY N(SAPURA)',cc_md:'CHING EAN',cc_team:'CC 4',rm:'ISKANDAR',status:'TOP UP',sales:5116370.54},
-  {batch:1,company:'USAHA TEGAS',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'MET',sales:null},
-  {batch:1,company:'YINSON',cc_md:'CHING EAN',cc_team:'CC 3',rm:'AZMI',status:'INJECTED',sales:22248308.5},
-  {batch:1,company:'MOF INC (UDA HOLDINGS)',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'NASYA',status:'TOP UP',sales:100599.53},
-  {batch:1,company:'SARAWAK ENERGY',cc_md:'JACK',cc_team:'MC SBH/SWK',rm:'NASYA',status:'EXISTING CLIENT',sales:null},
-  {batch:1,company:'SARAWAK STATE',cc_md:'JACK',cc_team:'SBH/SWK STATE',rm:'NASYA',status:'EXISTING CLIENT',sales:null},
-  {batch:1,company:'SELANGOR STATE',cc_md:'JACK',cc_team:'STATE GOVT',rm:'NASYA',status:'TOP UP',sales:99345.9},
-  {batch:1,company:'BIG',cc_md:'JASON',cc_team:'CBD',rm:'NASYA',status:'TOP UP',sales:7820058.77},
-  {batch:1,company:'FOCUS POINT',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'INJECTED',sales:17135710.13},
-  {batch:1,company:'GIGA',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'MET',sales:null},
-  {batch:1,company:'LONGSON FOOD',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'MET',sales:null},
-  {batch:1,company:'PUBLIC PACKAGES',cc_md:'JASON',cc_team:'CBD',rm:'NASYA',status:'TOP UP',sales:7628899.13},
-  {batch:1,company:'REACH TEN',cc_md:'JASON',cc_team:'CBD',rm:'NASYA',status:'TOP UP',sales:59548109.17},
-  {batch:1,company:'SKYWORLDDEVELOPMENT',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'MET',sales:null},
-  {batch:1,company:'YAMATO TRANSPORT',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'MET',sales:null},
-  {batch:1,company:'GD EXPRESS',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'MET',sales:null},
-  {batch:1,company:'KAWAN',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'EXISTING CLIENT',sales:null},
-  {batch:1,company:'KUMP FIMA',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'TOP UP',sales:13266994.38},
-  {batch:1,company:'MUHIBBAH',cc_md:'JESSIE',cc_team:'MC 3',rm:'AZMI',status:'MET SUBSIDIARY',sales:null},
-  {batch:1,company:'OBYU/PETRA',cc_md:'JESSIE',cc_team:'MC SBH/SWK',rm:'NASYA',status:'MET',sales:null},
-  {batch:1,company:'OIB/TIONG HUAT',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'MET',sales:null},
-  {batch:1,company:'TITIJAYA',cc_md:'JESSIE',cc_team:'MC 2',rm:'LEI KHIM',status:'MET',sales:null},
-  {batch:1,company:'TMF GROUP',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'MET',sales:null},
-  {batch:1,company:'TOKIO MARINE HOLDINGS INC',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'MET',sales:null},
-  {batch:1,company:'UNITED OVERSEAS BANK (UOB)',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'MET',sales:null},
-  {batch:1,company:'CHINA RUBBER INVESTMENT GROUP',cc_md:'ANNABELLE',cc_team:'CC INTERNATIONAL',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'MEHOW MEDICAL',cc_md:'ANNABELLE',cc_team:'CC INTERNATIONAL',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'AXIATA',cc_md:'AZZAHIR',cc_team:'GLC 1',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'EPF',cc_md:'AZZAHIR',cc_team:'GLC 2',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'FELDA',cc_md:'AZZAHIR',cc_team:'GLC 3',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'JAKEL',cc_md:'AZZAHIR',cc_team:'GLC 4',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'JOHOR CORP',cc_md:'AZZAHIR',cc_team:'GLC 3',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'LTAT/BOUSTEAD',cc_md:'AZZAHIR',cc_team:'GLC 4',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'PETRONAS',cc_md:'AZZAHIR',cc_team:'GLC 1',rm:'NASYA',status:'ACCEPTED',sales:null},
-  {batch:1,company:'PNB',cc_md:'AZZAHIR',cc_team:'GLC 2',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'SIME DARBY',cc_md:'AZZAHIR',cc_team:'GLC 2',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'SIME DARBY PROPERTY',cc_md:'AZZAHIR',cc_team:'GLC 2',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'TNB',cc_md:'AZZAHIR',cc_team:'GLC 1',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'UEM',cc_md:'AZZAHIR',cc_team:'GLC 4',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'AEON',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'AJINOMOTO',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'AYALA',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'CSC STEEL',cc_md:'CHING EAN',cc_team:'RC',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'GRAB INC',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'GUAN CHONG COCOA',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'HEXTAR GROUP',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:1,company:'HONG LEONG GROUP',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'IJM',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'INSAS / INARI / HO HUP',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'IOI',cc_md:'CHING EAN',cc_team:'CC 4',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:1,company:'KEYFIELD',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:1,company:'KUB',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:1,company:'LENDLEASE',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'MALAYAN FLOUR',cc_md:'CHING EAN',cc_team:'CC 2',rm:'AZMI',status:'PENDING',sales:null},
-  {batch:1,company:'QL',cc_md:'CHING EAN',cc_team:'CC 1',rm:'AZMI',status:'MET SUBSIDIARY',sales:null},
-  {batch:1,company:'TS SYED MOKHTAR',cc_md:'CHING EAN',cc_team:'CC 4',rm:'FILZAH',status:'PENDING',sales:null},
-  {batch:1,company:'EKUINAS',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
-  {batch:1,company:'GOM: JABATAN AKAUNTAN NEGARA M CAW JOHOR',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
-  {batch:1,company:'CYBERSECURITY MALAYSIA',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
-  {batch:1,company:'MARA-APS',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
-  {batch:1,company:'JABATAN AKAUNTAN NEGARA M CAW PUTRAJAYA',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
-  {batch:1,company:'KEDAH STATE: BINA DARULAMAN BERHAD',cc_md:'JACK',cc_team:'STATE GOVT',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
-  {batch:1,company:'NEGERI SEMBILAN STATE: SYARIKAT AIR NEGERI SEMBILAN SDN BHD',cc_md:'JACK',cc_team:'STATE GOVT',rm:'ISKANDAR',status:'REJECTED',sales:null},
-  {batch:1,company:'PENANG STATE: PERBADANAN BEKALAN AIR PULAU PINANG SDN.',cc_md:'JACK',cc_team:'STATE GOVT',rm:'ISKANDAR',status:'ACCEPTED',sales:null},
-  {batch:1,company:'PERKESO',cc_md:'JACK',cc_team:'GOM/FEDERAL GOVT',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'ASIABINA',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'INJECTED',sales:3372963.73},
-  {batch:1,company:'AUSTIN POWDER',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:1,company:'BEAVER PROPERTIES',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'BOROCHEMIE (M) SDN. BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'BU',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'BWYS GROUP BERHAD',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'CUSTOM FOOD',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
-  {batch:1,company:'DC HEALTHCARE HOLDINGS BERHAD',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'DKLS',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
-  {batch:1,company:'ECONSAVE',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
-  {batch:1,company:'ESRI MALAYSIA SDN BHD',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'EURO CHEMO',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'FAMILY CEREAL',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
-  {batch:1,company:'GUAN CHONG PROPERTIES',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
-  {batch:1,company:'HONG SENG POWER SDN. BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'KIANLEESMR',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'KONG LONG HUAT',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'LIMA SEN SDN. BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'MARINE & GENERAL BERHAD',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'PENDING',sales:null},
-  {batch:1,company:'OKA CORPORATION BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'OXFORD : CG SOLUTIONS ENTERPRISE SDN. BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'PATHLAB',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'PDG',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
-  {batch:1,company:'RK SOUTH',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'SL NG',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'SUPERLON',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'TGL',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
-  {batch:1,company:'THE HOUR GLASS SDN. BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'TREEGROW BOTANICAL',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'ACCEPTED',sales:null},
-  {batch:1,company:'TRITERRA METROPOLIS SDN. BHD.',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'ZUSPRESSO',cc_md:'JASON',cc_team:'CBD',rm:'LEI KHIM',status:'REJECTED',sales:null},
-  {batch:1,company:'ASIA FILE CORPORATION',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:1,company:'ATECH BERHAD',cc_md:'JESSIE',cc_team:'MC 4',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'BOARDROOM',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'EKSONS',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'HUAT LAI RESOURCES',cc_md:'JESSIE',cc_team:'MC 3',rm:'AZMI',status:'ACCEPTED',sales:null},
-  {batch:1,company:'LB ALUMINIUM',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'MET',sales:null},
-  {batch:1,company:'SKS',cc_md:'JESSIE',cc_team:'MC 1',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'SPRITZER',cc_md:'JESSIE',cc_team:'MC 2',rm:'AZMI',status:'REJECTED',sales:null},
-  {batch:1,company:'AIA GROUP',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:1,company:'AMANAH RAYA BERHAD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'APEX EQUITY HOLDINGS BERHAD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'ACCEPTED',sales:null},
-  {batch:1,company:'ARECA CAPITAL SDN BHD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'ASIAN INSTITUTE OF FINANCE BHD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'CREDIT GUARANTEE CORPORATION',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:1,company:'CVC CAPITAL PARTNERS',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'GOVERNMENT OF KENYA',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'ACCEPTED',sales:null},
-  {batch:1,company:'IFAST CORPORATION LTD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'INSAS BERHAD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'K & N KENANGA HOLDINGS BHD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'ACCEPTED',sales:null},
-  {batch:1,company:'MALAYSIAN INDUSTRIAL DEVELOPMENT FINANCE BHD (MIDF)',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:1,company:'MANULIFE FINANCIAL CORP',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'PENDING',sales:null},
-  {batch:1,company:'MNRB HOLDINGS BHD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'MTRUSTEE',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'ACCEPTED',sales:null},
-  {batch:1,company:'NOMURA HOLDINGS INC',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'OPUS ASSET MANAGEMENT SDN BHD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'ACCEPTED',sales:null},
-  {batch:1,company:'PACIFIC TRUSTEES BERHAD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'PHILLIP CAPITAL',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'SECURITIES COMMISSION MALAYSIA',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
-  {batch:1,company:'TA ENTERPRISE BERHAD',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'ACCEPTED',sales:null},
-  {batch:1,company:'VISA INC',cc_md:'NAELAH',cc_team:'FIG',rm:'NASYA',status:'REJECTED',sales:null},
+const _MSIICC_STATIC = [
+  {batch:1,company:'KEYFIELD',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'PENDING ONBOARDING DOCS',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'IGB Berhad',cc_md:'Ching Ean',cc_team:'CC 1',rm:'Azmi',status:'ACCEPTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'KESM Industries Berhad',cc_md:'Ching Ean',cc_team:'RC',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'TS SYED MOKHTAR (PROTON EDAR SDN BHD & THE NEW STRAITS TIMES PRESS (M) BHD)',cc_md:'Ching Ean',cc_team:'CC 4',rm:'Filzah',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Leong Hup International Berhad',cc_md:'Ching Ean',cc_team:'CC 3',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Mah Sing Group Berhad',cc_md:'Ching Ean',cc_team:'CC 1',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'IGB Real Estate Investment Trust',cc_md:'Ching Ean',cc_team:'CC 1',rm:'Azmi',status:'ACCEPTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Malaysia Smelting Corporation Berhad',cc_md:'Ching Ean',cc_team:'RC',rm:'Filzah',status:'MET',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Supermax Corporation Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'REDtone Digital Berhad',cc_md:'Ching Ean',cc_team:'CC 3',rm:'Azmi',status:'ACCEPTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Teo Seng Capital Berhad',cc_md:'Ching Ean',cc_team:'CC 3',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Landmarks Berhad',cc_md:'Ching Ean',cc_team:'CC 4',rm:'Azmi',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'TASCO Berhad',cc_md:'Ching Ean',cc_team:'RC',rm:'Azmi',status:'ACCEPTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'TMC Life Sciences Berhad',cc_md:'Ching Ean',cc_team:'CC 3',rm:'Azmi',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Y.S.P. Southeast Asia Holding Berhad',cc_md:'Ching Ean',cc_team:'RC',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'YTL Power International Berhad',cc_md:'Ching Ean',cc_team:'CC 3',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'AWC Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Choo Bee Metal Industries Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Azmi',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'HeiTech Padu Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Homeritz Corporation Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'GD EXPRESS',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'ACCEPTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'ASIA FILE CORPORATION',cc_md:'Jessie',cc_team:'MC 2',rm:'Azmi',status:'ACCEPTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'LBS Bina Group Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Magni-Tech Industries Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Azmi',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'MBM Resources Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Azmi',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'HUAT LAI RESOURCES',cc_md:'Jessie',cc_team:'MC 3',rm:'Azmi',status:'ACCEPTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Plenitude Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Kim Loong Resources Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Power Root Berhad',cc_md:'Jessie',cc_team:'MC 3',rm:'Azmi',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'SHL Consolidated Bhd.',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Southern Acids (M) Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Azmi',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Thong Guan Industries Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'PENDING DECISION',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'AIRWALLEX',cc_md:'Annabelle',cc_team:'CC INTERNATIONAL',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'MNC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'MAHB',cc_md:'Azzahir',cc_team:'GLC 1',rm:'Filzah',status:'PENDING DECISION',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'GEK POH/HAP SENG',cc_md:'Ching Ean',cc_team:'CC 3',rm:'Azmi',status:'TOP UP',sales:10000000.0,segment:'CONGLOMERATE & LARGE CAP',ctype:'EXISTING CLIENT',gross_sales:10000000,redemption_sales:0},
+  {batch:1,company:'KLK',cc_md:'Ching Ean',cc_team:'CC 3',rm:'Azmi',status:'TOP UP',sales:124472368.0,segment:'CONGLOMERATE & LARGE CAP',ctype:'EXISTING CLIENT',gross_sales:329920526,redemption_sales:205448158},
+  {batch:1,company:'SUNWAY',cc_md:'Ching Ean',cc_team:'CC 1',rm:'Azmi',status:'TOP UP',sales:287843837.0,segment:'CONGLOMERATE & LARGE CAP',ctype:'EXISTING CLIENT',gross_sales:318853837,redemption_sales:31010000},
+  {batch:1,company:'PETRONAS',cc_md:'Azzahir',cc_team:'GLC 1',rm:'Nasya',status:'EXISTING CLIENT',sales:0,segment:'GLC',ctype:'EXISTING CLIENT',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'YINSON',cc_md:'Ching Ean',cc_team:'CC 3',rm:'Azmi',status:'INJECTED',sales:29303579.0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:52003579,redemption_sales:22700000},
+  {batch:1,company:'GAMUDA',cc_md:'Ching Ean',cc_team:'CC 1',rm:'Azmi',status:'PENDING ONBOARDING DOCS',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'KAWAN',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'PENDING ONBOARDING DOCS',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'KUMP FIMA',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'TOP UP',sales:800000.0,segment:'MID CAP',ctype:'EXISTING CLIENT',gross_sales:7800000,redemption_sales:7000000},
+  {batch:1,company:'USAHA TEGAS',cc_md:'Ching Ean',cc_team:'CC 1',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'CHINA RUBBER INVESTMENT GROUP',cc_md:'Annabelle',cc_team:'CC INTERNATIONAL',rm:'Azmi',status:'MAMG DROP LEAD',sales:0,segment:'MNC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'MEHOW MEDICAL',cc_md:'Annabelle',cc_team:'CC INTERNATIONAL',rm:'Azmi',status:'MAMG DROP LEAD',sales:0,segment:'MNC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'AEON',cc_md:'Ching Ean',cc_team:'RC',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'AJINOMOTO',cc_md:'Ching Ean',cc_team:'RC',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'AYALA',cc_md:'Ching Ean',cc_team:'RC',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'CSC STEEL',cc_md:'Ching Ean',cc_team:'RC',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'GRAB INC',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'GUAN CHONG COCOA',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'HEXTAR GROUP',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'PENDING DECISION',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'HONG LEONG GROUP',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'IJM',cc_md:'Ching Ean',cc_team:'CC 1',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'INSAS / INARI / HO HUP',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'IOI',cc_md:'Ching Ean',cc_team:'CC 4',rm:'Nasya',status:'MET',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'ViTrox Corporation Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'KUB (JAG CAPITAL)',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'INJECTED',sales:-1610642.0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:50000000,redemption_sales:51610642},
+  {batch:1,company:'LENDLEASE',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Azmi',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'MALAYAN FLOUR',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'PENDING ONBOARDING DOCS',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'QL',cc_md:'Ching Ean',cc_team:'CC 1',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'GENTING',cc_md:'Ching Ean',cc_team:'CC 1',rm:'Filzah',status:'PENDING DECISION',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'ATECH BERHAD',cc_md:'Jessie',cc_team:'MC 4',rm:'Azmi',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'BOARDROOM',cc_md:'Jessie',cc_team:'MC 2',rm:'Azmi',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'EKSONS',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'WCT Holdings Berhad',cc_md:'Ching Ean',cc_team:'CC 1',rm:'Azmi',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'KUOK',cc_md:'Ching Ean',cc_team:'RC',rm:'Lei Khim',status:'MAMG DROP LEAD',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'SKS',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'SPRITZER',cc_md:'Jessie',cc_team:'MC 2',rm:'Azmi',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Eversendai Corporation Berhad',cc_md:'Cb',cc_team:'CB',rm:'Filzah',status:'PENDING',sales:0,segment:'CB',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Hua Yang Berhad',cc_md:'Cb',cc_team:'CB',rm:'Filzah',status:'PENDING',sales:0,segment:'CB',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Magna Prima Berhad',cc_md:'Cb',cc_team:'CB',rm:'Filzah',status:'PENDING',sales:0,segment:'CB',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Minho (M) Berhad',cc_md:'Cb',cc_team:'CB',rm:'Filzah',status:'MAMG DROP LEAD',sales:0,segment:'CB',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Protasco Berhad',cc_md:'Cb',cc_team:'CB',rm:'Filzah',status:'PENDING',sales:0,segment:'CB',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Rapid Synergy Berhad',cc_md:'Cb',cc_team:'CB',rm:'Filzah',status:'PENDING',sales:0,segment:'CB',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Ajiya Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Azmi',status:'EXISTING CLIENT',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'EXISTING CLIENT',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Chin Hin Group Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Azmi',status:'TOP UP',sales:6000005.0,segment:'CONGLOMERATE & LARGE CAP',ctype:'EXISTING CLIENT',gross_sales:8000005,redemption_sales:2000000},
+  {batch:2,company:'Fiamma Holdings Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Azmi',status:'EXISTING CLIENT',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'EXISTING CLIENT',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'GuocoLand (Malaysia) Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Filzah',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'MKH Berhad',cc_md:'Ching Ean',cc_team:'CC 4',rm:'Filzah',status:'MAMG DROP LEAD',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'MKH Oil Palm (East Kalimantan) Berhad',cc_md:'Ching Ean',cc_team:'CC 4',rm:'Filzah',status:'MAMG DROP LEAD',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Padini Holdings Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Filzah',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Taliworks Corporation Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Filzah',status:'PENDING ONBOARDING DOCS',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'LONGSON FOOD',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'MAMG DROP LEAD',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'SKYWORLDDEVELOPMENT',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Can-One Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Lei Khim',status:'MET',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'CB Industrial Product Holding Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Filzah',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Gabungan AQRS Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Harn Len Corporation Bhd',cc_md:'Jessie',cc_team:'MC 1',rm:'Filzah',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Hup Seng Industries Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Filzah',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'KSL Holdings Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Lei Khim',status:'PENDING ONBOARDING DOCS',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'NCT Alliance Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Filzah',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'OCK Group Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Pecca Group Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Iskandar',status:'PENDING DECISION',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'PRG Holdings Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Filzah',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'SMRT Holdings Berhad',cc_md:'Jessie',cc_team:'MC 3',rm:'Filzah',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'TSH Resources Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Filzah',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'United Malacca Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Filzah',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'OSK',cc_md:'Ching Ean',cc_team:'CC 4',rm:'Filzah',status:'PENDING DECISION',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'KEDAH STATE: BINA DARULAMAN BERHAD',cc_md:'Jack',cc_team:'STATE GOVT',rm:'Iskandar',status:'ACCEPTED',sales:0,segment:'GOVERNMENT',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'PENANG STATE: PERBADANAN BEKALAN AIR PULAU PINANG SDN.',cc_md:'Jack',cc_team:'STATE GOVT',rm:'Iskandar',status:'ACCEPTED',sales:0,segment:'GOVERNMENT',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Velesto Energy Berhad',cc_md:'Azzahir',cc_team:'GLC 2',rm:'Iskandar',status:'ACCEPTED',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Bermaz Auto Berhad',cc_md:'Ching Ean',cc_team:'CC 3',rm:'Iskandar',status:'ACCEPTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Capital A Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'D & O Green Technologies Berhad',cc_md:'Ching Ean',cc_team:'CC 4',rm:'Iskandar',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Dialog Group Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'DXN Holdings Bhd.',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'ACCEPTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Eastern & Oriental Berhad',cc_md:'Ching Ean',cc_team:'CC 1',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Frontken Corporation Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'INJECTED',sales:40440000.0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:40440000,redemption_sales:0},
+  {batch:2,company:'Inari Amertron Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Keck Seng (Malaysia) Berhad',cc_md:'Ching Ean',cc_team:'RC',rm:'Iskandar',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Kossan Rubber Industries Bhd',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'PENDING ONBOARDING DOCS',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Lotte Chemical Titan Holding Berhad',cc_md:'Ching Ean',cc_team:'RC',rm:'Iskandar',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Malakoff Corporation Berhad',cc_md:'Ching Ean',cc_team:'CC 4',rm:'Iskandar',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Malaysian Pacific Industries Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Media Prima Berhad',cc_md:'Ching Ean',cc_team:'CC 4',rm:'Nasya',status:'MAMG DROP LEAD',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'EXISTING CLIENT',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Mega First Corporation Berhad',cc_md:'Ching Ean',cc_team:'CC 4',rm:'Iskandar',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Oriental Holdings Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Panasonic Manufacturing Malaysia Berhad',cc_md:'Ching Ean',cc_team:'RC',rm:'Iskandar',status:'REJECTED',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'V.S. Industry Berhad',cc_md:'Ching Ean',cc_team:'CC 2',rm:'Iskandar',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Far East Holdings Berhad',cc_md:'Jack',cc_team:'STATE GOVT',rm:'Iskandar',status:'PENDING',sales:0,segment:'GOVERNMENT',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Pasdec Holdings Berhad',cc_md:'Jack',cc_team:'STATE GOVT',rm:'Iskandar',status:'PENDING',sales:0,segment:'GOVERNMENT',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'PBA Holdings Bhd',cc_md:'Jack',cc_team:'STATE GOVT',rm:'Iskandar',status:'REJECTED',sales:0,segment:'GOVERNMENT',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Favelle Favco Berhad',cc_md:'Jessie',cc_team:'MC 3',rm:'Iskandar',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Lii Hen Industries Bhd',cc_md:'Jessie',cc_team:'MC 1',rm:'Iskandar',status:'MET',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'LTKM Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Iskandar',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Luxchem Corporation Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'ACCEPTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Paramount Corporation Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Pekat Group Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Iskandar',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'RCE Capital Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Iskandar',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'BERJAYA',cc_md:'Ching Ean',cc_team:'CC 3',rm:'Iskandar',status:'INJECTED',sales:10000005.0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:10000005,redemption_sales:0},
+  {batch:1,company:'TSS & FAMILY N(SAPURA)',cc_md:'Ching Ean',cc_team:'CC 4',rm:'Iskandar',status:'TOP UP',sales:-10798201.0,segment:'CONGLOMERATE & LARGE CAP',ctype:'EXISTING CLIENT',gross_sales:6001799,redemption_sales:16800001},
+  {batch:1,company:'EKUINAS',cc_md:'Jack',cc_team:'GOM/FEDERAL GOVT',rm:'Iskandar',status:'REJECTED',sales:0,segment:'GOVERNMENT',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'GOM: JABATAN AKAUNTAN NEGARA M CAW JOHOR | CYBERSECURITY MALAYSIA | MARA-APS | JABATAN AKAUNTAN NEGARA M CAW PUTRAJAYA',cc_md:'Jack',cc_team:'GOM/FEDERAL GOVT',rm:'Iskandar',status:'REJECTED',sales:0,segment:'GOVERNMENT',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'GIGA',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'INJECTED',sales:10000000.0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:10000000,redemption_sales:0},
+  {batch:1,company:'NEGERI SEMBILAN STATE: SYARIKAT AIR NEGERI SEMBILAN SDN BHD',cc_md:'Jack',cc_team:'STATE GOVT',rm:'Iskandar',status:'REJECTED',sales:0,segment:'GOVERNMENT',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'YAMATO TRANSPORT',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'MAMG DROP LEAD',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'AUSTIN POWDER',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'CUSTOM FOOD',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'MAMG DROP LEAD',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'DKLS',cc_md:'Cb',cc_team:'CB',rm:'Lei Khim',status:'EXISTING CLIENT',sales:5.0,segment:'CB',ctype:'EXISTING CLIENT',gross_sales:5,redemption_sales:0},
+  {batch:1,company:'ECONSAVE',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'EXISTING CLIENT',sales:0,segment:'CBD',ctype:'EXISTING CLIENT',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'FAMILY CEREAL',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'ACCEPTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'GUAN CHONG PROPERTIES',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'ACCEPTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'MARINE & GENERAL BERHAD',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'PDG ASSET SDN. BHD.',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'ACCEPTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'TEO GUAN LEE',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'INJECTED',sales:10000000.0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:10000000,redemption_sales:0},
+  {batch:1,company:'TREEGROW BOTANICAL',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'ACCEPTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'FOCUS POINT',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'INJECTED',sales:17000008.0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:17000008,redemption_sales:0},
+  {batch:1,company:'ASIABINA',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'INJECTED',sales:510001.0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:510001,redemption_sales:0},
+  {batch:1,company:'BEAVER PROPERTIES',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'BOROCHEMIE (M) SDN. BHD.',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'BU',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Eng Kah Corporation Berhad',cc_md:'Jason',cc_team:'CBD',rm:'Filzah',status:'PENDING',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'BWYS GROUP BERHAD',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'DC HEALTHCARE HOLDINGS BERHAD',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'ESRI MALAYSIA SDN BHD',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'EURO CHEMO',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'HONG SENG POWER SDN. BHD.',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'KIANLEESMR',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'KONG LONG HUAT',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'LIMA SEN SDN. BHD.',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'OKA CORPORATION BHD.',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'OXFORD : CG SOLUTIONS ENTERPRISE SDN. BHD.',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'PATHLAB',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Land & General Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Nasya',status:'INJECTED',sales:18478333.0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:33300030,redemption_sales:14821697},
+  {batch:1,company:'RK SOUTH',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'SL NG',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'SUPERLON',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'THE HOUR GLASS SDN. BHD.',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'TRITERRA METROPOLIS SDN. BHD.',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'EXISTING CLIENT',sales:0,segment:'CBD',ctype:'EXISTING CLIENT',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'ZUSPRESSO',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'TITIJAYA',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'MAMG DROP LEAD',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Alcom Group Berhad',cc_md:'Cb',cc_team:'CB',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CB',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'InNature Berhad',cc_md:'Jason',cc_team:'CBD',rm:'Filzah',status:'PENDING',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Bintai Kinden Corporation Berhad',cc_md:'Cb',cc_team:'CB',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CB',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Engtex Group Berhad',cc_md:'Cb',cc_team:'CB',rm:'Lei Khim',status:'MAMG DROP LEAD',sales:0,segment:'CB',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'RGB International Bhd.',cc_md:'Cb',cc_team:'CB',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CB',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Press Metal Aluminium Holdings Berhad',cc_md:'Ching Ean',cc_team:'CC 4',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CONGLOMERATE & LARGE CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Astino Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'PENDING ONBOARDING DOCS',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Bonia Corporation Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'MAMG DROP LEAD',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Chin Well Holdings Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Econpile Holdings Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Eupe Corporation Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'MET',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Gadang Holdings Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Lei Khim',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Globetronics Technology Bhd.',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Infomina Berhad',cc_md:'Jessie',cc_team:'MC 4',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Iskandar Waterfront City Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'JKG Land Berhad',cc_md:'Jessie',cc_team:'MC 3',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Kotra Industries Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Mi Technovation Berhad',cc_md:'Jessie',cc_team:'MC 3',rm:'Lei Khim',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'N2N Connect Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Oriental Interest Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'INJECTED',sales:20000000.0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:20000000,redemption_sales:0},
+  {batch:2,company:'P.I.E. Industrial Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Selangor Dredging Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Mulpha International Bhd',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'ACCEPTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Sunsuria Berhad',cc_md:'Jessie',cc_team:'MC 3',rm:'Lei Khim',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Poh Huat Resources Holdings Berhad',cc_md:'Jessie',cc_team:'MC 1',rm:'Azmi',status:'ACCEPTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Tong Herr Resources Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Wellcall Holdings Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'MUHIBBAH',cc_md:'Jessie',cc_team:'MC 3',rm:'Azmi',status:'MAMG DROP LEAD',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Alpha IVF Group Berhad',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'ACCEPTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Dufu Technology Corp. Berhad',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Efficient E-Solutions Berhad',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Johan Holdings Berhad',cc_md:'Jessie',cc_team:'MC 3',rm:'Filzah',status:'PENDING ONBOARDING DOCS',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Formosa Prosonic Industries Berhad',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Khind Holdings Berhad',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Kobay Technology Bhd.',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'EXISTING CLIENT',sales:0,segment:'CBD',ctype:'EXISTING CLIENT',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Tambun Indah Land Berhad',cc_md:'Jessie',cc_team:'MC 2',rm:'Lei Khim',status:'REJECTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Muar Ban Lee Group Berhad',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'ACCEPTED',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'LB ALUMINIUM',cc_md:'Jessie',cc_team:'MC 2',rm:'Azmi',status:'PENDING DECISION',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'QES Group Berhad',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Scicom (MSC) Berhad',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'[COMPANY NAME MISSING — PLEASE UPDATE]',cc_md:'Azzahir',cc_team:'GLC 4',rm:'Nasya',status:'REJECTED',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'KPJ Healthcare Berhad',cc_md:'Azzahir',cc_team:'GLC 3',rm:'Nasya',status:'PENDING',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Malaysian Resources Corporation Berhad',cc_md:'Azzahir',cc_team:'GLC 3',rm:'Nasya',status:'PENDING',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Menang Corporation (M) Berhad',cc_md:'Azzahir',cc_team:'GLC 4',rm:'Nasya',status:'REJECTED',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'MISC Berhad',cc_md:'Azzahir',cc_team:'GLC 1',rm:'Nasya',status:'PENDING',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'S P Setia Berhad',cc_md:'Azzahir',cc_team:'GLC 2',rm:'Nasya',status:'REJECTED',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'TH Plantations Berhad',cc_md:'Azzahir',cc_team:'GLC 3',rm:'Nasya',status:'PENDING',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'TIME dotCom Berhad',cc_md:'Azzahir',cc_team:'GLC 1',rm:'Nasya',status:'PENDING',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Orkim Berhad',cc_md:'Jack',cc_team:'GOM/FEDERAL GOVT',rm:'Nasya',status:'REJECTED',sales:0,segment:'GOVERNMENT',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Suria Capital Holdings Berhad',cc_md:'Jack',cc_team:'SBH/SWK STATE',rm:'Nasya',status:'PENDING',sales:0,segment:'GOVERNMENT',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Coastal Contracts Bhd',cc_md:'Jessie',cc_team:'MC SBH/SWK',rm:'Nasya',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Dayang Enterprise Holdings Bhd',cc_md:'Jessie',cc_team:'MC SBH/SWK',rm:'Nasya',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Jaya Tiasa Holdings Berhad',cc_md:'Jessie',cc_team:'MC SBH/SWK',rm:'Nasya',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Kim Hin Industry Berhad',cc_md:'Jessie',cc_team:'MC SBH/SWK',rm:'Nasya',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'KKB Engineering Berhad',cc_md:'Jessie',cc_team:'MC SBH/SWK',rm:'Nasya',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Kretam Holdings Berhad',cc_md:'Jessie',cc_team:'MC SBH/SWK',rm:'Nasya',status:'ACCEPTED',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Media Chinese International Limited',cc_md:'Jessie',cc_team:'MC SBH/SWK',rm:'Nasya',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Naim Holdings Berhad',cc_md:'Jessie',cc_team:'MC SBH/SWK',rm:'Nasya',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Perdana Petroleum Berhad',cc_md:'Jessie',cc_team:'MC SBH/SWK',rm:'Nasya',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Sarawak Plantation Berhad',cc_md:'Jessie',cc_team:'MC SBH/SWK',rm:'Nasya',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'Ta Ann Holdings Berhad',cc_md:'Jessie',cc_team:'MC SBH/SWK',rm:'Nasya',status:'PENDING',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'ELK-Desa Resources Berhad',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:2,company:'SLP Resources Berhad',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'MOF INC (UDA HOLDINGS)',cc_md:'Jack',cc_team:'GOM/FEDERAL GOVT',rm:'Nasya',status:'TOP UP',sales:100000.0,segment:'GOVERNMENT',ctype:'EXISTING CLIENT',gross_sales:100000,redemption_sales:0},
+  {batch:1,company:'SARAWAK ENERGY',cc_md:'Jack',cc_team:'MC SBH/SWK',rm:'Nasya',status:'EXISTING CLIENT',sales:0,segment:'GOVERNMENT',ctype:'EXISTING CLIENT',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'SARAWAK STATE',cc_md:'Jack',cc_team:'SBH/SWK STATE',rm:'Nasya',status:'TOP UP',sales:170000000.0,segment:'GOVERNMENT',ctype:'EXISTING CLIENT',gross_sales:170000000,redemption_sales:0},
+  {batch:1,company:'SELANGOR STATE',cc_md:'Jack',cc_team:'STATE GOVT',rm:'Nasya',status:'TOP UP',sales:-45102.0,segment:'GOVERNMENT',ctype:'EXISTING CLIENT',gross_sales:400000,redemption_sales:445102},
+  {batch:1,company:'BIG',cc_md:'Jason',cc_team:'CBD',rm:'Nasya',status:'TOP UP',sales:6130000.0,segment:'CBD',ctype:'EXISTING CLIENT',gross_sales:6130000,redemption_sales:0},
+  {batch:1,company:'PUBLIC PACKAGES',cc_md:'Jason',cc_team:'CBD',rm:'Nasya',status:'TOP UP',sales:6000004.0,segment:'CBD',ctype:'EXISTING CLIENT',gross_sales:6000004,redemption_sales:0},
+  {batch:1,company:'REACH TEN',cc_md:'Jason',cc_team:'CBD',rm:'Nasya',status:'TOP UP',sales:10500034.0,segment:'CBD',ctype:'EXISTING CLIENT',gross_sales:22000034,redemption_sales:11500000},
+  {batch:2,company:'TT Vision Holdings Berhad',cc_md:'Jason',cc_team:'CBD',rm:'Lei Khim',status:'PENDING',sales:0,segment:'CBD',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'OBYU/PETRA',cc_md:'Jessie',cc_team:'MC SBH/SWK',rm:'Nasya',status:'PENDING DECISION',sales:0,segment:'MID CAP',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'TMF GROUP',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'PENDING DECISION',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'TOKIO MARINE HOLDINGS INC',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'AXIATA',cc_md:'Azzahir',cc_team:'GLC 1',rm:'Nasya',status:'REJECTED',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'EPF',cc_md:'Azzahir',cc_team:'GLC 2',rm:'Nasya',status:'REJECTED',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'FELDA',cc_md:'Azzahir',cc_team:'GLC 3',rm:'Nasya',status:'REJECTED',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'JAKEL',cc_md:'Azzahir',cc_team:'GLC 4',rm:'Filzah',status:'PENDING',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'JOHOR CORP',cc_md:'Azzahir',cc_team:'GLC 3',rm:'Nasya',status:'EXISTING CLIENT',sales:0,segment:'GLC',ctype:'EXISTING CLIENT',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'LTAT/BOUSTEAD',cc_md:'Azzahir',cc_team:'GLC 4',rm:'Nasya',status:'REJECTED',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'uob kay hian',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'PNB',cc_md:'Azzahir',cc_team:'GLC 2',rm:'Nasya',status:'REJECTED',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'SIME DARBY',cc_md:'Azzahir',cc_team:'GLC 2',rm:'Nasya',status:'REJECTED',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'SIME DARBY PROPERTY',cc_md:'Azzahir',cc_team:'GLC 2',rm:'Nasya',status:'REJECTED',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'TNB',cc_md:'Azzahir',cc_team:'GLC 1',rm:'Nasya',status:'REJECTED',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'UEM',cc_md:'Azzahir',cc_team:'GLC 4',rm:'Nasya',status:'REJECTED',sales:0,segment:'GLC',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'PERKESO',cc_md:'Jack',cc_team:'GOM/FEDERAL GOVT',rm:'Nasya',status:'REJECTED',sales:0,segment:'GOVERNMENT',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'AIA GROUP',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'PENDING',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'AMANAH RAYA BERHAD',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'APEX EQUITY HOLDINGS BERHAD',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'ACCEPTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'ARECA CAPITAL SDN BHD',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'ASIAN INSTITUTE OF FINANCE BHD',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'CREDIT GUARANTEE CORPORATION',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'PENDING',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'CVC CAPITAL PARTNERS',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'GOVERNMENT OF KENYA',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'ACCEPTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'IFAST CORPORATION LTD',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'INSAS BERHAD',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'K & N KENANGA HOLDINGS BHD',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'ACCEPTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'MALAYSIAN INDUSTRIAL DEVELOPMENT FINANCE BHD (MIDF)',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'PENDING',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'MANULIFE FINANCIAL CORP',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'PENDING',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'MNRB HOLDINGS BHD',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'MTRUSTEE',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'ACCEPTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'NOMURA HOLDINGS INC',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'OPUS ASSET MANAGEMENT SDN BHD',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'ACCEPTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'PACIFIC TRUSTEES BERHAD',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'PHILLIP CAPITAL',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'SECURITIES COMMISSION MALAYSIA',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'TA ENTERPRISE BERHAD',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'ACCEPTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0},
+  {batch:1,company:'VISA INC',cc_md:'Naelah',cc_team:'FIG',rm:'Nasya',status:'REJECTED',sales:0,segment:'FIG',ctype:'NEW TO MAMG',gross_sales:0,redemption_sales:0}
 ];
 
-// Total: 282 rows
+let MSIICC_LEADS = _MSIICC_STATIC; // loaded from Supabase msii_cc_leads table at init; static array is the fallback
+
+// Total: 281 rows (synced from MSII CC Management Dashboard EMBEDDED data)
 
 // Known subsidiary companies for MSII CC leads
 const CC_SUBSIDIARY_MAP = {
@@ -4423,7 +4771,7 @@ const CC_SUBSIDIARY_MAP = {
   'MUHIBBAH': 'Sedia Teguh Sdn Bhd',
 };
 
-// Maps Supabase company names (UPPER) → CC_LEADS parent group name (UPPER)
+// Maps Supabase company names (UPPER) → MSIICC_LEADS parent group name (UPPER)
 // Used so when fMSII==='msii', subsidiaries are aggregated under their parent
 const CC_PARENT_MAP = {
   // BERJAYA (Batch 1)
@@ -4545,31 +4893,73 @@ function setCCSummaryBatch(b, btn) {
   renderCCSummaryTables();
 }
 
-// Build CC leads with live Supabase data overlaid (priority: cc_tracker_updates > meeting_logs > CC_LEADS default)
+// Fetch CC statuses from potential_clients (Supabase live capture table) and overlay onto _MSIICC_STATIC
+// Forward-only: only upgrade status if Supabase status has higher pipeline priority
+async function loadMSIICCLeads() {
+  MSIICC_LEADS = [..._MSIICC_STATIC];
+}
+
+// Build CC leads with live Supabase data overlaid (priority: cc_tracker_updates > meeting_logs > MSIICC_LEADS default)
 function buildCCLeadsWithLiveData() {
   // Build a map of clientStatusData by company name for live meeting_logs lookup
   const clientLookup = {};
   (clientStatusData || []).forEach(c => { clientLookup[(c.name||'').toUpperCase()] = c; });
+  // Build subsidiary→parent lookup so meeting logs filed under a subsidiary count for the parent CC lead
+  // Status priority for forward-only rule: higher = further along the pipeline
+  const statusPriority = {
+    'INJECTED':7,'TOP UP':7,
+    'PENDING ONBOARDING DOCS':6,'Successful':6,'PENDING ONBOARDING DOCS':6,
+    'PENDING DECISION':5,'Pending Decision':5,
+    'MET':4,'MET SUBSIDIARY':4,
+    'ACCEPTED':3,'EXISTING CLIENT':3,
+    'PENDING':2,'MAMG DROP LEAD':1,'REJECTED':1,'Rejected':1
+  };
+  // Map meeting_log status text → CC status (forward-only)
+  const logStatusToCC = {
+    'Successful': null, // handled separately (Excel-only for INJECTED)
+    'PENDING ONBOARDING DOCS': 'PENDING ONBOARDING DOCS',
+    'Pending Onboarding': 'PENDING ONBOARDING DOCS',
+    'Pending Injection': 'PENDING ONBOARDING DOCS',
+    'Pending Board Approval': 'PENDING ONBOARDING DOCS',
+    'Pending Decision': 'PENDING DECISION',
+    'Rejected': 'REJECTED',
+    'Not Met': null // no automatic CC status change
+  };
 
-  return CC_LEADS.map(d => {
+  const parentLookup = {};
+  (clientStatusData || []).forEach(c => {
+    const parentName = CC_PARENT_MAP[(c.name||'').toUpperCase()];
+    if (parentName && c.latestLog) {
+      const curP = statusPriority[c.latestLog.status] || 0;
+      const exP  = parentLookup[parentName.toUpperCase()] ? (statusPriority[parentLookup[parentName.toUpperCase()].latestLog?.status] || 0) : -1;
+      if (curP > exP) parentLookup[parentName.toUpperCase()] = c;
+    }
+  });
+
+  return MSIICC_LEADS.map(d => {
     // Priority 1: manual override in cc_tracker_updates
     const ov = ccStatusMap[d.company.toUpperCase()];
-    if (ov) return {...d, status: ov.status, sales: ov.sales_amount ?? d.sales};
-    // Priority 2: actual Supabase meeting_logs via clientStatusData
-    const cl = clientLookup[d.company.toUpperCase()];
+    if (ov) {
+      const ovPriority = statusPriority[ov.status] || 0;
+      const curPriority = statusPriority[d.status] || 0;
+      // Forward-only: only upgrade if override status is higher priority
+      if (ovPriority >= curPriority) return {...d, status: ov.status, sales: ov.sales_amount ?? d.sales};
+    }
+    // Priority 2: actual Supabase meeting_logs via clientStatusData (direct match or via subsidiary)
+    const cl = clientLookup[d.company.toUpperCase()] || parentLookup[d.company.toUpperCase()];
     if (cl?.latestLog) {
       const ls = cl.latestLog.status;
-      const inj = cl.latestLog.injected_amount;
-      const _ck = (cl.latestLog.client_name_manual||d.company).toUpperCase().trim();
-      const _ch = (injectionsData[_ck]||[]).filter(r=>r.amount>0).reduce((s,r)=>s+r.amount,0);
-      const injCumulative = (parseFloat(inj)||0) + _ch;
       let st = d.status, sales = d.sales;
-      if (ls === 'Successful') {
-        st = (inj != null || _ch > 0) ? 'INJECTED' : 'TOP UP';
-        sales = injCumulative > 0 ? injCumulative * 1e6 : sales;
-      } else if (['Pending Decision','Pending Board Approval'].includes(ls)) { st = 'MET'; }
-      else if (['Pending Onboarding','Pending Injection'].includes(ls)) { st = 'ACCEPTED'; }
-      else if (ls === 'Rejected') { st = 'REJECTED'; }
+      const curP = statusPriority[d.status] || 0;
+      // Meeting was held = at minimum MET (unless already further)
+      if (curP < statusPriority['MET']) st = 'MET';
+      // Map specific statuses forward-only
+      const ccSt = logStatusToCC[ls];
+      if (ccSt && (statusPriority[ccSt]||0) > (statusPriority[st]||0)) st = ccSt;
+      // Successful = PENDING ONBOARDING DOCS from meeting log (Excel handles INJECTED/TOP UP)
+      if (ls === 'Successful' && (statusPriority['PENDING ONBOARDING DOCS']||0) > (statusPriority[st]||0)) {
+        st = 'PENDING ONBOARDING DOCS';
+      }
       return {...d, status: st, sales};
     }
     return {...d};
@@ -4582,15 +4972,15 @@ function renderCCSummaryTables() {
 
   const SEL_STYLE = `padding:5px 24px 5px 8px;border:1.5px solid var(--border);border-radius:7px;font-family:Poppins,sans-serif;font-size:12px;background:var(--white) url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236B6B6B%22 stroke-width=%222.5%22%3E%3Cpolyline points=%226 9 12 15 18 9%22%3E%3C/polyline%3E%3C/svg%3E') no-repeat right 6px center;appearance:none;min-height:32px;`;
 
-  const isAccepted = s => ['ACCEPTED','MET','MET SUBSIDIARY','EXISTING CLIENT','INJECTED','TOP UP'].includes(s);
-  const isMet      = s => ['MET','MET SUBSIDIARY','INJECTED','TOP UP'].includes(s);
+  const isAccepted = s => ['ACCEPTED','MET','MET SUBSIDIARY','PENDING DECISION','PENDING ONBOARDING DOCS','EXISTING CLIENT','INJECTED','TOP UP'].includes(s);
+  const isMet      = s => ['MET','MET SUBSIDIARY','PENDING DECISION','PENDING ONBOARDING DOCS','INJECTED','TOP UP'].includes(s);
   const isInjected = s => ['INJECTED','TOP UP'].includes(s);
   const pct = (n,d) => d===0 ? '—' : (n/d*100).toFixed(1)+'%';
   const rColor = (v,t) => { if(v==='—') return 'var(--grey)'; const n=parseFloat(v); return n>=t?'var(--success)':n>=t*0.5?'#E07B39':'var(--error)'; };
   const sfmt = s => s ? `RM ${(s/1e6).toFixed(2)}M` : '—';
 
   const CC_MDS_ORDER = ['CHING EAN','JESSIE','JACK','AZZAHIR','ANNABELLE','NAELAH','JASON','CB'];
-  const RM_CC_LIST   = ['AZMI','ISKANDAR','NASYA','LEI KHIM','FILZAH'];
+  const RM_CC_LIST   = ['AZMI','ISKANDAR','NASYA','LEI KHIM','HARRIS','FILZAH'];
 
   const allLeads = buildCCLeadsWithLiveData();
   let batchLeads = allLeads;
@@ -4601,7 +4991,7 @@ function renderCCSummaryTables() {
   const leads1 = _ccFilter1CCMD ? batchLeads.filter(d => d.cc_md.toUpperCase() === _ccFilter1CCMD) : batchLeads;
   let ccRows='', totT=0,totA=0,totM=0,totI=0,totS=0;
   CC_MDS_ORDER.forEach(ccmd => {
-    const grp = leads1.filter(d => d.cc_md === ccmd);
+    const grp = leads1.filter(d => (d.cc_md||'').toUpperCase() === ccmd);
     if (!grp.length) return;
     const target=grp.length, accepted=grp.filter(d=>isAccepted(d.status)).length;
     const met=grp.filter(d=>isMet(d.status)).length, inj=grp.filter(d=>isInjected(d.status)).length;
@@ -4694,10 +5084,10 @@ function showCCLeadDrawer(filterType, filterVal, statusGroup) {
   let leads = buildCCLeadsWithLiveData();
   if (_ccSumBatch === 'b1') leads = leads.filter(d => d.batch === 1);
   if (_ccSumBatch === 'b2') leads = leads.filter(d => d.batch === 2);
-  if (filterType === 'ccmd') leads = leads.filter(d => d.cc_md === filterVal);
+  if (filterType === 'ccmd') leads = leads.filter(d => (d.cc_md||'').toUpperCase() === filterVal.toUpperCase());
   if (filterType === 'rm')   leads = leads.filter(d => d.rm.toUpperCase() === filterVal.toUpperCase());
-  const isAccepted = s => ['ACCEPTED','MET','MET SUBSIDIARY','EXISTING CLIENT','INJECTED','TOP UP'].includes(s);
-  const isMet      = s => ['MET','MET SUBSIDIARY','INJECTED','TOP UP'].includes(s);
+  const isAccepted = s => ['ACCEPTED','MET','MET SUBSIDIARY','PENDING DECISION','PENDING ONBOARDING DOCS','EXISTING CLIENT','INJECTED','TOP UP'].includes(s);
+  const isMet      = s => ['MET','MET SUBSIDIARY','PENDING DECISION','PENDING ONBOARDING DOCS','INJECTED','TOP UP'].includes(s);
   const isInjected = s => ['INJECTED','TOP UP'].includes(s);
   if (statusGroup === 'accepted') leads = leads.filter(d => isAccepted(d.status));
   if (statusGroup === 'met')      leads = leads.filter(d => isMet(d.status));
@@ -4719,6 +5109,347 @@ function showCCLeadDrawer(filterType, filterVal, statusGroup) {
   document.getElementById('cc-lead-drawer').style.display = 'block';
   document.getElementById('cc-lead-drawer').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
+
+// ─── CC PIPELINE (DECISION TREE) ─────────────────────────────────────────────
+let _lmsCtype2 = '';
+
+function setLmsCtype2(v) {
+  _lmsCtype2 = v;
+  ['lmsPillAll2','lmsPillNew2','lmsPillExist2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.background = 'transparent';
+    el.style.color = 'var(--grey)';
+    el.style.fontWeight = '500';
+  });
+  const map = {'':'lmsPillAll2','NEW TO MAMG':'lmsPillNew2','EXISTING CLIENT':'lmsPillExist2'};
+  const t = document.getElementById(map[v]);
+  if (t) { t.style.background='var(--navy)'; t.style.color='#fff'; t.style.fontWeight='700'; }
+  renderLmsInjTable();
+}
+
+function renderCCPipeline() {
+  // Populate CC MD filter from data
+  const batchF = (document.getElementById('ccPipeBatch')||{}).value||'';
+  const ccmdF  = (document.getElementById('ccPipeCCMD')||{}).value||'';
+  const rmF    = (document.getElementById('ccPipeRM')||{}).value||'';
+  
+  const leads = buildCCLeadsWithLiveData();
+  
+  // Populate CC MD dropdown
+  const ccmdSel = document.getElementById('ccPipeCCMD');
+  if (ccmdSel && ccmdSel.options.length <= 1) {
+    const mds = [...new Set(leads.map(d=>d.cc_md).filter(Boolean))].sort();
+    mds.forEach(m => { const o = document.createElement('option'); o.value=m; o.textContent=m; ccmdSel.appendChild(o); });
+  }
+  if (ccmdF) ccmdSel.value = ccmdF;
+  
+  let f = leads;
+  if (batchF) f = f.filter(d => String(d.batch) === batchF);
+  if (ccmdF)  f = f.filter(d => d.cc_md === ccmdF);
+  if (rmF)    f = f.filter(d => d.rm.toUpperCase() === rmF.toUpperCase());
+  
+  const stages = [
+    {key:'total',   label:'Total Leads',             fn:d=>true,                                                                                                 color:'#1A3C5E'},
+    {key:'accept',  label:'Accepted',                 fn:d=>['ACCEPTED','MET','PENDING DECISION','PENDING ONBOARDING DOCS','EXISTING CLIENT','INJECTED','TOP UP'].includes(d.status), color:'#1565C0'},
+    {key:'met',     label:'Met / Active',             fn:d=>['MET','PENDING DECISION','PENDING ONBOARDING DOCS','EXISTING CLIENT','INJECTED','TOP UP'].includes(d.status), color:'#7B3F9E'},
+    {key:'pdec',    label:'Pending Decision',         fn:d=>['PENDING DECISION','PENDING ONBOARDING DOCS','INJECTED','TOP UP'].includes(d.status), color:'#D4720A'},
+    {key:'ponb',    label:'Pending Onboarding Docs',  fn:d=>['PENDING ONBOARDING DOCS','INJECTED','TOP UP'].includes(d.status), color:'#1B8C3A'},
+    {key:'inj',     label:'Injected / Top Up',        fn:d=>['INJECTED','TOP UP'].includes(d.status), color:'#1A6B3A'},
+  ];
+  
+  const totalN = f.length;
+  const netTotal = f.filter(d=>['INJECTED','TOP UP'].includes(d.status)).reduce((s,d)=>s+(d.sales||0),0);
+  
+  let funnelHTML = `<div style="display:flex;align-items:stretch;gap:0;margin-bottom:20px;border-radius:10px;overflow:hidden;border:1.5px solid var(--border);">`;
+  stages.forEach(st => {
+    const n = f.filter(st.fn).length;
+    const pct = totalN ? Math.round(n/totalN*100) : 0;
+    funnelHTML += `
+      <div style="flex:1;padding:14px 10px;text-align:center;background:${st.color};color:#fff;cursor:pointer;transition:filter 0.15s;" onclick="showCCPipeList('${st.key}')">
+        <div style="font-size:22px;font-weight:700;line-height:1.1;">${n}</div>
+        <div style="font-size:10px;font-weight:600;margin-top:3px;opacity:0.85;line-height:1.3;">${st.label}</div>
+        <div style="font-size:11px;margin-top:3px;opacity:0.7;">${pct}%</div>
+      </div>`;
+  });
+  funnelHTML += `</div>`;
+  
+  // Sales summary
+  funnelHTML += `<div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+    <div style="background:#E8F5E9;border:1.5px solid #A3D9B5;border-radius:8px;padding:12px 20px;text-align:center;">
+      <div style="font-size:18px;font-weight:700;color:#1A6B3A;">RM ${(netTotal/1e6).toFixed(2)}M</div>
+      <div style="font-size:11px;color:var(--grey);">Total Net Sales</div>
+    </div>
+    <div style="background:#FFF8E6;border:1.5px solid var(--yellow);border-radius:8px;padding:12px 20px;text-align:center;">
+      <div style="font-size:18px;font-weight:700;color:#856404;">${f.filter(d=>['INJECTED','TOP UP'].includes(d.status)).length}</div>
+      <div style="font-size:11px;color:var(--grey);">Injected/Top Up Groups</div>
+    </div>
+    <div style="background:#E3F0FF;border:1.5px solid #99CBFF;border-radius:8px;padding:12px 20px;text-align:center;">
+      <div style="font-size:18px;font-weight:700;color:#1A4B8C;">${f.filter(d=>d.status==='REJECTED').length}</div>
+      <div style="font-size:11px;color:var(--grey);">Rejected</div>
+    </div>
+  </div>`;
+  
+  funnelHTML += `<div id="ccPipeListDrawer" style="display:none;background:#FAFCFF;border:1.5px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+      <span id="ccPipeListTitle"></span>
+      <button onclick="document.getElementById('ccPipeListDrawer').style.display='none'" style="background:none;border:none;cursor:pointer;color:var(--grey);font-size:16px;">&#x2715;</button>
+    </div>
+    <div id="ccPipeListBody"></div>
+  </div>`;
+  
+  document.getElementById('ccPipelineTree').innerHTML = funnelHTML;
+  renderLmsInjTable();
+  
+  // Store current filter leads for drawer
+  window._ccPipeFilteredLeads = f;
+}
+
+function showCCPipeList(key) {
+  const f = window._ccPipeFilteredLeads || [];
+  const stageMap = {
+    'total': {label:'All Leads',           fn:d=>true},
+    'accept':{label:'Accepted',            fn:d=>['ACCEPTED','MET','PENDING DECISION','PENDING ONBOARDING DOCS','EXISTING CLIENT','INJECTED','TOP UP'].includes(d.status)},
+    'met':   {label:'Met / Active',        fn:d=>['MET','PENDING DECISION','PENDING ONBOARDING DOCS','EXISTING CLIENT','INJECTED','TOP UP'].includes(d.status)},
+    'pdec':  {label:'Pending Decision',    fn:d=>['PENDING DECISION','PENDING ONBOARDING DOCS','INJECTED','TOP UP'].includes(d.status)},
+    'ponb':  {label:'Pending Onboarding',  fn:d=>['PENDING ONBOARDING DOCS','INJECTED','TOP UP'].includes(d.status)},
+    'inj':   {label:'Injected / Top Up',   fn:d=>['INJECTED','TOP UP'].includes(d.status)},
+  };
+  const st = stageMap[key];
+  const rows = f.filter(st.fn);
+  const CC_STATUS_MAP = {'PENDING':'s-pending','ACCEPTED':'s-decision','MET':'s-onboarding','PENDING DECISION':'s-decision','PENDING ONBOARDING DOCS':'s-onboarding','EXISTING CLIENT':'s-topup','INJECTED':'s-injected','TOP UP':'s-topup','REJECTED':'s-rejected','MAMG DROP LEAD':'s-rejected'};
+  const trs = rows.map(d => `<tr>
+    <td style="text-align:left;font-weight:600;font-size:12px;color:var(--navy);">${d.company}</td>
+    <td style="font-size:11px;color:var(--grey);">${d.cc_md}</td>
+    <td style="font-size:11px;color:var(--grey);">${d.rm}</td>
+    <td><span class="status-pill ${CC_STATUS_MAP[d.status]||'s-default'}" style="font-size:10px;">${d.status}</span></td>
+    <td style="font-size:11px;font-weight:600;color:var(--success);">${d.sales?'RM '+(d.sales/1e6).toFixed(2)+'M':'—'}</td>
+  </tr>`).join('');
+  document.getElementById('ccPipeListTitle').textContent = `${st.label} (${rows.length} companies)`;
+  document.getElementById('ccPipeListBody').innerHTML = rows.length
+    ? `<div class="admin-table-wrap" style="max-height:300px;overflow-y:auto;"><table class="admin-table"><thead><tr>
+        <th style="text-align:left;">Company</th><th>CC MD</th><th>RM</th><th>Status</th><th>Sales</th>
+       </tr></thead><tbody>${trs}</tbody></table></div>`
+    : '<div style="color:var(--grey);font-size:13px;">No companies in this group.</div>';
+  document.getElementById('ccPipeListDrawer').style.display = 'block';
+}
+
+function renderLmsInjTable() {
+  const LMS_SET = new Set(['INJECTED','TOP UP']);
+  const leads = buildCCLeadsWithLiveData();
+  const batchF = (document.getElementById('ccPipeBatch')||{}).value||'';
+  const ccmdF  = (document.getElementById('ccPipeCCMD')||{}).value||'';
+  const rmF    = (document.getElementById('ccPipeRM')||{}).value||'';
+  let f = leads.filter(d => LMS_SET.has(d.status));
+  if (batchF) f = f.filter(d => String(d.batch) === batchF);
+  if (ccmdF)  f = f.filter(d => d.cc_md === ccmdF);
+  if (rmF)    f = f.filter(d => d.rm.toUpperCase() === rmF.toUpperCase());
+  if (_lmsCtype2) f = f.filter(d => (d.ctype||'').toUpperCase() === _lmsCtype2);
+  
+  const fmt = n => n != null ? 'RM ' + Math.round(n).toLocaleString() : '—';
+  const CC_STATUS_MAP = {'INJECTED':'s-injected','TOP UP':'s-topup'};
+  const totG = f.reduce((s,d)=>s+(d.gross_sales||0),0);
+  const totR = f.reduce((s,d)=>s+(d.redemption_sales||0),0);
+  const totN = f.reduce((s,d)=>s+(d.sales||0),0);
+  
+  const trs = f.map(d => `<tr>
+    <td style="text-align:left;font-weight:600;font-size:12px;color:var(--navy);">${d.company}</td>
+    <td style="font-size:11px;color:var(--grey);">${d.ctype||'—'}</td>
+    <td style="font-size:11px;color:var(--grey);">${d.segment||'—'}</td>
+    <td style="font-size:11px;color:var(--grey);">${d.rm}</td>
+    <td><span class="status-pill ${CC_STATUS_MAP[d.status]||'s-default'}" style="font-size:10px;">${d.status}</span></td>
+    <td>${fmt(d.gross_sales)}</td>
+    <td style="color:var(--error);">${d.redemption_sales?'RM '+Math.round(d.redemption_sales).toLocaleString():'—'}</td>
+    <td style="font-weight:700;color:var(--success);">${fmt(d.sales)}</td>
+  </tr>`).join('');
+  const totRow = `<tr style="background:var(--navy);color:#fff;font-weight:700;">
+    <td style="text-align:left;" colspan="5">TOTAL (${f.length} groups)</td>
+    <td>${fmt(totG)}</td>
+    <td>${totR?'RM '+Math.round(totR).toLocaleString():'—'}</td>
+    <td style="color:#90EE90;">${fmt(totN)}</td>
+  </tr>`;
+  
+  const tbody = document.getElementById('lmsInjBody');
+  if (tbody) tbody.innerHTML = trs + totRow;
+}
+
+// ─── CC INJECTION EXCEL UPLOAD ────────────────────────────────────────────────
+// Subsidiary → CC Group mapping (matches MSII_CC_Management_Dashboard.html)
+const CC_INJ_SUB_MAP = {
+  'PRESTAVEST SDN BHD':'ASIABINA','PRESTAVEST':'ASIABINA','ASIABINA HOLDINGS':'ASIABINA',
+  'MDCON HOLDINGS SDN BHD':'Oriental Interest Berhad','MDCON':'Oriental Interest Berhad',
+  'GREEN EV CHARGE SDN BHD':'YINSON','GREEN EV':'YINSON','YINSON MOBILITY SDN BHD':'YINSON',
+  'SIGNATURE ALLIANCE BERHAD':'Chin Hin Group Berhad','SIGNATURE ALLIANCE SDN BHD':'Chin Hin Group Berhad',
+  'LGB HOLDINGS BERHAD':'Land & General Berhad','LGB ENGINEERING SDN BHD':'Land & General Berhad',
+  'LGB REALTY SDN BHD':'Land & General Berhad','LGB CONSTRUCTION':'Land & General Berhad',
+  'TITIJAYA LAND BERHAD':'MAMG DROP LEAD','TITIJAYA':'MAMG DROP LEAD',
+  'SUNWAY HEALTHCARE HOLDINGS BERHAD':'SUNWAY','SUNWAY REIT':'SUNWAY','SUNWAY CONSTRUCTION':'SUNWAY',
+  'KLK LAND SDN. BHD.':'KLK','KL KEPONG COUNTRY HOMES SDN BHD':'KLK','KULIM':'KLK',
+  'KUOK BROS':'KUOK','KUOK BROTHERS':'KUOK',
+  'B.I.G. INDUSTRIAL GAS SDN. BHD.':'BIG','B.I.G. INDUSTRIES BERHAD':'BIG','BIG INDUSTRIES':'BIG',
+  'PETROLEUM SARAWAK BERHAD':'SARAWAK STATE','SARAWAK ENERGY BERHAD':'SARAWAK ENERGY',
+  'UDA HOLDINGS BERHAD':'MOF INC (UDA HOLDINGS)',
+  'LONGSON FOOD PRODUCTS SDN BHD':'LONGSON FOOD','LONGSON':'LONGSON FOOD',
+  'FOCUS POINT VISION CARE GROUP SDN BHD':'FOCUS POINT',
+  'TEO GUAN LEE (K.L.) SDN.BHD.':'TEO GUAN LEE','TEO GUAN LEE':'TEO GUAN LEE',
+  'JAG CAPITAL SDN BHD':'KUB (JAG CAPITAL)','JAG CAPITAL':'KUB (JAG CAPITAL)',
+  'GEKA HEALTHCARE SDN BHD':'GEK POH/HAP SENG','HAP SENG':'GEK POH/HAP SENG',
+  'REACH TEN SDN BHD':'REACH TEN','REACH 10':'REACH TEN',
+  'FRONTKEN (M) SDN BHD':'Frontken Corporation Berhad','FRONTKEN':'Frontken Corporation Berhad',
+};
+
+let _ccInjPending = []; // staged changes before apply
+
+function resolveSubsidiary(name) {
+  const up = (name||'').toUpperCase().trim();
+  // Direct match in subsidiary map
+  for (const [sub, parent] of Object.entries(CC_INJ_SUB_MAP)) {
+    if (up === sub.toUpperCase()) return parent;
+  }
+  // Check if name matches any CC lead directly
+  const match = MSIICC_LEADS.find(d => d.company.toUpperCase() === up);
+  if (match) return match.company;
+  // Fuzzy: check if any CC lead company name is contained in the input
+  const fuzz = MSIICC_LEADS.find(d => up.includes(d.company.toUpperCase()) || d.company.toUpperCase().includes(up));
+  return fuzz ? fuzz.company : null;
+}
+
+function handleCCInjDrop(ev) {
+  ev.preventDefault();
+  document.getElementById('ccInjDropzone').style.borderColor = 'var(--border)';
+  const file = ev.dataTransfer.files[0];
+  if (file) handleCCInjFile(file);
+}
+
+function handleCCInjFile(file) {
+  if (!file) return;
+  const status = document.getElementById('ccInjStatus');
+  status.style.display = 'block';
+  status.innerHTML = '<div style="color:var(--navy);font-size:13px;font-weight:600;">Reading Excel file...</div>';
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      if (typeof XLSX === 'undefined') {
+        status.innerHTML = '<div style="color:var(--error);font-size:13px;">SheetJS (XLSX) library not loaded. Add &lt;script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"&gt;&lt;/script&gt;</div>';
+        return;
+      }
+      const wb = XLSX.read(e.target.result, {type:'array'});
+      // Always use the ALL sheet — resolveSubsidiary() filters CC vs non-CC automatically
+      const allSheet = wb.Sheets[wb.SheetNames.find(s=>s.toUpperCase()==='ALL')] || wb.Sheets[wb.SheetNames[0]];
+
+      // Collect rows: {company_name, gross, redemption, net}
+      const groupTotals = {}; // cc_group → {gross, redemption, net}
+
+      function processSheet(sheet) {
+        if (!sheet) return;
+        const rows = XLSX.utils.sheet_to_json(sheet, {header:1, defval:''});
+        // Find header row
+        let hdr = -1;
+        for (let i=0;i<Math.min(rows.length,10);i++) {
+          const r = rows[i].map(c=>(c+'').toUpperCase());
+          if (r.some(c=>c.includes('INVESTOR')||c.includes('CLIENT')||c.includes('COMPANY')||c.includes('NAME'))) { hdr=i; break; }
+        }
+        if (hdr < 0) return;
+        const cols = rows[hdr].map(c=>(c+'').toLowerCase());
+        const nameCol  = cols.findIndex(c=>c.includes('investor')||c.includes('client name')||c.includes('company'));
+        const grossCol = cols.findIndex(c=>c.includes('gross'));
+        const redCol   = cols.findIndex(c=>c.includes('redemption'));
+        const netCol   = cols.findIndex(c=>c.includes('net'));
+        if (nameCol<0) return;
+        for (let i=hdr+1;i<rows.length;i++) {
+          const r = rows[i];
+          const rawName = (r[nameCol]||'').toString().trim();
+          if (!rawName) continue;
+          const gross = parseFloat(r[grossCol]||0)||0;
+          const red   = parseFloat(r[redCol]||0)||0;
+          const net   = netCol>=0 ? (parseFloat(r[netCol]||0)||0) : gross-red;
+          const group = resolveSubsidiary(rawName);
+          if (!group) continue; // not a CC company — skip
+          if (!groupTotals[group]) groupTotals[group] = {gross:0, redemption:0, net:0};
+          groupTotals[group].gross += gross;
+          groupTotals[group].redemption += red;
+          groupTotals[group].net += net;
+        }
+      }
+      processSheet(allSheet);
+      
+      if (Object.keys(groupTotals).length === 0) {
+        status.innerHTML = '<div style="color:var(--error);font-size:13px;">No matching CC groups found in the Excel file. Check column headers and company names.</div>';
+        return;
+      }
+      
+      // Build preview
+      _ccInjPending = Object.entries(groupTotals).map(([group, amt]) => ({
+        group,
+        gross: Math.round(amt.gross),
+        redemption: Math.round(amt.redemption),
+        net: Math.round(amt.net),
+        newStatus: amt.net > 0 ? (MSIICC_LEADS.find(d=>d.company===group)?.status==='TOP UP'||MSIICC_LEADS.find(d=>d.company===group)?.status==='INJECTED' ? 'TOP UP' : 'INJECTED') : null
+      }));
+      
+      const previewRows = _ccInjPending.map(r => `<tr>
+        <td style="text-align:left;font-weight:600;font-size:12px;color:var(--navy);">${r.group}</td>
+        <td>RM ${r.gross.toLocaleString()}</td>
+        <td style="color:var(--error);">${r.redemption?'RM '+r.redemption.toLocaleString():'—'}</td>
+        <td style="font-weight:700;color:var(--success);">RM ${r.net.toLocaleString()}</td>
+        <td><span class="status-pill ${r.newStatus==='INJECTED'?'s-injected':r.newStatus==='TOP UP'?'s-topup':'s-default'}" style="font-size:10px;">${r.newStatus||'No change'}</span></td>
+      </tr>`).join('');
+      
+      document.getElementById('ccInjPreviewBody').innerHTML = previewRows;
+      document.getElementById('ccInjPreview').style.display = 'block';
+      status.innerHTML = `<div style="color:var(--success);font-size:13px;font-weight:600;">Found ${_ccInjPending.length} CC groups. Review changes below.</div>`;
+    } catch(err) {
+      document.getElementById('ccInjStatus').innerHTML = `<div style="color:var(--error);font-size:13px;">Error reading file: ${err.message}</div>`;
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+async function applyCCInjection() {
+  if (!_ccInjPending.length) return;
+  const statusEl = document.getElementById('ccInjStatus');
+  statusEl.innerHTML = '<div style="color:var(--navy);font-size:13px;">Saving to database…</div>';
+
+  // Update MSIICC_LEADS in-memory
+  _ccInjPending.forEach(change => {
+    const lead = MSIICC_LEADS.find(d => d.company === change.group);
+    if (!lead) return;
+    lead.gross_sales = change.gross;
+    lead.redemption_sales = change.redemption;
+    lead.sales = change.net;
+    if (change.newStatus) lead.status = change.newStatus;
+  });
+
+  // Persist to cc_tracker_updates (writable via anon key, upsert by company_name)
+  let saved = 0, errs = 0;
+  if (_sb && !demoMode) {
+    for (const change of _ccInjPending) {
+      if (!change.newStatus) continue;
+      try {
+        const {error} = await _sb.from('cc_tracker_updates').upsert(
+          {company_name: change.group, status: change.newStatus, sales_amount: change.net,
+           updated_at: new Date().toISOString(), updated_by: 'Excel Upload'},
+          {onConflict: 'company_name'}
+        );
+        if (error) { console.warn('UPSERT cc_tracker_updates:', error.message); errs++; }
+        else { ccStatusMap[change.group.toUpperCase()] = {status: change.newStatus, sales_amount: change.net, updated_at: new Date().toISOString(), updated_by: 'Excel Upload'}; saved++; }
+      } catch(e) { errs++; }
+    }
+  }
+
+  // Re-render any open CC views
+  renderCCSummaryTables();
+  if (document.getElementById('subpanel-cc-pipeline').classList.contains('active')) {
+    renderCCPipeline();
+  }
+  document.getElementById('ccInjPreview').style.display = 'none';
+  const dbNote = _sb && !demoMode ? ` (${saved} saved to DB${errs?', '+errs+' errors':''})` : ' (demo mode — not saved to DB)';
+  statusEl.innerHTML = `<div style="color:var(--success);font-size:13px;font-weight:600;">${_ccInjPending.length} CC groups updated${dbNote}.</div>`;
+  _ccInjPending = [];
+}
+
+// CC Pipeline render is triggered directly via onclick (see button definition)
 
 </script>
 </body>
